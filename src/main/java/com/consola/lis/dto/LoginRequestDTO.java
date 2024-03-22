@@ -1,7 +1,7 @@
 package com.consola.lis.dto;
 
 
-import lombok.Data;
+import lombok.*;
 
 @Data
 public class LoginRequestDTO {

@@ -1,15 +1,17 @@
 package com.consola.lis.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class UserLoginResponseDTO {
-    private String userName;
+    private boolean allow;
+    private String user;
     private String role;
     private String id;
     private String name;
     private String lastName;
-    private boolean allow;
     private String token;
     private String message;
 }

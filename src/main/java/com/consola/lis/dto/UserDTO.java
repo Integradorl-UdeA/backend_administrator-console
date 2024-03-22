@@ -1,8 +1,11 @@
 package com.consola.lis.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@ToString
+@Getter
+@Setter
+@Builder
 public class UserDTO {
     private String userName;
     private String role;
