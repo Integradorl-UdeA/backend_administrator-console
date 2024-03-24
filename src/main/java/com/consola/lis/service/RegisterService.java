@@ -7,6 +7,7 @@ import com.consola.lis.model.entity.User;
 import com.consola.lis.model.repository.UserRepository;
 import com.consola.lis.util.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,7 @@ public class RegisterService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     public AuthResponse register(RegisterRequestDTO registerRequest){
         User user = User.builder()
                 .username(registerRequest.getUsername())
@@ -22,12 +24,13 @@ public class RegisterService {
                 .id(registerRequest.getId())
                 .name(registerRequest.getName())
                 .lastname(registerRequest.getLastname())
-                .password(registerRequest.getPassword())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .build();
 
+        System.out.println(registerRequest);
+        System.out.println(user);
 
         userRepository.save(user);
-
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();

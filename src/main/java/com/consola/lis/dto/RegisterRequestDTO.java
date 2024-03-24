@@ -16,8 +16,6 @@ public class RegisterRequestDTO {
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String username;
 
-    private String role;
-
     @NotBlank(message = "El ID es obligatorio")
     private String id;
 

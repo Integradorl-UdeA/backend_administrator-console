@@ -29,8 +29,8 @@ public class SecurityConfig {
                                 .requestMatchers("/console-lis/auth/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .sessionManagement(ssesionManager ->
-                        ssesionManager
+                .sessionManagement(sesionManager ->
+                        sesionManager
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 )

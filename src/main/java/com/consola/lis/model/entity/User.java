@@ -22,6 +22,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
+    @Enumerated(EnumType.STRING)
     UserRole role;
     @Id
     private String id;
