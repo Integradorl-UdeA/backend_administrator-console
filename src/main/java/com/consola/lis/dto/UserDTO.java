@@ -1,15 +1,16 @@
 package com.consola.lis.dto;
 
+import com.consola.lis.util.UserRole;
 import lombok.*;
 
-@ToString
-@Getter
-@Setter
+@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
-    private String userName;
-    private String role;
+    private String username;
+    UserRole role;
     private String id;
     private String name;
-    private String lastName;
+    private String lastname;
 }
