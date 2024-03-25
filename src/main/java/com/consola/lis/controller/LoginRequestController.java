@@ -2,11 +2,9 @@ package com.consola.lis.controller;
 
 import com.consola.lis.dto.AuthResponse;
 import com.consola.lis.dto.LoginRequestDTO;
-import com.consola.lis.dto.UserLoginResponseDTO;
 import com.consola.lis.service.LoginService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
