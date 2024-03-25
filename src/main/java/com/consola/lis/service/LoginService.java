@@ -1,39 +1,40 @@
 package com.consola.lis.service;
 
+import com.consola.lis.dto.AuthResponse;
 import com.consola.lis.dto.LoginRequestDTO;
-import com.consola.lis.dto.UserLoginResponseDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import com.consola.lis.exception.UserAuthenticationException;
+import com.consola.lis.jwt.JwtService;
+import com.consola.lis.model.entity.User;
+import com.consola.lis.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 
 @Service
 @RequiredArgsConstructor
 public class LoginService implements LoginServiceI {
 
-    private final RestTemplate restTemplate;
-    private final HttpHeaders headers = new HttpHeaders();
-    ObjectMapper objectMapper = new ObjectMapper();
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Override
-    public UserLoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws JsonProcessingException {
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        String bodyJson = objectMapper.writeValueAsString(loginRequestDTO);
-        HttpEntity<String> httpEntity = new HttpEntity<>(bodyJson, headers);
-        ResponseEntity<UserLoginResponseDTO> response = this.restTemplate.postForEntity("https://sistemas.udea.edu.co/api/ldap/login", httpEntity, UserLoginResponseDTO.class);
-        return response.getBody();
+    public AuthResponse login(LoginRequestDTO loginRequest) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+            String token = jwtService.getToken(user);
+            return AuthResponse.builder()
+                    .token(token)
+                    .build();
+        } catch (AuthenticationException ex) {
+            throw new UserAuthenticationException("401", HttpStatus.UNAUTHORIZED, "Authentication failed, user not found");
+        }
     }
 
-    private boolean validarRol(UserLoginResponseDTO body) {
-        return (body.getRole().equals("auxlis") || body.getRole().equals("auxprog"));
-    }
+
 }

@@ -1,6 +1,5 @@
 package com.consola.lis.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDTO {
-    private String username;
-    private String password;
+public class AuthResponse {
+   private String token;
 }

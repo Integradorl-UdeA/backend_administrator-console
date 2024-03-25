@@ -10,4 +10,5 @@ public class ConsolaLisApiApplication {
 		SpringApplication.run(ConsolaLisApiApplication.class, args);
 	}
 
+
 }
