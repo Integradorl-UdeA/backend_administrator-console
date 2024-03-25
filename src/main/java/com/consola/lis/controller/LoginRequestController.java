@@ -19,7 +19,6 @@ public class LoginRequestController {
 
     private final LoginService loginService;
 
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDTO loginRequestDTO) throws Exception  {
         return ResponseEntity.ok(loginService.login(loginRequestDTO));

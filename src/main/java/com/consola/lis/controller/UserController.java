@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @PostMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<UserDTO> user(@RequestBody String userName){
-        return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+    public String welcome(){
+        return "welcome from secure endpoint";
     }
 }

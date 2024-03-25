@@ -5,6 +5,7 @@ import com.consola.lis.dto.AuthResponse;
 import com.consola.lis.dto.RegisterRequestDTO;
 import com.consola.lis.service.RegisterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,9 @@ public class RegisterRequestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequestDTO registerRequestDTO) throws Exception{
-        return ResponseEntity.ok(registerService.register(registerRequestDTO));
+            AuthResponse response = registerService.register(registerRequestDTO);
+            return ResponseEntity.ok(response);
+
+
     }
 }
