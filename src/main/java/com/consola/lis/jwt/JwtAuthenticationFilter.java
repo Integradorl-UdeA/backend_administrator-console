@@ -1,6 +1,5 @@
 package com.consola.lis.jwt;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

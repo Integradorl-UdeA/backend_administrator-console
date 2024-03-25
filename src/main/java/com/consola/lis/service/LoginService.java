@@ -2,10 +2,12 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponse;
 import com.consola.lis.dto.LoginRequestDTO;
+import com.consola.lis.exception.UserAuthenticationException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -22,17 +24,16 @@ public class LoginService implements LoginServiceI {
 
     @Override
     public AuthResponse login(LoginRequestDTO loginRequest) {
-
-        System.out.println("loginrequest"+ loginRequest);
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
-        System.out.println(user);
-        String token = jwtService.getToken(user);
-        return AuthResponse.builder()
-                .token(token)
-                .build();
-
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+            User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+            String token = jwtService.getToken(user);
+            return AuthResponse.builder()
+                    .token(token)
+                    .build();
+        } catch (AuthenticationException ex) {
+            throw new UserAuthenticationException("401", HttpStatus.UNAUTHORIZED, "Authentication failed, user not found");
+        }
     }
 
 
