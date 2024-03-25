@@ -26,6 +26,7 @@ public class JwtService {
 
 
     public String getToken(User user){
+
         return getToken(new HashMap<>(), user);
     }
 
@@ -50,6 +51,7 @@ public class JwtService {
     }
 
     public String getUsernameFromToken(String token) {
+
         return getClaim(token, Claims::getSubject);
     }
 
@@ -67,9 +69,9 @@ public class JwtService {
                 .getPayload();
     }
 
-    public <T> T getClaim(String token, Function<Claims,T> claimsResolve){
+    public <T> T getClaim(String token, Function<Claims,T> claimsResolver){
         final Claims claims = getAllClaims(token);
-        return claimsResolve.apply(claims);
+        return claimsResolver.apply(claims);
     }
 
     private Date getExpiration(String token){

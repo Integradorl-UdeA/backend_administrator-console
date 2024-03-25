@@ -23,8 +23,9 @@ public class LoginService implements LoginServiceI {
     @Override
     public AuthResponse login(LoginRequestDTO loginRequest) {
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         System.out.println("loginrequest"+ loginRequest);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
         User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
         System.out.println(user);
         String token = jwtService.getToken(user);
