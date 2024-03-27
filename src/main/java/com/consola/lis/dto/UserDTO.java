@@ -1,6 +1,6 @@
 package com.consola.lis.dto;
 
-import com.consola.lis.util.UserRole;
+import com.consola.lis.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

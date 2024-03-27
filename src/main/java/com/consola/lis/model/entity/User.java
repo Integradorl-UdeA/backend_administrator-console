@@ -1,6 +1,6 @@
 package com.consola.lis.model.entity;
 
-import com.consola.lis.util.UserRole;
+import com.consola.lis.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +20,13 @@ import java.util.List;
 @Entity
 @Table(name="userLis", uniqueConstraints = {@UniqueConstraint(columnNames={"username"})})
 public class User implements UserDetails {
+
     @Column(nullable = false)
     private String username;
+
     @Enumerated(EnumType.STRING)
     UserRole role;
+
     @Id
     private String id;
     private String name;
