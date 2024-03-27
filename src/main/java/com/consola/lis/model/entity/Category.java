@@ -2,6 +2,8 @@ package com.consola.lis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +28,8 @@ public class Category {
     @JsonRawValue
     private String attributes;
 
-    @JsonFormat
     @JsonRawValue
     @Column(name = "list_attributes")
     private String listAttributes;
 }
+

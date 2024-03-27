@@ -8,13 +8,15 @@ import org.springframework.http.HttpStatus;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @RequiredArgsConstructor
-public class UserAlreadyExistsException extends RuntimeException {
+public class NotExistingException extends RuntimeException {
+
     private final String code;
     private final HttpStatus status;
 
-    public UserAlreadyExistsException(String code, HttpStatus status, String message){
+    public NotExistingException(String code, HttpStatus status, String message){
         super(message);
         this.status = status;
         this.code = code;
     }
+
 }

@@ -9,6 +9,6 @@ import lombok.Data;
 public class CategoryDTO {
     private String categoryName;
     private Boolean quantizable;
-    private String attributes;
-    private String listAttributes;
+    private String[] attributes;
+    private ListAttributeDTO[] listAttributes;
 }

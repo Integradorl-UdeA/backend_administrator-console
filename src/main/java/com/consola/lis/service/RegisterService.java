@@ -1,8 +1,8 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.AuthResponse;
+import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.RegisterRequestDTO;
-import com.consola.lis.exception.UserAlreadyExistsException;
+import com.consola.lis.exception.AlreadyExistsException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.repository.UserRepository;
@@ -22,14 +22,14 @@ public class RegisterService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse register(RegisterRequestDTO registerRequest) {
+    public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
 
-        boolean existingOneData = userRepository.existsUserNameByIdOrUsername(registerRequest.getUsername(), registerRequest.getId());
-        boolean existingUser = userRepository.existsUserNameByIdAndUsername(registerRequest.getUsername(), registerRequest.getId());
-        if (existingUser) {
-            throw new UserAlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
-        }else if(existingOneData){
-            throw new UserAlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
+        Optional<User> existingOneData = userRepository.findByUsernameOrId(registerRequest.getUsername(), registerRequest.getId());
+        Optional<User> existingUser = userRepository.findByUsernameAndId(registerRequest.getUsername(), registerRequest.getId());
+        if (existingUser.isPresent()) {
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
+        }else if(existingOneData.isPresent()){
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
         }else {
             User user = User.builder()
                     .username(registerRequest.getUsername())
@@ -43,7 +43,7 @@ public class RegisterService {
             userRepository.save(user);
 
 
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .token(jwtService.getToken(user))
                     .build();
         }

@@ -1,9 +1,9 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.AuthResponse;
+import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.LoginRequestDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface LoginServiceI {
-    AuthResponse login(LoginRequestDTO loginRequestDTO) throws JsonProcessingException;
+    AuthResponseDTO login(LoginRequestDTO loginRequestDTO) throws JsonProcessingException;
 }

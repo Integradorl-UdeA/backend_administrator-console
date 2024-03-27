@@ -2,9 +2,9 @@ package com.consola.lis.service;
 
 
 import com.consola.lis.dto.CategoryDTO;
-import com.consola.lis.exception.UserAlreadyExistsException;
+import com.consola.lis.exception.AlreadyExistsException;
+import com.consola.lis.exception.NotExistingException;
 import com.consola.lis.model.entity.Category;
-import com.consola.lis.model.entity.User;
 import com.consola.lis.model.repository.CategoryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,47 +28,36 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public void createCategory(CategoryDTO categoryRequest) {
+    public void createCategory(CategoryDTO categoryRequest) throws JsonProcessingException {
         boolean existingCategory = categoryRepository.existsByCategoryName(categoryRequest.getCategoryName());
 
-
         if (existingCategory) {
-            throw new UserAlreadyExistsException("409", HttpStatus.CONFLICT, "Category already exists");
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Category already exists");
         } else {
+            String attributesJson = objectMapper.writeValueAsString(categoryRequest.getAttributes());
+            String listAttributesJson = objectMapper.writeValueAsString(categoryRequest.getListAttributes());
             Category category = Category.builder()
                     .categoryName(categoryRequest.getCategoryName().toLowerCase())
                     .quantizable(categoryRequest.getQuantizable())
-                    .attributes(categoryRequest.getAttributes())
-                    .listAttributes(categoryRequest.getListAttributes())
+                    .attributes(attributesJson)
+                    .listAttributes(listAttributesJson)
                     .build();
+
             categoryRepository.save(category);
         }
 
 
     }
 
-    public void updateCategory(String categoryName, CategoryDTO categoryRequest) {
-        if (categoryRepository.existsByCategoryName(categoryName)) {
-            Category category = Category.builder()
-                    .categoryName(categoryRequest.getCategoryName().toLowerCase())
-                    .quantizable(categoryRequest.getQuantizable())
-                    .attributes(categoryRequest.getAttributes())
-                    .listAttributes(categoryRequest.getListAttributes())
-                    .build();
-            categoryRepository.save(category);
 
-        } else {
-            throw new IllegalArgumentException("La categoría con el ID " + categoryName + " no existe");
-        }
-    }
 
     @Transactional
     public void deleteCategory(String categoryName) {
 
-        if (categoryRepository.existsByCategoryName(categoryName)) {
+        if (existCategory(categoryName)) {
             categoryRepository.deleteByCategoryName(categoryName);
         } else {
-            throw new IllegalArgumentException(" the category whit ID " + categoryName + " not exist");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
         }
     }
 
@@ -77,9 +66,15 @@ public class CategoryService {
         if (category.isPresent()) {
             return category.get();
         } else {
-            throw new IllegalArgumentException("No exist a category whit this name");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
         }
     }
+
+    public boolean existCategory(String categoryName) {
+        return categoryRepository.existsByCategoryName(categoryName);
+    }
+
+
 }
 
 

@@ -1,6 +1,6 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.AuthResponse;
+import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.LoginRequestDTO;
 import com.consola.lis.exception.UserAuthenticationException;
 import com.consola.lis.jwt.JwtService;
@@ -23,12 +23,12 @@ public class LoginService implements LoginServiceI {
     private final JwtService jwtService;
 
     @Override
-    public AuthResponse login(LoginRequestDTO loginRequest) {
+    public AuthResponseDTO login(LoginRequestDTO loginRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
             String token = jwtService.getToken(user);
-            return AuthResponse.builder()
+            return AuthResponseDTO.builder()
                     .token(token)
                     .build();
         } catch (AuthenticationException ex) {
