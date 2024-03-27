@@ -1,4 +1,4 @@
-package com.consola.lis.util;
+package com.consola.lis.model.enums;
 
 public enum UserRole {
     ADMIN,
