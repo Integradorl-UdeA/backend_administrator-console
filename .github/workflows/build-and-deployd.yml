@@ -1,0 +1,26 @@
+name: Build, Deploy, and Run Docker
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    name: Build, Deploy, and Run Docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy and Run Docker Container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd /home/consolelis/console_lis_backend/backend_administrator-console
+            git pull
+            mvn clean install
+            docker stop consoleapi || true
+            docker rm consoleapi || true
+            docker build -t consoleapi .
+            docker run --net=host -d -p 8092:8092 consoleapi
