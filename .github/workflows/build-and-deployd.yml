@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+      
 jobs:
   build-and-deploy:
     name: Build, Deploy, and Run Docker
