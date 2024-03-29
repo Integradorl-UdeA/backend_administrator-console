@@ -1,5 +1,6 @@
 package com.consola.lis.controller;
 
+import com.consola.lis.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.LoginRequestDTO;
 import com.consola.lis.service.LoginService;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/console-lis/auth/login")
+@RequestMapping(EndpointConstant.ENDPOINT_LOGIN)
 @RequiredArgsConstructor
 public class LoginRequestController {
 

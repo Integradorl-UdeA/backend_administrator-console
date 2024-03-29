@@ -1,6 +1,7 @@
 package com.consola.lis.controller;
 
 
+import com.consola.lis.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.RegisterRequestDTO;
 import com.consola.lis.service.RegisterService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/console-lis/auth/register")
+@RequestMapping(EndpointConstant.ENDPOINT_REGISTER)
 @RequiredArgsConstructor
 public class RegisterRequestController {
 

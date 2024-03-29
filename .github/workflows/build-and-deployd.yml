@@ -12,12 +12,12 @@ jobs:
       - name: Deploy and Run Docker Container
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd /home/consolelis/console_lis_backend/backend_administrator-console
+            cd ${{ secrets.WORK_DIR}}
             git pull
             mvn clean install
             docker stop consolea-pi || true
