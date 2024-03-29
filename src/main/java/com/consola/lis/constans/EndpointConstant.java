@@ -14,6 +14,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_CATEGORY = "/api/console-lis/auth/category";
     public static final String ENDPOINT_DELETE_CATEGORY = "/{categoryName}";
     public static final String ENDPOINT_ONE_CATEGORY = "/{categoryName}";
+    public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/CategoriesNames";
 
 
 

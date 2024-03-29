@@ -1,5 +1,6 @@
 package com.consola.lis.configuration;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +15,8 @@ public class CorsConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/console-lis/**").allowedOrigins("http://localhost:3000").allowedHeaders("*").allowedMethods("*");
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
+                registry.addMapping("/api/console-lis/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("*");
             }
         };
     }

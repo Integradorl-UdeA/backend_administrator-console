@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +49,7 @@ public class CategoryService {
 
 
     }
-
-
-
+    
     @Transactional
     public void deleteCategory(String categoryName) {
 
@@ -75,6 +74,12 @@ public class CategoryService {
     }
 
 
+    public List<String> getCategoryNames() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(Category::getCategoryName)
+                .collect(Collectors.toList());
+    }
 }
 
 
