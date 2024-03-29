@@ -1,3 +1,4 @@
+
 name: Build, Deploy, and Run 
 
 on:
@@ -34,16 +35,15 @@ jobs:
     - name: SSH to Host
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_PASSPHRASE: ${{ secrets.PASSPHRASE }}
+        SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
       run: |
         mkdir -p ~/.ssh
         echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        echo "${{ env.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/id_rsa
         eval "$(ssh-agent)"
         ssh-add ~/.ssh/id_rsa
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
-
-
       
     
 
