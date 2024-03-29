@@ -20,8 +20,14 @@ jobs:
       - name: Descargar archivo de configuración
         run: |
           mkdir certs
-          curl -LJO -u superpollo2:${{ secrets.TOKEN_GI }} ${{ secrets.REPOSITORY }}
+          curl -LJO -u ${{ secrets.USER_GI}}:${{ secrets.TOKEN_GI }} ${{ secrets.REPOSITORY }}
           mv ${{ secrets.CERT }} certs/
+          
+      - name: Agregar certificado a OpenVPN
+        run: sudo cp certs/${{ secrets.CERT }} /etc/openvpn/client.crt
+
+      - name: Iniciar OpenVPN
+        run: sudo openvpn --config /path/to/openvpn/config.ovpn &
 
       - name: Esperar 15 segundos
         run: sleep 15
