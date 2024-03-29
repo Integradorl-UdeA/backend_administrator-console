@@ -20,3 +20,13 @@ jobs:
         git clone https://${{ secrets.USER_GI}}:${{ secrets.TOKEN_GI }}@${{secrets.REPOSITORY}}
       env:
         GH_TOKEN: ${{ secrets.TOKEN_GI }}
+
+    - name: Instalar OpenVPN
+      run: sudo apt-get install openvpn
+
+    - name: Mover archivo de configuracion ovpn 
+      run: |
+        sudo mv certs/${{secrets.CERT}}${{secrets.PATH_DIR_OVPN}}
+
+    - name: Iniciar OpenVPN
+      run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}${{secrets.CERT}} &
