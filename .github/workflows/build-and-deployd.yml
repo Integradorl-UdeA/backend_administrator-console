@@ -27,7 +27,7 @@ jobs:
         run: sudo cp certs/${{ secrets.CERT }} /etc/openvpn/client.crt
 
       - name: Iniciar OpenVPN
-        run: sudo openvpn --config /path/to/openvpn/config.ovpn &
+        run: sudo openvpn --config /etc/openvpn/config.ovpn &
 
       - name: Esperar 15 segundos
         run: sleep 15
