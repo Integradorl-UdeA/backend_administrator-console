@@ -28,13 +28,10 @@ jobs:
       run: |
         sudo mv ./certs/ ${{secrets.PATH_DIR_OVPN}}
     
-    - name: Show certificates directory contents
-      run: ls ${{secrets.PATH_DIR_OVPN}}certs/
+    - name: cd to certs and run openvpn
+      run: |
+        cd ${{secrets.PATH_DIR_OVPN}}/certs
+        sudo openvpn --config ${{ secrets.CERT}} &
 
-    - name: Show contents of certificate file
-      run: cat ${{secrets.PATH_DIR_OVPN}}certs/${{secrets.CERT}}
-
-    - name: Run Openvpn
-      run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}certs/${{secrets.CERT}} &
 
       
