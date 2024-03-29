@@ -44,14 +44,9 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         eval "$(ssh-agent)"
         ssh-add ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no  ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
 
-    - name: Show 
-      run: ls ~/.ssh
 
-    - name: Show trw
-      run: |
-        cat ~/.ssh/id_rsa
-        cat ~/.ssh/id_rsa.pub
 
         
 
