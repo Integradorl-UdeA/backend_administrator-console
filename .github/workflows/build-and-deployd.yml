@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+      
 jobs:
   build-and-deploy:
     name: Build, Deploy, and Run Docker
@@ -20,7 +23,8 @@ jobs:
             cd /home/consolelis/console_lis_backend/backend_administrator-console
             git pull
             mvn clean install
-            docker stop consolea-pi || true
-            docker rm consolea-pi || true
+            docker stop consolea-api || true
+            docker rm consolea-api || true
             docker build -t consoleapi .
             docker run --net=host -d -p 8092:8092 --name console-api consoleapi
+
