@@ -1,4 +1,3 @@
-
 name: Build, Deploy, and Run 
 
 on:
@@ -28,23 +27,14 @@ jobs:
     - name: Move the dir to configuration openvpn 
       run: |
         sudo mv ./certs/ ${{secrets.PATH_DIR_OVPN}}
+    
+    - name: Show certificates directory contents
+      run: ls ${{secrets.PATH_DIR_OVPN}}certs/
+
+    - name: Show contents of certificate file
+      run: cat ${{secrets.PATH_DIR_OVPN}}certs/${{secrets.CERT}}
 
     - name: Run Openvpn
       run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}certs/${{secrets.CERT}} &
-
-    - name: SSH to Host
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        echo "${{ env.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
-        chmod 600 ~/.ssh/id_rsa
-        eval "$(ssh-agent)"
-        ssh-add ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
-      
-    
 
       
