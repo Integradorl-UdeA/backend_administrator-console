@@ -31,24 +31,6 @@ jobs:
     - name: Run Openvpn
       run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}certs/${{secrets.CERT}} &
 
-    - name: Esperar 15 segundos
-      run: sleep 15
-
-    - name: SSH Deployment
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        script: |
-          cd ${{ secrets.WORK_DIR}}
-          git pull
-          mvn clean install
-          docker stop consolea-api || true
-          docker rm consolea-api || true
-          docker build -t consoleapi .
-          docker run --net=host -d -p 8092:8092 --name console-api consoleapi
-    
       
     
 
