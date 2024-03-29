@@ -3,23 +3,36 @@ name: Build, Deploy, and Run Docker
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
-    types: [opened, synchronize, reopened]
-      
+    types: [ opened, synchronize, reopened ]
+
 jobs:
-  build-and-deploy:
-    name: Build, Deploy, and Run Docker
+  build-deploy-and-run-docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy and Run Docker Container
-        uses: appleboy/ssh-action@v0.1.7
+      - name: Checkout código
+        uses: actions/checkout@v2
+
+      - name: Instalar OpenVPN
+        run: sudo apt-get install openvpn
+
+      - name: Descargar archivo de configuración
+        run: |
+          mkdir certs
+          curl -LJO -u superpollo2:${{ secrets.TOKEN_GI }} ${{ secrets.REPOSITORY }}
+          mv ${{ secrets.CERT }} certs/
+
+      - name: Esperar 15 segundos
+        run: sleep 15
+
+      - name: SSH Deployment
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          port: ${{ secrets.SSH_PORT}}
           script: |
             cd ${{ secrets.WORK_DIR}}
             git pull
@@ -28,4 +41,3 @@ jobs:
             docker rm consolea-api || true
             docker build -t consoleapi .
             docker run --net=host -d -p 8092:8092 --name console-api consoleapi
-
