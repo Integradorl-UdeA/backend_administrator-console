@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          port: ${{ secret.SSH_PORT}}
+          port: ${{ secrets.SSH_PORT}}
           script: |
             cd ${{ secrets.WORK_DIR}}
             git pull
