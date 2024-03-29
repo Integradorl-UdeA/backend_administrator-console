@@ -24,9 +24,13 @@ jobs:
     - name: Instalar OpenVPN
       run: sudo apt-get install openvpn
 
+    - name: Mover carpeta certs 
+      run: |
+        sudo mv certs ${{secrets.PATH_DIR_OVPN}}
+
     - name: Mover archivo de configuracion ovpn 
       run: |
         sudo mv certs/${{secrets.CERT}} ${{secrets.PATH_DIR_OVPN}}
 
     - name: Iniciar OpenVPN
-      run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}${{secrets.CERT}} &
+      run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}/certs${{secrets.CERT}} &
