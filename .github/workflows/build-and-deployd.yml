@@ -6,6 +6,7 @@ on:
       - master
   pull_request:
     types: [ opened, synchronize, reopened ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +17,6 @@ jobs:
       
     - name: Clonar repositorio privado
       run: |
-        git clone https://github.com/superpollo2/certs.git
+        git clone https://${{ secrets.USER_GI}}:${{ secrets.TOKEN_GI }}@${{secrets.REPOSITORY}}
       env:
-        GH_TOKEN: ${{ secrets.TOKEN_GI}}
+        GH_TOKEN: ${{ secrets.TOKEN_GI }}
