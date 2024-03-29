@@ -1,6 +1,7 @@
 package com.consola.lis.controller;
 
 
+import com.consola.lis.constans.EndpointConstant;
 import com.consola.lis.dto.CategoryDTO;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.service.CategoryService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/console-lis/auth/category")
+@RequestMapping(EndpointConstant.ENDPOINT_CATEGORY)
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -29,13 +30,13 @@ public class CategoryController {
     }
 
 
-    @DeleteMapping("/{categoryName}")
+    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_CATEGORY)
     public void deleteCategory(@PathVariable("categoryName") String categoryName){
         categoryService.deleteCategory(categoryName);
     }
 
-    @GetMapping("/{category}")
-    public Category findCategory(@PathVariable("category") String categoryName){
+    @GetMapping(EndpointConstant.ENDPOINT_ONE_CATEGORY)
+    public Category findCategory(@PathVariable("categoryName") String categoryName){
         return categoryService.findCategory(categoryName);
     }
 }
