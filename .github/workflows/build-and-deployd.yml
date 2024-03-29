@@ -20,7 +20,7 @@ jobs:
             cd /home/consolelis/console_lis_backend/backend_administrator-console
             git pull
             mvn clean install
-            docker stop consoleapi || true
-            docker rm consoleapi || true
+            docker stop consolea-pi || true
+            docker rm consolea-pi || true
             docker build -t consoleapi .
-            docker run --net=host -d -p 8092:8092 consoleapi
+            docker run --net=host -d -p 8092:8092 --name console-api consoleapi
