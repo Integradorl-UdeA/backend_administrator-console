@@ -1,4 +1,4 @@
-name: Clonar repositorio privado
+name: Build, Deploy, and Run Docker
 
 on:
   push:
@@ -8,25 +8,49 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  build:
+  build-deploy-and-run-docker:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v2
       
-    - name: Clonar repositorio privado
+    - name: Clone repository
       run: |
         git clone https://${{ secrets.USER_GI}}:${{ secrets.TOKEN_GI }}@${{secrets.REPOSITORY}}
       env:
         GH_TOKEN: ${{ secrets.TOKEN_GI }}
 
-    - name: Instalar OpenVPN
+    - name: Install OpenVPN
       run: sudo apt-get install openvpn
 
-    - name: Mover carpeta certs 
+    - name: Move the dir to configuration openvpn 
       run: |
         sudo mv ./certs/ ${{secrets.PATH_DIR_OVPN}}
 
-    - name: Iniciar OpenVPN
+    - name: Run Openvpn
       run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}/certs${{secrets.CERT}} &
+
+    - name: Esperar 15 segundos
+      run: sleep 15
+
+    - name: SSH Deployment
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        script: |
+          cd ${{ secrets.WORK_DIR}}
+          git pull
+          mvn clean install
+          docker stop consolea-api || true
+          docker rm consolea-api || true
+          docker build -t consoleapi .
+          docker run --net=host -d -p 8092:8092 --name console-api consoleapi
+    
+      
+    
+
+      
