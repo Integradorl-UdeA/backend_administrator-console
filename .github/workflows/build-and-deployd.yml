@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Checkout code  
-      uses: appleboy/ssh-action@v1.0.3
+      uses: actions/checkout@v2
       
     - name: Clone repository
       run: |
