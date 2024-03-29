@@ -49,14 +49,14 @@ public class CategoryService {
 
 
     }
-    
+
     @Transactional
     public void deleteCategory(String categoryName) {
 
         if (existCategory(categoryName)) {
             categoryRepository.deleteByCategoryName(categoryName);
         } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName + " not exist");
         }
     }
 
@@ -65,7 +65,7 @@ public class CategoryService {
         if (category.isPresent()) {
             return category.get();
         } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName + " not exist");
         }
     }
 
@@ -76,10 +76,16 @@ public class CategoryService {
 
     public List<String> getCategoryNames() {
         List<Category> categories = categoryRepository.findAll();
-        return categories.stream()
-                .map(Category::getCategoryName)
-                .collect(Collectors.toList());
+        if (!categories.isEmpty()) {
+            return categories.stream()
+                    .map(Category::getCategoryName)
+                    .toList();
+        } else {
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, "No categories found.");
+        }
     }
+
+
 }
 
 

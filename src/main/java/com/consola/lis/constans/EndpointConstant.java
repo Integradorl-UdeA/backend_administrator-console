@@ -17,6 +17,8 @@ public class EndpointConstant {
     public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/CategoriesNames";
 
 
+    //Endpoints Inventory Item
+    public static final String ENDPOINT_INVENTORY = "/api/console-lis/auth/inventory";
 
 
 }
