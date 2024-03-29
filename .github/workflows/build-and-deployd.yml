@@ -26,7 +26,7 @@ jobs:
 
     - name: Mover archivo de configuracion ovpn 
       run: |
-        sudo mv certs/${{secrets.CERT}}${{secrets.PATH_DIR_OVPN}}
+        sudo mv certs/${{secrets.CERT}} ${{secrets.PATH_DIR_OVPN}}
 
     - name: Iniciar OpenVPN
       run: sudo openvpn --config ${{secrets.PATH_DIR_OVPN}}${{secrets.CERT}} &
