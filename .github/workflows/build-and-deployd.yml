@@ -24,6 +24,9 @@ jobs:
     - name: Install OpenVPN
       run: sudo apt-get install openvpn
 
+    - name: Install OpenSSH Server
+      run: sudo apt-get install openssh-server
+
     - name: Move the dir to configuration openvpn 
       run: |
         sudo mv ./certs/ ${{secrets.PATH_DIR_OVPN}}
