@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Checkout code  
+      uses: appleboy/ssh-action@v1.0.3
       
     - name: Clone repository
       run: |
@@ -35,7 +35,6 @@ jobs:
       run: sleep 15
 
     - name: SSH Deployment
-      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
