@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,15 +50,13 @@ public class CategoryService {
 
     }
 
-
-
     @Transactional
     public void deleteCategory(String categoryName) {
 
         if (existCategory(categoryName)) {
             categoryRepository.deleteByCategoryName(categoryName);
         } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName + " not exist");
         }
     }
 
@@ -66,12 +65,24 @@ public class CategoryService {
         if (category.isPresent()) {
             return category.get();
         } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName +  " not exist");
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit name " + categoryName + " not exist");
         }
     }
 
     public boolean existCategory(String categoryName) {
         return categoryRepository.existsByCategoryName(categoryName);
+    }
+
+
+    public List<String> getCategoryNames() {
+        List<Category> categories = categoryRepository.findAll();
+        if (!categories.isEmpty()) {
+            return categories.stream()
+                    .map(Category::getCategoryName)
+                    .toList();
+        } else {
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, "No categories found.");
+        }
     }
 
 

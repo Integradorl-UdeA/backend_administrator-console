@@ -2,6 +2,7 @@ package com.consola.lis.controller;
 
 import com.consola.lis.dto.ErrorDTO;
 import com.consola.lis.exception.AlreadyExistsException;
+import com.consola.lis.exception.IllegalParameterInRequest;
 import com.consola.lis.exception.NotExistingException;
 import com.consola.lis.exception.UserAuthenticationException;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,15 @@ public class ControllerAdvice {
 
     @ExceptionHandler(value = UserAuthenticationException.class)
     public ResponseEntity<ErrorDTO> requestExceptionHandler(UserAuthenticationException ex){
+        ErrorDTO error = ErrorDTO.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(error, ex.getStatus());
+    }
+
+    @ExceptionHandler(value = IllegalParameterInRequest.class)
+    public ResponseEntity<ErrorDTO> requestExceptionHandler(IllegalParameterInRequest ex){
         ErrorDTO error = ErrorDTO.builder()
                 .code(ex.getCode())
                 .message(ex.getMessage())

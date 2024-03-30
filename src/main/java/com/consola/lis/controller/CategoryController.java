@@ -39,5 +39,10 @@ public class CategoryController {
     public Category findCategory(@PathVariable("categoryName") String categoryName){
         return categoryService.findCategory(categoryName);
     }
+
+    @GetMapping(EndpointConstant.ENDPOINT_ALL_NAMES_CATEGORYS)
+    public List<String> getCategoryNames() {
+        return categoryService.getCategoryNames();
+    }
 }
 
