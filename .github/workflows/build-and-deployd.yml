@@ -42,7 +42,6 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
         script: |
           cd ${{ secrets.WORK_DIR}}
           git pull
