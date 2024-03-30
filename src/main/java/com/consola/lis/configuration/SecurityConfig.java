@@ -1,11 +1,9 @@
 package com.consola.lis.configuration;
 
-import com.consola.lis.exception.NotExistingException;
 import com.consola.lis.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,11 +36,6 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter,  UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling
-                                .authenticationEntryPoint((request, response, authException) -> {
-                                    throw new NotExistingException("403", HttpStatus.FORBIDDEN, "Access to the requested action is denied, you do not have permissions.");
-                                }))
                 .build();
     }
 }

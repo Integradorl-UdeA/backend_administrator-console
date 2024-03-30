@@ -4,5 +4,7 @@ public enum StateItem {
     AVAILABLE,
     BROKEN,
     REPARING,
-    LOST
+    LOST,
+    PRESENT,
+    LENDED
 }

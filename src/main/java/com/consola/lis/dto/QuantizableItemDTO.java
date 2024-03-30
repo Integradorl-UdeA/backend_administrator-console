@@ -1,18 +1,18 @@
 package com.consola.lis.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuantizableItemDTO extends GeneralItemDTO{
 
+    @NotBlank(message = "The quantity  is required")
+    @Min(value = 0, message = "The quantity must be greater than or equal to zero")
     private int quantity;
-    private int total;
 
 }

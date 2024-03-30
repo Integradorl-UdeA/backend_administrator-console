@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="general_user", uniqueConstraints = {@UniqueConstraint(columnNames={"itemName"})})
+@Table(name="general_item")
 public class GeneralItem {
 
     @Id
@@ -28,7 +28,7 @@ public class GeneralItem {
     @Column(name = "category_id")
     private int categoryId;
 
-    private boolean lendable;
+    private Boolean lendable;
 
     @Enumerated(EnumType.STRING)
     StateItem state;

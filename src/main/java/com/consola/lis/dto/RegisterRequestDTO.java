@@ -12,19 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequestDTO {
-    @NotBlank(message = "El nombre de usuario es obligatorio")
+    @NotBlank(message = "Username is required")
     private String username;
 
-    @NotBlank(message = "El ID es obligatorio")
+    @NotBlank(message = "ID is required")
     private String id;
 
-    @NotBlank(message = "El nombre es obligatorio")
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "El apellido es obligatorio")
+    @NotBlank(message = "Last name is required")
     private String lastname;
 
-    @NotBlank(message = "La contraseña es obligatoria")
+    @NotBlank(message = "Password is required")
     private String password;
 
 }
