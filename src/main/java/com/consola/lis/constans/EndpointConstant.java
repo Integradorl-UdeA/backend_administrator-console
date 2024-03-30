@@ -20,8 +20,17 @@ public class EndpointConstant {
     //Endpoints Inventory Item
     public static final String ENDPOINT_INVENTORY = "/api/console-lis/auth/inventory";
 
-    public static final String ENDPOINT_INVENTORY_GENERAL_ITEM = "/generalItems";
-    public static final String ENDPOINT_INVENTORY_QUANTIZABLE_ITEM = "/quantizableItems";
+    public static final String ENDPOINT_INVENTORY_GENERAL_ITEM = "/generalItem";
+    public static final String ENDPOINT_INVENTORY_QUANTIZABLE_ITEM = "/quantizableItem";
+
+    public static final String ENDPOINT_INVENTORY_ALL_GENERAL_ITEM = "/generalItems";
+    public static final String ENDPOINT_INVENTORY_ALL_QUANTIZABLE_ITEM = "/quantizableItems";
+    public static final String ENDPOINT_DELETE_ITEM="/{itemId}";
+
+
+    public static final String ENDPOINT_ONE_GENERAL_ITEM = "/generalItem/{itemId}";
+    public static final String ENDPOINT_ONE_QUANTIZABLE_ITEM = "/quantizableItem/{itemId}";
+
 
 
 

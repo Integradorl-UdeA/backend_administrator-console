@@ -2,7 +2,8 @@ package com.consola.lis.model.entity;
 
 
 import com.consola.lis.model.enums.StateItem;
-import com.consola.lis.model.enums.UserRole;
+import com.consola.lis.model.enums.WalletOwners;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,10 @@ public class GeneralItem {
     @Column(name = "category_id")
     private int categoryId;
 
+    @Enumerated(EnumType.STRING)
+    private WalletOwners wallet;
+
+
     private Boolean lendable;
 
     @Enumerated(EnumType.STRING)
@@ -36,6 +41,7 @@ public class GeneralItem {
     @JsonRawValue
     private String attributes;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Category category;

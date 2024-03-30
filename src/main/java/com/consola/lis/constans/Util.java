@@ -10,4 +10,7 @@ public class Util {
     public static final String VALID_STATES_CUANT_NOTLEND = "BROKEN, REPARING, LOST, PRESENT";
     public static final String VALID_STATES_NOT_CUAN_LEND = "AVAILABLE, BROKEN, REPARING, LOST, PRESENT, LENDED, OUT OF STOCK";
     public static final String VALID_STATES_NOTCUAN_LEND = "BROKEN,REPAIRING,LOST,PRESENT";
+
+    //valid wallet owners
+    public static final String VALID_WALLET_OWNERS = "DIEGO_ALEJANDRO_BOTIA,ANDRES_MARIN,LUIS_SILVA,NOT_APPLY";
 }
