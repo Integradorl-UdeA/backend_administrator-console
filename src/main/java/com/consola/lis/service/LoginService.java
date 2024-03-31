@@ -16,17 +16,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService implements LoginServiceI {
+public class LoginService  {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    @Override
+
     public AuthResponseDTO login(LoginRequestDTO loginRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+            User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new UserAuthenticationException("401", HttpStatus.UNAUTHORIZED, "Authentication failed, user not found"));
             String token = jwtService.getToken(user);
             return AuthResponseDTO.builder()
                     .token(token)
