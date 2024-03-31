@@ -1,14 +1,11 @@
 name: Build Deploy and Run Docker
 
 on:
-  push:
-    branches:
-      - master
   workflow_run:
     workflows: [ "SonarCloud" ]
-    types:
-      - completed
-
+    types: [ requested ]
+    branches:
+      - master
 
 jobs:
   build-deploy-and-run-docker:
