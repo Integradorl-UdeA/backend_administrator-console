@@ -58,8 +58,8 @@ public class InventoryItemService {
         validateCategoryExists(generalItemRequest.getCategoryId());
 
         Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
-        boolean isQuantizable = category.getQuantizable() ?? false;
-        boolean isLendable = generalItemRequest.getLendable() ?? false;
+        boolean isQuantizable = Objects.requireNonNullElse(category.getQuantizable(), false);
+        boolean isLendable = Object.requireNonNullElse(generalItemRequest.getLendable(), false);
         boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
 
 
