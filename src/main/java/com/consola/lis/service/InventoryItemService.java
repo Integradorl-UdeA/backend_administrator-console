@@ -56,11 +56,12 @@ public class InventoryItemService {
     }
     public GeneralItem createGeneralItem(GeneralItemDTO generalItemRequest) throws JsonProcessingException {
 
+        System.out.println(generalItemRequest.getCategoryId());
         validateCategoryExists(generalItemRequest.getCategoryId());
 
         Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
         boolean isQuantizable = Objects.requireNonNullElse(category.getQuantizable(), false);
-        boolean isLendable = Object.requireNonNullElse(generalItemRequest.getLendable(), false);
+        boolean isLendable = Objects.requireNonNullElse(generalItemRequest.getLendable(), false);
         boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
 
 
@@ -122,6 +123,7 @@ public class InventoryItemService {
 
     public void validateCategoryExists(Integer categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
+            System.out.println("entre y no debia");
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided category id is not valid");
         }
     }

@@ -1,8 +1,11 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.GeneralItemDTO;
+import com.consola.lis.dto.ListAttributeDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
+import com.consola.lis.exception.AlreadyExistsException;
 import com.consola.lis.exception.IllegalParameterInRequest;
+import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.GeneralItem;
 import com.consola.lis.model.entity.QuantizableItem;
 import com.consola.lis.model.repository.CategoryRepository;
@@ -18,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,6 +111,20 @@ class InventoryItemServiceTest {
         when(categoryRepository.existsById(any())).thenReturn(false);
 
         assertThrows(IllegalParameterInRequest.class, () -> inventoryItemService.createGeneralItem(generalItemDTO));
+        verify(generalItemRepository, never()).save(any());
+    }
+
+
+    @Test
+    void testCreateItem_ItemExist() throws JsonProcessingException {
+
+        GeneralItemDTO generalItemDTO = new GeneralItemDTO();
+
+        when(categoryRepository.findCategoryById(any())).thenReturn(new Category());
+        when(categoryRepository.existsById(any())).thenReturn(true);
+        when(generalItemRepository.existsById(any())).thenReturn(true);
+
+        assertThrows(AlreadyExistsException.class, () -> inventoryItemService.createGeneralItem(generalItemDTO));
         verify(generalItemRepository, never()).save(any());
     }
 
