@@ -6,12 +6,16 @@ import com.consola.lis.exception.AlreadyExistsException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
+import com.consola.lis.model.repository.CategoryRepository;
 import com.consola.lis.model.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -23,18 +27,22 @@ import static org.mockito.Mockito.*;
 
 class RegisterServiceTest {
 
+    @Mock
+    private UserRepository userRepository;
 
+    @Mock
+    private JwtService jwtService;
 
-    private final UserRepository userRepository = mock(UserRepository.class);
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-    private final JwtService jwtService = mock(JwtService.class);
+    @InjectMocks
+    private RegisterService registerService;
 
-
-    private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-
-
-    private final RegisterService registerService = new RegisterService(userRepository, jwtService,passwordEncoder) ;
-
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testRegister_NewUser_SuccessfullyRegistered() {
