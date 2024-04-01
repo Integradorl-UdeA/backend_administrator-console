@@ -2,16 +2,13 @@ package com.consola.lis.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name="category", uniqueConstraints = {@UniqueConstraint(columnNames={"categoryName"})})
 public class Category {
     @Id
