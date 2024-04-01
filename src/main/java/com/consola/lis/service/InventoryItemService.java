@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+
 public class InventoryItemService {
 
     private final ObjectMapper objectMapper;
@@ -57,11 +58,12 @@ public class InventoryItemService {
         validateCategoryExists(generalItemRequest.getCategoryId());
 
         Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
-        boolean isQuantizable = category.getQuantizable();
-        boolean isLendable = generalItemRequest.getLendable();
+
+        boolean isQuantizable = category.getQuantizable() != null ? category.getQuantizable() : false;
+        boolean isLendable = generalItemRequest.getLendable() != null ? generalItemRequest.getLendable() : false;
         boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
 
-
+        System.out.println("existing item "+existingGeneralItem);
 
         if (existingGeneralItem) {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item already exists into inventary");
@@ -120,6 +122,8 @@ public class InventoryItemService {
 
 
     public void validateCategoryExists(Integer categoryId) {
+        System.out.println("category"+categoryRepository.existsById(categoryId));
+        System.out.println("category"+!categoryRepository.existsById(categoryId));
         if (!categoryRepository.existsById(categoryId)) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided category id is not valid");
         }
@@ -193,6 +197,7 @@ public class InventoryItemService {
         return  inventoryItems;
 
     }
+
 
 
 }

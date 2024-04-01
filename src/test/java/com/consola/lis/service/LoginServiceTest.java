@@ -6,24 +6,14 @@ import com.consola.lis.exception.UserAuthenticationException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
-import com.consola.lis.model.repository.CategoryRepository;
 import com.consola.lis.model.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,7 +29,7 @@ class LoginServiceTest {
 
 
     @Test
-    void login() {
+    void testLogin() {
         LoginRequestDTO loginRequest = new LoginRequestDTO("example_user", "password");
         User user = new User();
         user.setId("1");

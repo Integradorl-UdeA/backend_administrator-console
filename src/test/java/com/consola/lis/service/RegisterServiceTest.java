@@ -6,13 +6,9 @@ import com.consola.lis.exception.AlreadyExistsException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
-import com.consola.lis.model.repository.CategoryRepository;
 import com.consola.lis.model.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -41,7 +37,7 @@ class RegisterServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+         MockitoAnnotations.openMocks(this);
     }
 
     @Test
