@@ -1,6 +1,7 @@
 package com.consola.lis.configuration;
 
 import com.consola.lis.jwt.JwtAuthenticationFilter;
+import com.consola.lis.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest ->
                         authRequest
+                                .requestMatchers("/api/admin/**").hasRole(UserRole.ADMIN.name()) // Ejemplo de autorización basada en roles
+                                .requestMatchers("/api/user/**").hasAnyRole(UserRole.AUXADMI.name(), UserRole.ADMIN.name(), UserRole.AUXPROG.name()) // Ejemplo de autorización basada en roles
                                 .requestMatchers("/api/console-lis/auth/**").permitAll()
                                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()

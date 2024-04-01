@@ -20,10 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.Objects;
 
 import java.util.*;
 
 @Service
+
 public class InventoryItemService {
 
     private final ObjectMapper objectMapper;
@@ -57,10 +59,9 @@ public class InventoryItemService {
         validateCategoryExists(generalItemRequest.getCategoryId());
 
         Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
-        boolean isQuantizable = category.getQuantizable();
-        boolean isLendable = generalItemRequest.getLendable();
+        boolean isQuantizable = category.getQuantizable() !=null ? category.getQuantizable() :false;
+        boolean isLendable = generalItemRequest.getLendable() !=null ? generalItemRequest.getLendable() : false;
         boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
-
 
 
         if (existingGeneralItem) {
@@ -193,6 +194,7 @@ public class InventoryItemService {
         return  inventoryItems;
 
     }
+
 
 
 }
