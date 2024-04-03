@@ -31,7 +31,9 @@ public class EndpointConstant {
     public static final String ENDPOINT_ONE_GENERAL_ITEM = "/generalItem/{itemId}";
     public static final String ENDPOINT_ONE_QUANTIZABLE_ITEM = "/quantizableItem/{itemId}";
 
+    //user
 
+    public static final String ENDPOINT_USER = "/api/console-lis/auth/user";
 
 
 

@@ -1,10 +1,7 @@
 package com.consola.lis.controller;
 
 import com.consola.lis.dto.ErrorDTO;
-import com.consola.lis.exception.AlreadyExistsException;
-import com.consola.lis.exception.IllegalParameterInRequest;
-import com.consola.lis.exception.NotExistingException;
-import com.consola.lis.exception.UserAuthenticationException;
+import com.consola.lis.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,4 +46,12 @@ public class ControllerAdvice {
         return new ResponseEntity<>(error, ex.getStatus());
     }
 
+    @ExceptionHandler(value = JwtExpiredException.class)
+    public ResponseEntity<ErrorDTO> handleJwtExpiredException(JwtExpiredException ex){
+        ErrorDTO error = ErrorDTO.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(error, ex.getStatus());
+    }
 }

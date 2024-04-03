@@ -80,7 +80,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    public void testDeleteCategory_CategoryNotExists() {
+    void testDeleteCategory_CategoryNotExists() {
 
         String categoryName = "Test";
 

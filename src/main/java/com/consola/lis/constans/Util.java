@@ -13,4 +13,7 @@ public class Util {
 
     //valid wallet owners
     public static final String VALID_WALLET_OWNERS = "DIEGO_ALEJANDRO_BOTIA,ANDRES_MARIN,LUIS_SILVA,NOT_APPLY";
+
+    //roles
+    public static final String VALID_ROLE = "ADMIN,AUXPROG, AUXADMI";
 }
