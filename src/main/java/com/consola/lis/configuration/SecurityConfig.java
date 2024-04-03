@@ -5,6 +5,7 @@ import com.consola.lis.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,6 +40,12 @@ public class SecurityConfig {
                 )
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter,  UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                                    response.getWriter().write("1020 - Category already exists");
+                                }))
                 .build();
     }
 }

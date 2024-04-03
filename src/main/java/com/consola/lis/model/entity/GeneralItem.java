@@ -32,7 +32,6 @@ public class GeneralItem {
     @Enumerated(EnumType.STRING)
     private WalletOwners wallet;
 
-
     private Boolean lendable;
 
     @Enumerated(EnumType.STRING)
