@@ -44,7 +44,7 @@ public class SecurityConfig {
                         exceptionHandling
                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                                     response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                                    response.getWriter().write("1020 - Category already exists");
+                                    response.getWriter().write("1020 - Access Denied");
                                 }))
                 .build();
     }

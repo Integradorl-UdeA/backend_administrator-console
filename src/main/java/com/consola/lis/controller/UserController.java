@@ -8,7 +8,6 @@ import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
 import com.consola.lis.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

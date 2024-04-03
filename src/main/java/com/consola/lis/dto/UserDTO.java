@@ -1,6 +1,5 @@
 package com.consola.lis.dto;
 
-import com.consola.lis.model.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
