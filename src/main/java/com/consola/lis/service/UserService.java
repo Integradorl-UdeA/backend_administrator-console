@@ -35,7 +35,6 @@ public class UserService {
     }
 
 
-
     public AuthResponseDTO changeUserRole(String username, UserRole newRole) {
 
         Optional<User> user = userRepository.findByUsername(username);
@@ -56,6 +55,9 @@ public class UserService {
     public UserDTO getUserLDAP(String username) {
 
         ResponseEntity<UserDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserDTO.class, username);
+        if (response.getBody() == null){
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit " + username + "not exist");
+        }
         return changeRole(Objects.requireNonNull(response.getBody()));
 
     }

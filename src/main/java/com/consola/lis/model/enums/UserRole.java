@@ -6,5 +6,5 @@ public enum UserRole {
     AUXADMI,
 
     STUDENT,
-    PROFESOR
+    PROFESSOR, PROFESOR
 }
