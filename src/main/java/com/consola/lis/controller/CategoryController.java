@@ -6,11 +6,13 @@ import com.consola.lis.dto.CategoryDTO;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.service.CategoryService;
 import com.fasterxml.jackson.core.JacksonException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Tag(name = "Manage categories", description = "something")
 @RestController
 @RequestMapping(EndpointConstant.ENDPOINT_CATEGORY)
 @RequiredArgsConstructor

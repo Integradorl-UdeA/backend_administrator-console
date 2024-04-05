@@ -7,11 +7,13 @@ import com.consola.lis.model.entity.GeneralItem;
 import com.consola.lis.model.entity.QuantizableItem;
 import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Tag(name = "Manage for Inventory", description = "something")
 @RestController
 @RequestMapping(EndpointConstant.ENDPOINT_INVENTORY)
 @RequiredArgsConstructor
