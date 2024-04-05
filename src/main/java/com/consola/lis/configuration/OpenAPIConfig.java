@@ -3,22 +3,14 @@ package com.consola.lis.configuration;
 
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
-    @Value("${console.openapi.prod-url}")
-    private String prodUrl;
-
-    @Value("${console.openapi.dev-url}")
-    private String devUrl;
 
     @Bean
     public OpenAPI swagger() {
