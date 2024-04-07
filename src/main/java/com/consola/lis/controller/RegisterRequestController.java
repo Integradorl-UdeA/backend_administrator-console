@@ -1,7 +1,7 @@
 package com.consola.lis.controller;
 
 
-import com.consola.lis.constans.EndpointConstant;
+import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.RegisterRequestDTO;
 import com.consola.lis.service.RegisterService;

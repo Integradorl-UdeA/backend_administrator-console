@@ -1,6 +1,6 @@
 package com.consola.lis.controller;
 
-import com.consola.lis.constans.EndpointConstant;
+import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.GeneralItemDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
 import com.consola.lis.model.entity.GeneralItem;

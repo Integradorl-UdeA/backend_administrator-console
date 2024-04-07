@@ -1,10 +1,9 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.GeneralItemDTO;
-import com.consola.lis.dto.ListAttributeDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
-import com.consola.lis.exception.AlreadyExistsException;
-import com.consola.lis.exception.IllegalParameterInRequest;
+import com.consola.lis.util.exception.AlreadyExistsException;
+import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.GeneralItem;
 import com.consola.lis.model.entity.QuantizableItem;
@@ -21,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

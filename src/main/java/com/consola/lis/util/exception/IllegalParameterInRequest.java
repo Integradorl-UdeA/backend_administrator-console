@@ -1,4 +1,4 @@
-package com.consola.lis.exception;
+package com.consola.lis.util.exception;
 
 
 import lombok.Data;

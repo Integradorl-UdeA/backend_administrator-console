@@ -1,4 +1,4 @@
-package com.consola.lis.constans;
+package com.consola.lis.util.constans;
 
 import lombok.experimental.UtilityClass;
 

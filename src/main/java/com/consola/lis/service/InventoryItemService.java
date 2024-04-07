@@ -1,12 +1,12 @@
 package com.consola.lis.service;
 
 
-import com.consola.lis.constans.Util;
+import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.GeneralItemDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
-import com.consola.lis.exception.AlreadyExistsException;
-import com.consola.lis.exception.IllegalParameterInRequest;
-import com.consola.lis.exception.NotExistingException;
+import com.consola.lis.util.exception.AlreadyExistsException;
+import com.consola.lis.util.exception.IllegalParameterInRequest;
+import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.GeneralItem;
 import com.consola.lis.model.entity.QuantizableItem;

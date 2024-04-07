@@ -1,6 +1,6 @@
 package com.consola.lis.jwt;
 
-import com.consola.lis.exception.JwtExpiredException;
+import com.consola.lis.util.exception.JwtExpiredException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
