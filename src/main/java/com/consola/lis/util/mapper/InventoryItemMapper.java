@@ -1,11 +1,8 @@
 package com.consola.lis.util.mapper;
 
-import com.consola.lis.dto.CategoryDTO;
 import com.consola.lis.dto.ItemInfoDTO;
-import com.consola.lis.dto.UserDTO;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.GeneralItem;
-import com.consola.lis.model.entity.User;
 import org.json.JSONObject;
 
 import java.util.Set;
