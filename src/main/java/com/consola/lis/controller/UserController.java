@@ -4,7 +4,6 @@ package com.consola.lis.controller;
 import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserDTO;
-import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
 import com.consola.lis.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;

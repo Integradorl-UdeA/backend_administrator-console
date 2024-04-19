@@ -52,7 +52,6 @@ public class InventoryController {
 
     @GetMapping
     public Map<String, Object> inventoryItems() {
-        System.out.println("al menos me dan click");
         return inventoryItemService.getAllItemsMapped();
     }
 
