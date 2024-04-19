@@ -45,7 +45,7 @@ jobs:
         script: |
           cd ${{ secrets.WORK_DIR}}
           git pull
-          mvn clean install
+          mvn clean install -P prod
           docker stop console-api || true
           docker rm console-api || true
           docker build -t consoleapi .
