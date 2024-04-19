@@ -200,8 +200,9 @@ public class InventoryItemService {
         header.add("Id");
         header.add("Estado");
         header.add("Categoría");
-        header.add("Wallet");
+        header.add("Cartera");
         header.add("Atributos");
+        header.add("Acciones");
         return header;
     }
 
