@@ -2,7 +2,6 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserDTO;
-import com.consola.lis.mapper.UserMapper;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;

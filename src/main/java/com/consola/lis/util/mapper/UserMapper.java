@@ -1,4 +1,4 @@
-package com.consola.lis.mapper;
+package com.consola.lis.util.mapper;
 
 import com.consola.lis.dto.UserDTO;
 import com.consola.lis.model.entity.User;

@@ -1,6 +1,7 @@
 package com.consola.lis.service;
 
 
+import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.GeneralItemDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
@@ -15,13 +16,16 @@ import com.consola.lis.model.enums.WalletOwners;
 import com.consola.lis.model.repository.CategoryRepository;
 import com.consola.lis.model.repository.GeneralItemRepository;
 import com.consola.lis.model.repository.QuantizableItemRepository;
+import com.consola.lis.util.mapper.InventoryItemMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
 
 @Service
 
@@ -31,6 +35,7 @@ public class InventoryItemService {
     private final GeneralItemRepository generalItemRepository;
     private final QuantizableItemRepository quantizableItemRepository;
     private final CategoryRepository categoryRepository;
+
 
     private final Map<Boolean, Map<Boolean, List<String>>> validStatesMap = new HashMap<>();
 
@@ -183,17 +188,44 @@ public class InventoryItemService {
         return generalItemRepository.existsById(itemId);
     }
 
-    public List<Object> getAllItems() {
-
-        List<GeneralItem> generalItems = getAllGeneralItems();
-        List<Object> inventoryItems = new ArrayList<>(generalItems);
-        List<QuantizableItem> quantizableItems = getAllQuantizableItems();
-        inventoryItems.addAll(quantizableItems);
-
-        return  inventoryItems;
-
+    public Map<String, Object> getAllItemsMapped() {
+        List<ItemInfoDTO> inventoryItems = getAllItems();
+        Map<String, Object> result = new HashMap<>();
+        result.put("header", createHeader());
+        result.put("allRegisters", inventoryItems);
+        return result;
     }
 
+    private List<String> createHeader() {
+        List<String> header = new ArrayList<>();
+        header.add("Id");
+        header.add("Estado");
+        header.add("Categoría");
+        header.add("Wallet");
+        header.add("Atributos");
+        return header;
+    }
 
+    private List<ItemInfoDTO> getAllItems() {
+        List<GeneralItem> generalItems = getAllGeneralItems();
+        List<QuantizableItem> quantizableItems = getAllQuantizableItems();
+
+        List<ItemInfoDTO> inventoryItems = new ArrayList<>();
+
+        generalItems.forEach(generalItem -> {
+            Category category = categoryRepository.findCategoryById(generalItem.getCategoryId());
+            inventoryItems.add(InventoryItemMapper.mapToItemInfoDTO(generalItem, category));
+        });
+
+        // Mapear los QuantizableItems
+        quantizableItems.forEach(quantizableItem -> {
+            GeneralItem generalItem = quantizableItem.getGeneralItem();
+            Category category = categoryRepository.findCategoryById(generalItem.getCategoryId());
+            inventoryItems.add(InventoryItemMapper.mapToItemInfoDTO(generalItem, category));
+        });
+
+
+        return inventoryItems;
+    }
 
 }
