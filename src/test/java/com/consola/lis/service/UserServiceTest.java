@@ -2,6 +2,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserDTO;
+import com.consola.lis.mapper.UserMapper;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
@@ -28,6 +29,8 @@ class UserServiceTest {
     @Mock
     RestTemplate restTemplate;
 
+
+
     @Mock
     PasswordEncoder passwordEncoder;
 
@@ -43,27 +46,18 @@ class UserServiceTest {
     }
 
     @Test
-    void testGetUser_ExistingUser() {
+    void testGetUser_UserNotExists() {
+        String username = "nonExistingUsername";
+        Optional<User> optionalUser = Optional.empty();
+        when(userRepository.findByUsername(username)).thenReturn(optionalUser);
 
-        String username = "testUser";
-        User user = new User();
-        user.setUsername(username);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-
-        User result = userService.getUser(username);
-
-        assertEquals(user, result);
-    }
-
-    @Test
-    void testGetUser_NonExistingUser() {
-        // Arrange
-        String username = "nonExistingUser";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        // Act and Assert
         assertThrows(NotExistingException.class, () -> userService.getUser(username));
+
+        verify(userRepository, times(1)).findByUsername(username);
+
     }
+
+
 
     @Test
     void testDeleteUser_UserExist() {

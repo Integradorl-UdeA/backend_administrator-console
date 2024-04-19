@@ -2,6 +2,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserDTO;
+import com.consola.lis.mapper.UserMapper;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
@@ -25,13 +26,12 @@ public class UserService {
     public final PasswordEncoder passwordEncoder;
     public final JwtService jwtService;
 
-    public User getUser(String username) {
+
+    public UserDTO getUser(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist ");
-        } else {
-            return user.get();
-        }
+        } else return UserMapper.mapToUserDTO(user.get());
     }
 
 
