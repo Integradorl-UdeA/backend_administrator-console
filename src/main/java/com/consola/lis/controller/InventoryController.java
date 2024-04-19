@@ -1,6 +1,6 @@
 package com.consola.lis.controller;
 
-import com.consola.lis.constans.EndpointConstant;
+import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.GeneralItemDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
 import com.consola.lis.model.entity.GeneralItem;
@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Manage for Inventory", description = "something")
 @RestController
@@ -50,8 +51,9 @@ public class InventoryController {
     }
 
     @GetMapping
-    public List<Object> inventoryItems() {
-        return inventoryItemService.getAllItems();
+    public Map<String, Object> inventoryItems() {
+        System.out.println("al menos me dan click");
+        return inventoryItemService.getAllItemsMapped();
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_GENERAL_ITEM)

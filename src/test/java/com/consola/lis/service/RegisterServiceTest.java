@@ -2,7 +2,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.RegisterRequestDTO;
-import com.consola.lis.exception.AlreadyExistsException;
+import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;

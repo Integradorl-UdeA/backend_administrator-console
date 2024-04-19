@@ -1,7 +1,7 @@
 package com.consola.lis.controller;
 
 
-import com.consola.lis.constans.EndpointConstant;
+import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserDTO;
 import com.consola.lis.model.entity.User;
@@ -21,24 +21,24 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    @GetMapping("/{userName}")
-    public User oneUser(@PathVariable("userName") String userId){
-        return userService.getUser(userId);
+    @GetMapping(EndpointConstant.ENDPOINT_ONE_USER)
+    public ResponseEntity<UserDTO> oneUser(@PathVariable("username") String userId){
+        return ResponseEntity.ok(userService.getUser(userId));
     }
 
 
     @Operation(summary = "This method is used to login the options valid are ADMIN, AUXPROG, AUXADMI")
-    @PatchMapping("/role/{username}")
+    @PatchMapping(EndpointConstant.ENDPOINT_CHANGE_ROLE_USER)
     public ResponseEntity<AuthResponseDTO> changeRole(@PathVariable("username") String username, @RequestBody UserRole userRole){
         return ResponseEntity.ok(userService.changeUserRole(username, userRole));
     }
 
-    @GetMapping("/ldapUser/{username}")
+    @GetMapping(EndpointConstant.ENDPOINT_USER_LDAP)
     public ResponseEntity<UserDTO> userLDAP(@PathVariable("username") String username){
         return ResponseEntity.ok(userService.getUserLDAP(username));
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_USER)
     public void deleteUser(@PathVariable("username") String username){
          userService.deleteUser(username);
     }

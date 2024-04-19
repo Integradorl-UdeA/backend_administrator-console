@@ -1,7 +1,7 @@
 package com.consola.lis.controller;
 
 import com.consola.lis.dto.ErrorDTO;
-import com.consola.lis.exception.*;
+import com.consola.lis.util.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

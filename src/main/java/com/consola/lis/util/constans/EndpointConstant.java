@@ -1,4 +1,4 @@
-package com.consola.lis.constans;
+package com.consola.lis.util.constans;
 
 import lombok.experimental.UtilityClass;
 
@@ -14,7 +14,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_CATEGORY = "/api/console-lis/auth/category";
     public static final String ENDPOINT_DELETE_CATEGORY = "/{categoryName}";
     public static final String ENDPOINT_ONE_CATEGORY = "/{categoryName}";
-    public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/CategoriesNames";
+    public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/categoriesNames";
 
 
     //Endpoints Inventory Item
@@ -34,6 +34,14 @@ public class EndpointConstant {
     //user
 
     public static final String ENDPOINT_USER = "/api/console-lis/auth/user";
+    public static final String ENDPOINT_ONE_USER ="/{username}";
+    public static final String ENDPOINT_USER_LDAP = "/ldapUser/{username}";
+    public static final String ENDPOINT_DELETE_USER = "/delete/{username}";
+    public static final String ENDPOINT_CHANGE_ROLE_USER = "/role/{username}";
+
+
+
+
 
 
 

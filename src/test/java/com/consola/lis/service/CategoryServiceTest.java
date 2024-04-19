@@ -2,8 +2,8 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.CategoryDTO;
 import com.consola.lis.dto.ListAttributeDTO;
-import com.consola.lis.exception.AlreadyExistsException;
-import com.consola.lis.exception.NotExistingException;
+import com.consola.lis.util.exception.AlreadyExistsException;
+import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.repository.CategoryRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

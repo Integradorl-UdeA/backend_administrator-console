@@ -1,4 +1,4 @@
-package com.consola.lis.exception;
+package com.consola.lis.util.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @RequiredArgsConstructor
-public class UserAuthenticationException extends RuntimeException {
+public class AlreadyExistsException extends RuntimeException {
     private final String code;
     private final HttpStatus status;
 
-    public UserAuthenticationException(String code, HttpStatus status, String message){
+    public AlreadyExistsException(String code, HttpStatus status, String message){
         super(message);
         this.status = status;
         this.code = code;
