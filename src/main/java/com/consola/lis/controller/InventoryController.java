@@ -45,9 +45,14 @@ public class InventoryController {
         return inventoryItemService.getAllQuantizableItems();
     }
 
-    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM)
-    public void deleteCategory(@PathVariable("itemId") String itemId){
-        inventoryItemService.deleteItem(itemId);
+    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_GEN)
+    public void deleteItemGeneral(@PathVariable("itemId") String itemId){
+        inventoryItemService.deleteItemGeneral(itemId);
+    }
+
+    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_QUA)
+    public void deleteItemQuantizable(@PathVariable("itemId") String itemId){
+        inventoryItemService.deleteItemQuantizable(itemId);
     }
 
     @GetMapping

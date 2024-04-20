@@ -25,7 +25,8 @@ public class EndpointConstant {
 
     public static final String ENDPOINT_INVENTORY_ALL_GENERAL_ITEM = "/generalItems";
     public static final String ENDPOINT_INVENTORY_ALL_QUANTIZABLE_ITEM = "/quantizableItems";
-    public static final String ENDPOINT_DELETE_ITEM="/{itemId}";
+    public static final String ENDPOINT_DELETE_ITEM_GEN="/generalItems/{itemId}";
+    public static final String ENDPOINT_DELETE_ITEM_QUA="/quantizableItems/{itemId}";
 
 
     public static final String ENDPOINT_ONE_GENERAL_ITEM = "/generalItem/{itemId}";
