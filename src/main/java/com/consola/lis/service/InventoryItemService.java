@@ -100,6 +100,11 @@ public class InventoryItemService {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided initial quantity must be greater than zero");
         }
 
+        Category category = categoryRepository.findCategoryById(quantizableItemRequest.getCategoryId());
+        if(!category.getQuantizable()){
+            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The category no is quantizable");
+        }
+
         GeneralItemDTO generalItemDTO = GeneralItemDTO.builder()
                 .itemId(quantizableItemRequest.getItemId())
                 .itemName(quantizableItemRequest.getItemName())
@@ -213,19 +218,21 @@ public class InventoryItemService {
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
 
         generalItems.forEach(generalItem -> {
-            Category category = categoryRepository.findCategoryById(generalItem.getCategoryId());
-            inventoryItems.add(InventoryItemMapper.mapToItemInfoDTO(generalItem, category));
+            inventoryItems.add(InventoryItemMapper.mapToItemInfoGene(generalItem, findCategory(generalItem)));
         });
 
         // Mapear los QuantizableItems
         quantizableItems.forEach(quantizableItem -> {
             GeneralItem generalItem = quantizableItem.getGeneralItem();
-            Category category = categoryRepository.findCategoryById(generalItem.getCategoryId());
-            inventoryItems.add(InventoryItemMapper.mapToItemInfoDTO(generalItem, category));
+            inventoryItems.add(InventoryItemMapper.mapToItemInfoQuant(quantizableItem, findCategory(generalItem)));
         });
 
 
         return inventoryItems;
+    }
+
+    private Category findCategory(GeneralItem generalItem){
+        return categoryRepository.findCategoryById(generalItem.getCategoryId());
     }
 
 }
