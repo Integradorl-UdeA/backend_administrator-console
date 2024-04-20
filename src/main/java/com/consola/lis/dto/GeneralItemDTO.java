@@ -29,6 +29,6 @@ public class GeneralItemDTO {
     @NotBlank(message = "The state  is required")
     private String state;
 
-    private Map<String, String> attributes;
+    private ListAttributeItemDTO[] attributes;
 
 }

@@ -78,7 +78,7 @@ public class InventoryItemService {
 
             }
             validateWalletOwner(generalItemRequest.getWallet());
-
+            
             GeneralItem generalItem = GeneralItem.builder()
                     .itemId(generalItemRequest.getItemId())
                     .itemName(generalItemRequest.getItemName())
@@ -227,22 +227,24 @@ public class InventoryItemService {
     private List<ItemInfoDTO> getAllItems() {
         List<GeneralItem> generalItems = getAllGeneralItems();
         List<QuantizableItem> quantizableItems = getAllQuantizableItems();
-
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
 
-        generalItems.forEach(generalItem -> {
-            inventoryItems.add(InventoryItemMapper.mapToItemInfoGene(generalItem, findCategory(generalItem)));
-        });
-
-        // Mapear los QuantizableItems
+        // Mappear los QuantizableItems
         quantizableItems.forEach(quantizableItem -> {
             GeneralItem generalItem = quantizableItem.getGeneralItem();
-            inventoryItems.add(InventoryItemMapper.mapToItemInfoQuant(quantizableItem, findCategory(generalItem)));
+            inventoryItems.add(InventoryItemMapper.mapToItemInfo(generalItem, findCategory(generalItem)));
         });
 
+        // Mappear los GeneralItems solo si no se han añadido ya como QuantizableItems
+        generalItems.forEach(generalItem -> {
+            if (!quantizableItems.stream().anyMatch(quantizableItem -> quantizableItem.getGeneralItem().equals(generalItem))) {
+                inventoryItems.add(InventoryItemMapper.mapToItemInfo(generalItem, findCategory(generalItem)));
+            }
+        });
 
         return inventoryItems;
     }
+
 
     private Category findCategory(GeneralItem generalItem){
         return categoryRepository.findCategoryById(generalItem.getCategoryId());

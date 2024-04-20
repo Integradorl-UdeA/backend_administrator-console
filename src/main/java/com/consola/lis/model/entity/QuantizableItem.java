@@ -26,7 +26,7 @@ public class QuantizableItem {
 
     private int total;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id", insertable = false, updatable = false)
     private GeneralItem generalItem;
 }

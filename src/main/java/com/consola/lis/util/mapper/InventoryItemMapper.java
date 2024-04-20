@@ -4,14 +4,18 @@ import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.GeneralItem;
 import com.consola.lis.model.entity.QuantizableItem;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class InventoryItemMapper {
     private InventoryItemMapper () {
     }
-    public static ItemInfoDTO mapToItemInfoGene(GeneralItem generalItem, Category category) {
+    public static ItemInfoDTO mapToItemInfo(GeneralItem generalItem, Category category) {
 
         return ItemInfoDTO.builder()
                 .id(generalItem.getItemId())
@@ -38,9 +42,16 @@ public class InventoryItemMapper {
 
 
 
-    private static String[] convertAttributes(String attributes){
-        JSONObject jsonObject = new JSONObject(attributes);
-        Set<String> keySet = jsonObject.keySet();
-        return keySet.toArray(new String[0]);
+    private static String[] convertAttributes(String attributes) throws JSONException {
+        JSONArray jsonArray = new JSONArray(attributes);
+        List<String> values = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            values.add(obj.getString("name"));
+        }
+
+        return values.toArray(new String[0]);
     }
+
 }
