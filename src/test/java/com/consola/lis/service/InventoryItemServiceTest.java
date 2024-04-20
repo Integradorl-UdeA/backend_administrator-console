@@ -74,7 +74,7 @@ class InventoryItemServiceTest {
         String itemId = "123";
         when(generalItemRepository.existsById(itemId)).thenReturn(true);
 
-        assertDoesNotThrow(() -> inventoryItemService.deleteItem(itemId));
+        assertDoesNotThrow(() -> inventoryItemService.deleteItemGeneral(itemId));
 
         verify(generalItemRepository, times(1)).deleteById(itemId);
     }

@@ -161,10 +161,19 @@ public class InventoryItemService {
 
 
     @Transactional
-    public void deleteItem(String itemId) {
+    public void deleteItemGeneral(String itemId) {
 
         if (existItem(itemId)) {
             generalItemRepository.deleteById(itemId);
+        } else {
+            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the item whit id " + itemId + "not exist");
+        }
+    }
+
+    @Transactional
+    public void deleteItemQuantizable(String itemId) {
+        if (existItemQua(itemId)) {
+            quantizableItemRepository.deleteById(itemId);
         } else {
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the item whit id " + itemId + "not exist");
         }
@@ -190,6 +199,10 @@ public class InventoryItemService {
 
     public boolean existItem(String itemId) {
         return generalItemRepository.existsById(itemId);
+    }
+
+    public boolean existItemQua(String itemId) {
+        return quantizableItemRepository.existsById(itemId);
     }
 
     public Map<String, Object> getAllItemsMapped() {
