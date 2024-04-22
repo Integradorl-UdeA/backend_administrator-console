@@ -8,9 +8,14 @@ import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
+import com.consola.lis.util.exception.IsEmptyException;
+import com.consola.lis.util.exception.NotExistingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +32,17 @@ public class LoanService {
         }
 
         InventoryItem generalItem = inventoryItemService.findInventoryItem(loanRequest.getItemId());
-        if(!generalItem.getLendable())
+        if(!generalItem.getLendable()) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item not is lendable");
-        //falta corroborar el total pero eso va con el quantizable, mientras se arregla entonces no se pone
-        //sería generalItem.getTotal() > 0 and generalItem.getTotal()-loan.getQuantity() >= 0 así no se puede prestar
-        //más de lo disponible y tampoco se puede prestar si no hay disponible
+        }
 
-        //también si es prestable pero no quantizable entonces el estado del item debe pasar a LENDED
+        if(loanRequest.getQuantity()>generalItem.getTotal()){
+            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity is greater than the stock");
+        }
+
         if (!generalItem.getCategory().getQuantizable()) {
-            inventoryItemService.updateGeneralItemState(loanRequest.getItemId(), StateItem.LENDED);
+            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), StateItem.LENDED);
+            inventoryItemService.updateInventoryItemTotal(loanRequest);
         }
 
         Loan loan = Loan.builder()
@@ -50,8 +57,33 @@ public class LoanService {
 
         loanRepository.save(loan);
 
+    }
 
+    public void deleteLoan(int loanId){
+        existLoan(loanId);
+        loanRepository.deleteById(loanId);
+    }
+
+    public Loan getOneLoan(int loanId) {
+        return loanRepository.findById(loanId)
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists "));
 
     }
 
+    private void existLoan(int loanId){
+        loanRepository.findById(loanId)
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists "));
+    }
+
+    public List<Loan> getAllLoans() {
+        List<Loan> allLoans = loanRepository.findAll();
+        if(allLoans.isEmpty()){
+            throw new IsEmptyException("403", HttpStatus.FORBIDDEN, "No exists loans");
+        }
+        return allLoans;
+    }
+
+//    public Map<String, Object> getAllLoansMapper() {
+//
+//    }
 }

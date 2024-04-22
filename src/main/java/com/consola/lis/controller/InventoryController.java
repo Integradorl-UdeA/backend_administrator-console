@@ -6,6 +6,7 @@ import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,14 +44,14 @@ public class InventoryController {
         return inventoryItemService.getAllItemsMapped();
     }
 
-    @GetMapping(EndpointConstant.ENDPOINT_ONE_GENERAL_ITEM)
-    public InventoryItem findGeneralItem(@PathVariable("itemId") String itemId){
+    @GetMapping(EndpointConstant.ENDPOINT_ONE_ITEM)
+    public InventoryItem findInventoryItem(@PathVariable("itemId") String itemId){
         return inventoryItemService.findInventoryItem(itemId);
     }
 
     @PatchMapping(EndpointConstant.ENDPOINT_EDIT_ITEM_STATE)
-    public void updateGeneralItem(@PathVariable("itemId")String itemId, @RequestBody StateItem state) {
-        inventoryItemService.updateGeneralItemState(itemId,state);
+    public void updateInventoryItem(@PathVariable("itemId")String itemId, @RequestBody StateItem state) {
+        inventoryItemService.updateInventoryItemState(itemId,state);
     }
 
 

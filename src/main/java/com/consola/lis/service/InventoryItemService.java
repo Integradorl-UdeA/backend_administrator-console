@@ -2,6 +2,7 @@ package com.consola.lis.service;
 
 
 import com.consola.lis.dto.ItemInfoDTO;
+import com.consola.lis.dto.LoanDTO;
 import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.util.exception.AlreadyExistsException;
@@ -180,12 +181,20 @@ public class InventoryItemService {
     }
 
 
-    public void updateGeneralItemState(String itemId, StateItem state) {
+    public void updateInventoryItemState (String itemId, StateItem state) {
         InventoryItem existingItem = inventoryItemRepository.findById(itemId)
-                .orElseThrow(() -> new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
 
         existingItem.setState(state);
         inventoryItemRepository.save(existingItem);
     }
 
+
+    public void updateInventoryItemTotal(LoanDTO loanRequest) {
+        InventoryItem existingItem = inventoryItemRepository.findById(loanRequest.getItemId())
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+        existingItem.setTotal(existingItem.getTotal()-loanRequest.getQuantity());
+        inventoryItemRepository.save(existingItem);
+
+    }
 }
