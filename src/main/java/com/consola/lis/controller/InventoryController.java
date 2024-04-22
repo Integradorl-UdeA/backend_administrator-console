@@ -2,10 +2,8 @@ package com.consola.lis.controller;
 
 import com.consola.lis.model.enums.StateItem;
 import com.consola.lis.util.constans.EndpointConstant;
-import com.consola.lis.dto.GeneralItemDTO;
-import com.consola.lis.dto.QuantizableItemDTO;
-import com.consola.lis.model.entity.GeneralItem;
-import com.consola.lis.model.entity.QuantizableItem;
+import com.consola.lis.dto.InventoryItemDTO;
+import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,54 +22,33 @@ public class InventoryController {
     private final InventoryItemService inventoryItemService;
 
 
-    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_GENERAL_ITEM )
-    public ResponseEntity<GeneralItem> createGeneralItem(@RequestBody GeneralItemDTO generalItemDTO) throws JsonProcessingException {
-        GeneralItem createdGeneralItem = inventoryItemService.createGeneralItem(generalItemDTO);
+    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_ITEM )
+    public ResponseEntity<InventoryItem> createInventoryItem(@RequestBody InventoryItemDTO inventoryItemDTO) throws JsonProcessingException {
+        InventoryItem createdGeneralItem = inventoryItemService.createInventoryItem(inventoryItemDTO);
         return ResponseEntity.ok(createdGeneralItem);
     }
 
-    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_QUANTIZABLE_ITEM)
-    public ResponseEntity<QuantizableItem> createQuantizableItem(@RequestBody QuantizableItemDTO quantizableItemDTO) throws JsonProcessingException {
-        QuantizableItem createdQuantizableItem = inventoryItemService.createQuantizableItem(quantizableItemDTO);
-        return ResponseEntity.ok(createdQuantizableItem);
-    }
-
-    @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_ALL_GENERAL_ITEM)
-    public List<GeneralItem> generalItems(){
-        return inventoryItemService.getAllGeneralItems();
-    }
-
-    @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_ALL_QUANTIZABLE_ITEM)
-    public List<QuantizableItem> quantizableItems(){
-        return inventoryItemService.getAllQuantizableItems();
-    }
-
-    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_GEN)
-    public void deleteItemGeneral(@PathVariable("itemId") String itemId){
-        inventoryItemService.deleteItemGeneral(itemId);
-    }
-
-    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_QUA)
-    public void deleteItemQuantizable(@PathVariable("itemId") String itemId){
-        inventoryItemService.deleteItemQuantizable(itemId);
-    }
-
     @GetMapping
+    public List<InventoryItem> items(){
+        return inventoryItemService.getAllInventoryItems();
+    }
+
+    @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM)
+    public void deleteItem(@PathVariable("itemId") String itemId){
+        inventoryItemService.deleteInventoryItem(itemId);
+    }
+
+    @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
     public Map<String, Object> inventoryItems() {
         return inventoryItemService.getAllItemsMapped();
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_GENERAL_ITEM)
-    public GeneralItem findGeneralItem(@PathVariable("itemId") String itemId){
-        return inventoryItemService.findGeneralItem(itemId);
+    public InventoryItem findGeneralItem(@PathVariable("itemId") String itemId){
+        return inventoryItemService.findInventoryItem(itemId);
     }
 
-    @GetMapping(EndpointConstant.ENDPOINT_ONE_QUANTIZABLE_ITEM)
-    public QuantizableItem findQuantizableItem(@PathVariable("itemId") String itemId){
-        return inventoryItemService.findQuantizableItem(itemId);
-    }
-
-    @PatchMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_GEN_STATE)
+    @PatchMapping(EndpointConstant.ENDPOINT_EDIT_ITEM_STATE)
     public void updateGeneralItem(@PathVariable("itemId")String itemId, @RequestBody StateItem state) {
         inventoryItemService.updateGeneralItemState(itemId,state);
     }

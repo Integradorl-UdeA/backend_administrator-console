@@ -3,22 +3,19 @@ package com.consola.lis.dto;
 import com.consola.lis.model.enums.StateItem;
 import com.consola.lis.model.enums.WalletOwners;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import java.util.Map;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GeneralItemDTO {
+public class InventoryItemDTO {
 
     @NotBlank(message = "The  ID item  is required")
     private String itemId;
-
-    @NotBlank(message = "The item name c is required")
-    private String itemName;
 
     @NotBlank(message = "The category  is required")
     private int categoryId;
@@ -30,6 +27,10 @@ public class GeneralItemDTO {
 
     @NotBlank(message = "The state  is required")
     private StateItem state;
+
+    @NotBlank(message = "The quantity  is required")
+    @Min(value = 0, message = "The quantity must be greater than or equal to zero")
+    private int quantity;
 
     private ListAttributeItemDTO[] attributes;
 

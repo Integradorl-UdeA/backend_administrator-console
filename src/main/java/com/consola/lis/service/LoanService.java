@@ -1,11 +1,10 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.LoanDTO;
-import com.consola.lis.model.entity.Category;
-import com.consola.lis.model.entity.GeneralItem;
+import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.enums.StateItem;
-import com.consola.lis.model.repository.GeneralItemRepository;
+import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class LoanService {
 
     private final LoanRepository loanRepository;
-    private final GeneralItemRepository generalItemRepository;
+    private final InventoryItemRepository inventoryItemRepository;
     private final InventoryItemService inventoryItemService;
 
     public void createLoan(LoanDTO loanRequest) {
@@ -27,7 +26,7 @@ public class LoanService {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item no exists into inventary");
         }
 
-        GeneralItem generalItem = inventoryItemService.findGeneralItem(loanRequest.getItemId());
+        InventoryItem generalItem = inventoryItemService.findInventoryItem(loanRequest.getItemId());
         if(!generalItem.getLendable())
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item not is lendable");
         //falta corroborar el total pero eso va con el quantizable, mientras se arregla entonces no se pone

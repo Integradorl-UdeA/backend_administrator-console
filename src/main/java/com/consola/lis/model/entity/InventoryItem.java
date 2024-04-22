@@ -16,15 +16,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="general_item")
-public class GeneralItem {
+@Table(name="inventory_item")
+public class InventoryItem {
 
     @Id
     @Column(name = "item_id")
     private String itemId;
 
-    @Column(name = "item_name")
-    private String itemName;
 
     @Column(name = "category_id")
     private int categoryId;
@@ -39,6 +37,10 @@ public class GeneralItem {
 
     @JsonRawValue
     private String attributes;
+
+    private int quantity;
+
+    private int total;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
