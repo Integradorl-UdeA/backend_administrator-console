@@ -69,22 +69,22 @@ public class InventoryItemService {
         if (existItem(generalItemRequest.getItemId())) {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item already exists into inventary");
         } else {
-            validateState(generalItemRequest.getState(), isQuantizable, isLendable);
+            validateState(generalItemRequest.getState().name(), isQuantizable, isLendable);
 
             String attributesJson = objectMapper.writeValueAsString(generalItemRequest.getAttributes());
-            if (generalItemRequest.getWallet() == null || generalItemRequest.getWallet().trim().isEmpty()) {
-                generalItemRequest.setWallet(String.valueOf(WalletOwners.NOT_APPLY));
+            if (generalItemRequest.getWallet() == null || generalItemRequest.getWallet().name().trim().isEmpty()) {
+                generalItemRequest.setWallet(WalletOwners.NOT_APPLY);
 
             }
-            validateWalletOwner(generalItemRequest.getWallet());
+            validateWalletOwner(generalItemRequest.getWallet().name());
             
             GeneralItem generalItem = GeneralItem.builder()
                     .itemId(generalItemRequest.getItemId())
                     .itemName(generalItemRequest.getItemName())
                     .categoryId(generalItemRequest.getCategoryId())
-                    .wallet(WalletOwners.valueOf(generalItemRequest.getWallet()))
+                    .wallet(WalletOwners.valueOf(generalItemRequest.getWallet().name()))
                     .lendable(generalItemRequest.getLendable())
-                    .state(StateItem.valueOf(generalItemRequest.getState()))
+                    .state(StateItem.valueOf(generalItemRequest.getState().name()))
                     .attributes(attributesJson)
                     .build();
 

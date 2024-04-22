@@ -3,7 +3,7 @@ package com.consola.lis.model.enums;
 public enum StateItem {
     AVAILABLE,
     BROKEN,
-    REPARING,
+    REPAIRING,
     LOST,
     PRESENT,
     LENDED

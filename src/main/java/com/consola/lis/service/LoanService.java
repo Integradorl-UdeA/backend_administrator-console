@@ -30,7 +30,7 @@ public class LoanService {
         GeneralItem generalItem = inventoryItemService.findGeneralItem(loanRequest.getItemId());
         if(!generalItem.getLendable())
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item not is lendable");
-        //falta corroborar el total pero eso va con el quantizable, mientras se arregla entonces lo se pone
+        //falta corroborar el total pero eso va con el quantizable, mientras se arregla entonces no se pone
         //sería generalItem.getTotal() > 0 and generalItem.getTotal()-loan.getQuantity() >= 0 así no se puede prestar
         //más de lo disponible y tampoco se puede prestar si no hay disponible
 

@@ -1,5 +1,7 @@
 package com.consola.lis.dto;
 
+import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.WalletOwners;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -21,13 +23,13 @@ public class GeneralItemDTO {
     @NotBlank(message = "The category  is required")
     private int categoryId;
 
-    private String wallet;
+    private WalletOwners wallet;
 
     @NotBlank(message = "The lendable  is required")
     private Boolean lendable;
 
     @NotBlank(message = "The state  is required")
-    private String state;
+    private StateItem state;
 
     private ListAttributeItemDTO[] attributes;
 
