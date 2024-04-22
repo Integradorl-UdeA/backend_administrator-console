@@ -26,6 +26,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_INVENTORY_ALL_GENERAL_ITEM = "/generalItems";
     public static final String ENDPOINT_INVENTORY_ALL_QUANTIZABLE_ITEM = "/quantizableItems";
     public static final String ENDPOINT_DELETE_ITEM_GEN="/generalItems/{itemId}";
+    public static final String ENDPOINT_DELETE_ITEM_GEN_STATE="/generalItems/state/{itemId}";
     public static final String ENDPOINT_DELETE_ITEM_QUA="/quantizableItems/{itemId}";
 
 
@@ -40,7 +41,8 @@ public class EndpointConstant {
     public static final String ENDPOINT_DELETE_USER = "/delete/{username}";
     public static final String ENDPOINT_CHANGE_ROLE_USER = "/role/{username}";
 
-
+    //Loan
+    public static final String ENDPOINT_LOAN = "/api/console-lis/auth/loan";
 
 
 

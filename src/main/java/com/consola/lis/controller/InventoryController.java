@@ -1,5 +1,6 @@
 package com.consola.lis.controller;
 
+import com.consola.lis.model.enums.StateItem;
 import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.GeneralItemDTO;
 import com.consola.lis.dto.QuantizableItemDTO;
@@ -70,7 +71,10 @@ public class InventoryController {
         return inventoryItemService.findQuantizableItem(itemId);
     }
 
-
+    @PatchMapping(EndpointConstant.ENDPOINT_DELETE_ITEM_GEN_STATE)
+    public void updateGeneralItem(@PathVariable("itemId")String itemId, @RequestBody StateItem state) {
+        inventoryItemService.updateGeneralItemState(itemId,state);
+    }
 
 
 }

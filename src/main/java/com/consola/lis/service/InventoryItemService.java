@@ -64,10 +64,9 @@ public class InventoryItemService {
         Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
         boolean isQuantizable = category.getQuantizable() !=null ? category.getQuantizable() :false;
         boolean isLendable = generalItemRequest.getLendable() !=null ? generalItemRequest.getLendable() : false;
-        boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
 
 
-        if (existingGeneralItem) {
+        if (existItem(generalItemRequest.getItemId())) {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item already exists into inventary");
         } else {
             validateState(generalItemRequest.getState(), isQuantizable, isLendable);
@@ -223,7 +222,7 @@ public class InventoryItemService {
         return header;
     }
 
-    private List<ItemInfoDTO> getAllItems() {
+    public List<ItemInfoDTO> getAllItems() {
         List<GeneralItem> generalItems = getAllGeneralItems();
         List<QuantizableItem> quantizableItems = getAllQuantizableItems();
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
@@ -245,8 +244,17 @@ public class InventoryItemService {
     }
 
 
-    private Category findCategory(GeneralItem generalItem){
+    public Category findCategory(GeneralItem generalItem){
         return categoryRepository.findCategoryById(generalItem.getCategoryId());
+    }
+
+
+    public void updateGeneralItemState(String itemId, StateItem state) {
+        GeneralItem existingItem = generalItemRepository.findById(itemId)
+                .orElseThrow(() -> new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+
+        existingItem.setState(state);
+        generalItemRepository.save(existingItem);
     }
 
 }
