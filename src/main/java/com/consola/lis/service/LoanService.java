@@ -3,6 +3,7 @@ package com.consola.lis.service;
 import com.consola.lis.dto.LoanDTO;
 import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.model.entity.Loan;
+import com.consola.lis.model.enums.LoanType;
 import com.consola.lis.model.enums.StateItem;
 import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,42 +26,51 @@ public class LoanService {
     private final InventoryItemRepository inventoryItemRepository;
     private final InventoryItemService inventoryItemService;
 
-    public void createLoan(LoanDTO loanRequest) {
+    public Loan createLoan(LoanDTO loanRequest) {
 
         if(!inventoryItemService.existItem(loanRequest.getItemId())) {
-            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item no exists into inventary");
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item no exists into inventory");
         }
 
-        InventoryItem generalItem = inventoryItemService.findInventoryItem(loanRequest.getItemId());
-        if(!generalItem.getLendable()) {
+        InventoryItem item = inventoryItemService.findInventoryItem(loanRequest.getItemId());
+        if(!item.getLendable()) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item not is lendable");
         }
 
-        if(loanRequest.getQuantity()>generalItem.getTotal()){
+        if(loanRequest.getQuantity()>item.getTotal()){
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity is greater than the stock");
         }
 
-        if (!generalItem.getCategory().getQuantizable()) {
+        if (!item.getCategory().getQuantizable()) {
             inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), StateItem.LENDED);
-            inventoryItemService.updateInventoryItemTotal(loanRequest);
         }
+
+        if (item.getCategory().getQuantizable()) {
+            if (item.getTotal() - loanRequest.getQuantity() == 0) {
+                inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), StateItem.OUT_OF_STOCK);
+            }
+        }
+        inventoryItemService.updateInventoryItemTotal(loanRequest);
 
         Loan loan = Loan.builder()
                 .itemId(loanRequest.getItemId())
-                .loanType(loanRequest.getLoanType())
-                .borrowerId(loanRequest.getBorrowerId())
-                .lenderId(loanRequest.getLenderId())
+                .loanType(LoanType.valueOf(loanRequest.getLoanType().name()))
+                .borrowerUser(loanRequest.getBorrowerUser())
+                .lenderUser(loanRequest.getLenderUser())
                 .quantity(loanRequest.getQuantity())
                 .observation(loanRequest.getObservation())
                 .returnDate(loanRequest.getReturnDate())
                 .build();
 
-        loanRepository.save(loan);
+        return  loanRepository.save(loan);
+
 
     }
 
     public void deleteLoan(int loanId){
-        existLoan(loanId);
+        if(!existLoan(loanId)){
+            throw new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists ");
+        }
         loanRepository.deleteById(loanId);
     }
 
@@ -70,9 +80,8 @@ public class LoanService {
 
     }
 
-    private void existLoan(int loanId){
-        loanRepository.findById(loanId)
-                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists "));
+    private boolean existLoan(int loanId){
+        return loanRepository.existsById(loanId);
     }
 
     public List<Loan> getAllLoans() {

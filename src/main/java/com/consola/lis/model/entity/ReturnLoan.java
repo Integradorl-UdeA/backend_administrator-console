@@ -22,11 +22,11 @@ public class ReturnLoan {
     @Column(name = "loan_id")
     private int loanId;
 
-    @Column(name = "borrower_id")
-    private String borrowerId;
+    @Column(name = "borrower_user")
+    private String borrowerUser;
 
-    @Column(name = "lender_id")
-    private String lenderId;
+    @Column(name = "lender_user")
+    private String lenderUser;
 
     @Column(name = "return_date")
     private Date returnDate;

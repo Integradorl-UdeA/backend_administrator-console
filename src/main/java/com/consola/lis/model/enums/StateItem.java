@@ -6,5 +6,6 @@ public enum StateItem {
     REPAIRING,
     LOST,
     PRESENT,
-    LENDED
+    LENDED,
+    OUT_OF_STOCK
 }

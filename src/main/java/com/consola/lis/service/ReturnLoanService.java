@@ -30,8 +30,8 @@ public class ReturnLoanService {
 
         ReturnLoan returnLoan = ReturnLoan.builder()
                 .loanId(returnLoanRequest.getLoanId())
-                .borrowerId(returnLoanRequest.getBorrowerId())
-                .lenderId(returnLoanRequest.getBorrowerId())
+                .borrowerUser(returnLoanRequest.getBorrowerUser())
+                .lenderUser(returnLoanRequest.getLenderUser())
                 .observation(returnLoanRequest.getObservation())
                 .build();
 

@@ -7,10 +7,14 @@ import com.consola.lis.model.entity.Loan;
 import com.consola.lis.service.LoanService;
 import com.consola.lis.util.constans.EndpointConstant;
 import com.fasterxml.jackson.core.JacksonException;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -21,13 +25,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoanController {
     private final LoanService loanService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
-    @ResponseStatus(HttpStatus.CREATED)
+
     @PostMapping(EndpointConstant.ENDPOINT_CREATE_LOAN)
-    public void createLoan(@RequestBody LoanDTO loan)  {
-        loanService.createLoan(loan);
+    public ResponseEntity<Loan> createLoan(@RequestBody LoanDTO loanRequest)  {
+        return new ResponseEntity<>(loanService.createLoan(loanRequest), HttpStatus.CREATED);
 
     }
+
     @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_LOAN)
     public void deleteLoan(@PathVariable("loanId") int loanId){
         loanService.deleteLoan(loanId);

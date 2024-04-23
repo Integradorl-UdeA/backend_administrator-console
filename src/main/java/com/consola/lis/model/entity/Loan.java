@@ -1,11 +1,16 @@
 package com.consola.lis.model.entity;
 
 import com.consola.lis.model.enums.LoanType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -27,21 +32,40 @@ public class Loan {
 
     private int quantity;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "loan_type")
     private LoanType loanType;
 
-    @Column(name = "borrower_id")
-    private String borrowerId;
+    @Column(name = "borrower_user")
+    private String borrowerUser;
 
-    @Column(name = "lender_id")
-    private String lenderId;
+    @Column(name = "lender_user")
+    private String lenderUser;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="UTC")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "loan_date")
     private Date loanDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="UTC")
     @Column(name = "return_date")
     private Date returnDate;
 
     private String observation;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", referencedColumnName = "item_id", insertable = false, updatable = false)
+    @JsonIgnore
+    private InventoryItem inventoryItem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrower_user", referencedColumnName = "username", insertable = false, updatable = false)
+    @JsonIgnore
+    private User userB;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lender_user", referencedColumnName = "username", insertable = false, updatable = false)
+    @JsonIgnore
+    private User userL;
 }
