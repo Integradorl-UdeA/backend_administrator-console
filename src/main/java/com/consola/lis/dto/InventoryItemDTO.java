@@ -29,7 +29,7 @@ public class InventoryItemDTO {
     private StateItem state;
 
     @NotBlank(message = "The quantity  is required")
-    @Min(value = 0, message = "The quantity must be greater than or equal to zero")
+    @Min(value = 1)
     private int quantity;
 
     private ListAttributeItemDTO[] attributes;

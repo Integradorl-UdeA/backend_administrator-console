@@ -51,6 +51,7 @@ public class LoanService {
             }
         }
         inventoryItemService.updateInventoryItemTotal(loanRequest);
+        if(loanRequest.getLoanType()==null) loanRequest.setLoanType(LoanType.GENERAL);
 
         Loan loan = Loan.builder()
                 .itemId(loanRequest.getItemId())
