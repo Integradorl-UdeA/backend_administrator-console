@@ -31,8 +31,6 @@ class InventoryItemServiceTest {
     @Mock
     private InventoryItemRepository inventoryItemRepository;
 
-    //@Mock
-   // private QuantizableItemRepository quantizableItemRepository;
 
     @Mock
     private  CategoryRepository categoryRepository;
@@ -56,15 +54,7 @@ class InventoryItemServiceTest {
         assertEquals(mockedList, result);
     }
 
-//    @Test
-//    void testGetAllQuantizableItems() {
-//        List<QuantizableItem> mockedList = Arrays.asList(new QuantizableItem(), new QuantizableItem());
-//        when(quantizableItemRepository.findAll()).thenReturn(mockedList);
-//
-//        List<QuantizableItem> result = inventoryItemService.getAllQuantizableItems();
-//
-//        assertEquals(mockedList, result);
-//    }
+
 
     @Test
     void testDeleteItem() {
@@ -87,16 +77,6 @@ class InventoryItemServiceTest {
         assertEquals(mockItem, result);
     }
 
-//    @Test
-//    void testFindQuantizableItem() {
-//        String itemId = "123";
-//        QuantizableItem mockItem = new QuantizableItem();
-//        when(quantizableItemRepository.findByItemId(itemId)).thenReturn(Optional.of(mockItem));
-//
-//        QuantizableItem result = inventoryItemService.findQuantizableItem(itemId);
-//
-//        assertEquals(mockItem, result);
-//    }
 
 
     @Test
@@ -112,28 +92,22 @@ class InventoryItemServiceTest {
 
     @Test
     void testCreateItem_ItemExist() throws JsonProcessingException {
-
+        // Arrange
         InventoryItemDTO inventoryItemDTO = new InventoryItemDTO();
+        inventoryItemDTO.setQuantity(5);
 
         when(categoryRepository.findCategoryById(any())).thenReturn(new Category());
         when(categoryRepository.existsById(any())).thenReturn(true);
         when(inventoryItemRepository.existsById(any())).thenReturn(true);
 
-        assertThrows(AlreadyExistsException.class, () -> inventoryItemService.createInventoryItem(inventoryItemDTO));
+        assertThrows(AlreadyExistsException.class, () -> inventoryItemService.createInventoryItem(inventoryItemDTO),
+                "Expected AlreadyExistsException to be thrown");
+
         verify(inventoryItemRepository, never()).save(any());
     }
 
 
-//    @Test
-//    void createQuantizableItem_InitialQuantityZero() {
-//        // Mocking
-//        QuantizableItemDTO quantizableItemDTO = new QuantizableItemDTO();
-//        quantizableItemDTO.setQuantity(0);
-//
-//        // Test & Verify
-//        assertThrows(IllegalParameterInRequest.class, () -> inventoryItemService.createInventoryItem(quantizableItemDTO));
-//        verify(inventoryItemRepository, never()).save(any());
-//    }
+
 
 
 
