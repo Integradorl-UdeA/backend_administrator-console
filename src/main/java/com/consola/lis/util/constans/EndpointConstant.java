@@ -14,24 +14,19 @@ public class EndpointConstant {
     public static final String ENDPOINT_CATEGORY = "/api/console-lis/auth/category";
     public static final String ENDPOINT_DELETE_CATEGORY = "/{categoryName}";
     public static final String ENDPOINT_ONE_CATEGORY = "/{categoryName}";
-    public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/categoriesNames";
+    public static final String ENDPOINT_ALL_NAMES_CATEGORIES = "/categoriesNames";
 
 
     //Endpoints Inventory Item
     public static final String ENDPOINT_INVENTORY = "/api/console-lis/auth/inventory";
 
-    public static final String ENDPOINT_INVENTORY_GENERAL_ITEM = "/generalItem";
-    public static final String ENDPOINT_INVENTORY_QUANTIZABLE_ITEM = "/quantizableItem";
+    public static final String ENDPOINT_INVENTORY_TABLE = "/tableRegisters";
+    public static final String ENDPOINT_INVENTORY_ITEM = "/item";
 
-    public static final String ENDPOINT_INVENTORY_ALL_GENERAL_ITEM = "/generalItems";
-    public static final String ENDPOINT_INVENTORY_ALL_QUANTIZABLE_ITEM = "/quantizableItems";
-    public static final String ENDPOINT_DELETE_ITEM_GEN="/generalItems/{itemId}";
-    public static final String ENDPOINT_DELETE_ITEM_QUA="/quantizableItems/{itemId}";
+    public static final String ENDPOINT_DELETE_ITEM="/item/delete/{itemId}";
+    public static final String ENDPOINT_EDIT_ITEM_STATE="/item/state/{itemId}";
 
-
-    public static final String ENDPOINT_ONE_GENERAL_ITEM = "/generalItem/{itemId}";
-    public static final String ENDPOINT_ONE_QUANTIZABLE_ITEM = "/quantizableItem/{itemId}";
-
+    public static final String ENDPOINT_ONE_ITEM = "/item/{itemId}";
     //user
 
     public static final String ENDPOINT_USER = "/api/console-lis/auth/user";
@@ -40,9 +35,18 @@ public class EndpointConstant {
     public static final String ENDPOINT_DELETE_USER = "/delete/{username}";
     public static final String ENDPOINT_CHANGE_ROLE_USER = "/role/{username}";
 
+    //Loan
+    public static final String ENDPOINT_LOAN = "/api/console-lis/auth/loan";
+    public static final String ENDPOINT_DELETE_LOAN = "/delete/{loanId}";
+    public static final String ENDPOINT_CREATE_LOAN = "/create";
 
+    public static final String ENDPOINT_GET_ONE_LOAN = "/{loanId}";
 
+    public static final String ENDPOINT_ALL_LOANS_TABLE = "/tableRegisters";
 
+    //Return Loan
+    public static final String ENDPOINT_RETURN_LOAN = "/api/console-lis/auth/returnLoan";
+    public static final String ENDPOINT_RETURN_ALL_LOANS = "/returnLoans";
 
 
 

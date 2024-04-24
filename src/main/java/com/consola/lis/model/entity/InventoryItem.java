@@ -1,7 +1,7 @@
 package com.consola.lis.model.entity;
 
 
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.WalletOwners;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
@@ -16,15 +16,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="general_item")
-public class GeneralItem {
+@Table(name="inventory_item")
+public class InventoryItem {
 
     @Id
     @Column(name = "item_id")
     private String itemId;
 
-    @Column(name = "item_name")
-    private String itemName;
 
     @Column(name = "category_id")
     private int categoryId;
@@ -35,10 +33,14 @@ public class GeneralItem {
     private Boolean lendable;
 
     @Enumerated(EnumType.STRING)
-    StateItem state;
+    ItemState state;
 
     @JsonRawValue
     private String attributes;
+
+    private int quantity;
+
+    private int total;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)

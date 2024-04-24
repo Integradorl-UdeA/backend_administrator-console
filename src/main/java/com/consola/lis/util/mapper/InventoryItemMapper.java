@@ -2,44 +2,28 @@ package com.consola.lis.util.mapper;
 
 import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.model.entity.Category;
-import com.consola.lis.model.entity.GeneralItem;
-import com.consola.lis.model.entity.QuantizableItem;
+import com.consola.lis.model.entity.InventoryItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class InventoryItemMapper {
     private InventoryItemMapper () {
     }
-    public static ItemInfoDTO mapToItemInfo(GeneralItem generalItem, Category category) {
+    public static ItemInfoDTO mapToItemInfo(InventoryItem item, Category category) {
 
         return ItemInfoDTO.builder()
-                .id(generalItem.getItemId())
-                .state(String.valueOf(generalItem.getState()))
+                .id(item.getItemId())
+                .state(String.valueOf(item.getState()))
                 .category(category.getCategoryName())
-                .wallet(String.valueOf(generalItem.getWallet()).replace("_"," "))
+                .wallet(String.valueOf(item.getWallet()).replace("_"," "))
                 .quantizable(category.getQuantizable())
-                .attributes(convertAttributes(generalItem.getAttributes()))
+                .attributes(convertAttributes(item.getAttributes()))
                 .build();
     }
-
-    public static ItemInfoDTO mapToItemInfoQuant(QuantizableItem quantizableItem, Category category) {
-
-        GeneralItem generalItem = quantizableItem.getGeneralItem();
-        return ItemInfoDTO.builder()
-                .id(String.valueOf(quantizableItem.getQuantizableItemId()))
-                .state(String.valueOf(generalItem.getState()))
-                .category(category.getCategoryName())
-                .wallet(String.valueOf(generalItem.getWallet()).replace("_"," "))
-                .quantizable(category.getQuantizable())
-                .attributes(convertAttributes(generalItem.getAttributes()))
-                .build();
-    }
-
 
 
     private static String[] convertAttributes(String attributes) throws JSONException {

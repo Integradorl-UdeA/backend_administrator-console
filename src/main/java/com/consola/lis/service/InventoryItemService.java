@@ -2,20 +2,18 @@ package com.consola.lis.service;
 
 
 import com.consola.lis.dto.ItemInfoDTO;
+import com.consola.lis.dto.LoanDTO;
 import com.consola.lis.util.constans.Util;
-import com.consola.lis.dto.GeneralItemDTO;
-import com.consola.lis.dto.QuantizableItemDTO;
+import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.model.entity.Category;
-import com.consola.lis.model.entity.GeneralItem;
-import com.consola.lis.model.entity.QuantizableItem;
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.entity.InventoryItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.WalletOwners;
 import com.consola.lis.model.repository.CategoryRepository;
-import com.consola.lis.model.repository.GeneralItemRepository;
-import com.consola.lis.model.repository.QuantizableItemRepository;
+import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.util.mapper.InventoryItemMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,20 +29,17 @@ import java.util.*;
 public class InventoryItemService {
 
     private final ObjectMapper objectMapper;
-    private final GeneralItemRepository generalItemRepository;
-    private final QuantizableItemRepository quantizableItemRepository;
+    private final InventoryItemRepository inventoryItemRepository;
     private final CategoryRepository categoryRepository;
 
 
     private final Map<Boolean, Map<Boolean, List<String>>> validStatesMap = new HashMap<>();
 
     public InventoryItemService(ObjectMapper objectMapper,
-                                GeneralItemRepository generalItemRepository,
-                                QuantizableItemRepository quantizableItemRepository,
+                                InventoryItemRepository inventoryItemRepository,
                                 CategoryRepository categoryRepository) {
         this.objectMapper = objectMapper;
-        this.generalItemRepository = generalItemRepository;
-        this.quantizableItemRepository = quantizableItemRepository;
+        this.inventoryItemRepository = inventoryItemRepository;
         this.categoryRepository = categoryRepository;
 
         validStatesMap.put(true, new HashMap<>());
@@ -54,78 +49,46 @@ public class InventoryItemService {
         validStatesMap.get(true).put(false, Arrays.asList(Util.VALID_STATES_CUANT_NOTLEND.split(",")));
         validStatesMap.get(false).put(true, Arrays.asList(Util.VALID_STATES_NOTCUAN_LEND.split(",")));
         validStatesMap.get(false).put(false, Arrays.asList(Util.VALID_STATES_NOT_CUAN_LEND.split(",")));
-
-
     }
-    public GeneralItem createGeneralItem(GeneralItemDTO generalItemRequest) throws JsonProcessingException {
+    public InventoryItem createInventoryItem(InventoryItemDTO inventoryItemRequest) throws JsonProcessingException {
 
-        validateCategoryExists(generalItemRequest.getCategoryId());
-
-        Category category = categoryRepository.findCategoryById(generalItemRequest.getCategoryId());
-        boolean isQuantizable = category.getQuantizable() !=null ? category.getQuantizable() :false;
-        boolean isLendable = generalItemRequest.getLendable() !=null ? generalItemRequest.getLendable() : false;
-        boolean existingGeneralItem = generalItemRepository.existsById(generalItemRequest.getItemId());
-
-
-        if (existingGeneralItem) {
-            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item already exists into inventary");
-        } else {
-            validateState(generalItemRequest.getState(), isQuantizable, isLendable);
-
-            String attributesJson = objectMapper.writeValueAsString(generalItemRequest.getAttributes());
-            if (generalItemRequest.getWallet() == null || generalItemRequest.getWallet().trim().isEmpty()) {
-                generalItemRequest.setWallet(String.valueOf(WalletOwners.NOT_APPLY));
-
-            }
-            validateWalletOwner(generalItemRequest.getWallet());
-            
-            GeneralItem generalItem = GeneralItem.builder()
-                    .itemId(generalItemRequest.getItemId())
-                    .itemName(generalItemRequest.getItemName())
-                    .categoryId(generalItemRequest.getCategoryId())
-                    .wallet(WalletOwners.valueOf(generalItemRequest.getWallet()))
-                    .lendable(generalItemRequest.getLendable())
-                    .state(StateItem.valueOf(generalItemRequest.getState()))
-                    .attributes(attributesJson)
-                    .build();
-
-            return generalItemRepository.save(generalItem);
-        }
-    }
-
-
-    public QuantizableItem createQuantizableItem(QuantizableItemDTO quantizableItemRequest) throws JsonProcessingException {
-
-        if (quantizableItemRequest.getQuantity() == 0) {
+        if (inventoryItemRequest.getQuantity() == 0) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided initial quantity must be greater than zero");
         }
 
-        Category category = categoryRepository.findCategoryById(quantizableItemRequest.getCategoryId());
-        if(!category.getQuantizable()){
-            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The category no is quantizable");
+        validateCategoryExists(inventoryItemRequest.getCategoryId());
+
+        Category category = categoryRepository.findCategoryById(inventoryItemRequest.getCategoryId());
+        boolean isQuantizable = category.getQuantizable() !=null ? category.getQuantizable() :false;
+        boolean isLendable = inventoryItemRequest.getLendable() !=null ? inventoryItemRequest.getLendable() : false;
+
+
+        if (existItem(inventoryItemRequest.getItemId())) {
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item already exists into inventary");
+        } else {
+            validateState(inventoryItemRequest.getState().name(), isQuantizable, isLendable);
+
+            String attributesJson = objectMapper.writeValueAsString(inventoryItemRequest.getAttributes());
+            if (inventoryItemRequest.getWallet() == null || inventoryItemRequest.getWallet().name().trim().isEmpty()) {
+                inventoryItemRequest.setWallet(WalletOwners.NOT_APPLY);
+
+            }
+            validateWalletOwner(inventoryItemRequest.getWallet().name());
+            
+            InventoryItem inventoryItem = InventoryItem.builder()
+                    .itemId(inventoryItemRequest.getItemId())
+                    .categoryId(inventoryItemRequest.getCategoryId())
+                    .wallet(WalletOwners.valueOf(inventoryItemRequest.getWallet().name()))
+                    .lendable(inventoryItemRequest.getLendable())
+                    .state(ItemState.valueOf(inventoryItemRequest.getState().name()))
+                    .attributes(attributesJson)
+                    .quantity(inventoryItemRequest.getQuantity())
+                    .total(inventoryItemRequest.getQuantity())
+                    .build();
+
+            return inventoryItemRepository.save(inventoryItem);
         }
-
-        GeneralItemDTO generalItemDTO = GeneralItemDTO.builder()
-                .itemId(quantizableItemRequest.getItemId())
-                .itemName(quantizableItemRequest.getItemName())
-                .categoryId(quantizableItemRequest.getCategoryId())
-                .wallet(quantizableItemRequest.getWallet())
-                .lendable(quantizableItemRequest.getLendable())
-                .state(quantizableItemRequest.getState())
-                .attributes(quantizableItemRequest.getAttributes())
-                .build();
-
-        createGeneralItem(generalItemDTO);
-
-        QuantizableItem quantizableItem = QuantizableItem.builder()
-                .itemId(quantizableItemRequest.getItemId())
-                .quantity(quantizableItemRequest.getQuantity())
-                .total(quantizableItemRequest.getQuantity())
-                .build();
-
-        return quantizableItemRepository.save(quantizableItem);
     }
-
 
 
     public void validateCategoryExists(Integer categoryId) {
@@ -151,59 +114,35 @@ public class InventoryItemService {
         }
     }
 
-    public List<GeneralItem> getAllGeneralItems() {
-        return generalItemRepository.findAll();
-    }
-
-    public List<QuantizableItem> getAllQuantizableItems() {
-        return quantizableItemRepository.findAll();
+    public List<InventoryItem> getAllInventoryItems() {
+        return inventoryItemRepository.findAll();
     }
 
 
     @Transactional
-    public void deleteItemGeneral(String itemId) {
-
+    public void deleteInventoryItem(String itemId) {
         if (existItem(itemId)) {
-            generalItemRepository.deleteById(itemId);
+            inventoryItemRepository.deleteById(itemId);
         } else {
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the item whit id " + itemId + "not exist");
         }
     }
 
-    @Transactional
-    public void deleteItemQuantizable(String itemId) {
-        if (existItemQua(itemId)) {
-            quantizableItemRepository.deleteById(itemId);
-        } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the item whit id " + itemId + "not exist");
-        }
-    }
 
-    public GeneralItem findGeneralItem(String itemId) {
-        Optional<GeneralItem> generalItem = generalItemRepository.findById(itemId);
-        if (generalItem.isPresent()) {
-            return generalItem.get();
+    public InventoryItem findInventoryItem(String itemId) {
+        Optional<InventoryItem> item = inventoryItemRepository.findById(itemId);
+        if (item.isPresent()) {
+            return item.get();
         } else {
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit id " + itemId + " not exist");
         }
     }
 
-    public QuantizableItem findQuantizableItem(String itemId) {
-        Optional<QuantizableItem> quantizableItem = quantizableItemRepository.findByItemId(itemId);
-        if (quantizableItem.isPresent()) {
-            return quantizableItem.get();
-        } else {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the category whit id " + itemId + " not exist");
-        }
-    }
 
     public boolean existItem(String itemId) {
-        return generalItemRepository.existsById(itemId);
+        return inventoryItemRepository.existsById(itemId);
     }
 
-    public boolean existItemQua(String itemId) {
-        return quantizableItemRepository.existsById(itemId);
-    }
 
     public Map<String, Object> getAllItemsMapped() {
         List<ItemInfoDTO> inventoryItems = getAllItems();
@@ -224,30 +163,39 @@ public class InventoryItemService {
         return header;
     }
 
-    private List<ItemInfoDTO> getAllItems() {
-        List<GeneralItem> generalItems = getAllGeneralItems();
-        List<QuantizableItem> quantizableItems = getAllQuantizableItems();
+    public List<ItemInfoDTO> getAllItems() {
+        List<InventoryItem> allItems = getAllInventoryItems();
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
 
-        // Mappear los QuantizableItems
-        quantizableItems.forEach(quantizableItem -> {
-            GeneralItem generalItem = quantizableItem.getGeneralItem();
-            inventoryItems.add(InventoryItemMapper.mapToItemInfo(generalItem, findCategory(generalItem)));
-        });
-
         // Mappear los GeneralItems solo si no se han añadido ya como QuantizableItems
-        generalItems.forEach(generalItem -> {
-            if (!quantizableItems.stream().anyMatch(quantizableItem -> quantizableItem.getGeneralItem().equals(generalItem))) {
-                inventoryItems.add(InventoryItemMapper.mapToItemInfo(generalItem, findCategory(generalItem)));
-            }
+        allItems.forEach(item -> {
+                inventoryItems.add(InventoryItemMapper.mapToItemInfo(item, findCategory(item)));
+
         });
 
         return inventoryItems;
     }
 
 
-    private Category findCategory(GeneralItem generalItem){
+    public Category findCategory(InventoryItem generalItem){
         return categoryRepository.findCategoryById(generalItem.getCategoryId());
     }
 
+
+    public void updateInventoryItemState (String itemId, ItemState state) {
+        InventoryItem existingItem = inventoryItemRepository.findById(itemId)
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+
+        existingItem.setState(state);
+        inventoryItemRepository.save(existingItem);
+    }
+
+
+    public void updateInventoryItemTotal(LoanDTO loanRequest) {
+        InventoryItem existingItem = inventoryItemRepository.findById(loanRequest.getItemId())
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+        existingItem.setTotal(existingItem.getTotal()-loanRequest.getQuantity());
+        inventoryItemRepository.save(existingItem);
+
+    }
 }

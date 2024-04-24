@@ -54,4 +54,13 @@ public class ControllerAdvice {
                 .build();
         return new ResponseEntity<>(error, ex.getStatus());
     }
+
+    @ExceptionHandler(value = IsEmptyException.class)
+    public ResponseEntity<ErrorDTO> handleIsEmptyException(IsEmptyException ex){
+        ErrorDTO error = ErrorDTO.builder()
+                .code(ex.getCode())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(error, ex.getStatus());
+    }
 }
