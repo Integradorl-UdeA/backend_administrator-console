@@ -1,14 +1,10 @@
 package com.consola.lis.controller;
 
 
-import com.consola.lis.dto.CategoryDTO;
 import com.consola.lis.dto.LoanDTO;
 import com.consola.lis.model.entity.Loan;
 import com.consola.lis.service.LoanService;
 import com.consola.lis.util.constans.EndpointConstant;
-import com.fasterxml.jackson.core.JacksonException;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

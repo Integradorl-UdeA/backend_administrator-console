@@ -1,6 +1,5 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.dto.LoanDTO;
 import com.consola.lis.dto.LoanInfoDTO;
 import com.consola.lis.model.entity.InventoryItem;
@@ -14,7 +13,6 @@ import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.IsEmptyException;
 import com.consola.lis.util.exception.NotExistingException;
-import com.consola.lis.util.mapper.InventoryItemMapper;
 import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

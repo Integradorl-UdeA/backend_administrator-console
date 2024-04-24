@@ -1,7 +1,6 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.ReturnLoanDTO;
-import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.entity.ReturnLoan;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.model.repository.ReturnLoanRepository;
@@ -10,7 +9,6 @@ import com.consola.lis.util.exception.NotExistingException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
