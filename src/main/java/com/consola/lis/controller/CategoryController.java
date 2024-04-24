@@ -42,7 +42,7 @@ public class CategoryController {
         return categoryService.findCategory(categoryName);
     }
 
-    @GetMapping(EndpointConstant.ENDPOINT_ALL_NAMES_CATEGORYS)
+    @GetMapping(EndpointConstant.ENDPOINT_ALL_NAMES_CATEGORIES)
     public List<String> getCategoryNames() {
         return categoryService.getCategoryNames();
     }

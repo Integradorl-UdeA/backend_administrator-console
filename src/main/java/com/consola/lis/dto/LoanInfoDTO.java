@@ -15,15 +15,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoanInfoDTO {
-    private int loan_id;
-    private String loan_name;
-    private LoanState loan_state;
-    private String borrower_user;
-    private LoanType loan_type;
+    private int loanId;
+    private String loanName;
+    private LoanState loanState;
+    private String borrowerUser;
+    private LoanType loanType;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date loan_date;
+    private Date loanDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date return_date;
+    private Date returnDate;
 }

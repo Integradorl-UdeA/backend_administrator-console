@@ -14,14 +14,14 @@ public class LoanMapper {
     public static LoanInfoDTO mapLoanToDTO(Loan loan, InventoryItem item){
 
         return LoanInfoDTO.builder()
-                .loan_id(loan.getLoanId())
-                .loan_type(loan.getLoanType())
-                .loan_state(loan.getLoanState())
-                .borrower_user(loan.getBorrowerUser())
-                .loan_date(loan.getLoanDate())
-                .loan_name(item.getCategory().getCategoryName())
-                .return_date(loan.getReturnDate())
-                .loan_date(loan.getLoanDate())
+                .loanId(loan.getLoanId())
+                .loanType(loan.getLoanType())
+                .loanState(loan.getLoanState())
+                .borrowerUser(loan.getBorrowerUser())
+                .loanDate(loan.getLoanDate())
+                .loanName(item.getCategory().getCategoryName())
+                .returnDate(loan.getReturnDate())
+                .loanDate(loan.getLoanDate())
                 .build();
     }
 

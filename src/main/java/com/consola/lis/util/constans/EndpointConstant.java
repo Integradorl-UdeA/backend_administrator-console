@@ -14,7 +14,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_CATEGORY = "/api/console-lis/auth/category";
     public static final String ENDPOINT_DELETE_CATEGORY = "/{categoryName}";
     public static final String ENDPOINT_ONE_CATEGORY = "/{categoryName}";
-    public static final String ENDPOINT_ALL_NAMES_CATEGORYS = "/categoriesNames";
+    public static final String ENDPOINT_ALL_NAMES_CATEGORIES = "/categoriesNames";
 
 
     //Endpoints Inventory Item
@@ -36,7 +36,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_CHANGE_ROLE_USER = "/role/{username}";
 
     //Loan
-    public static final String ENDPOINT_LOAN = "/api/console-lis/auth/loan";//traerlos todos
+    public static final String ENDPOINT_LOAN = "/api/console-lis/auth/loan";
     public static final String ENDPOINT_DELETE_LOAN = "/delete/{loanId}";
     public static final String ENDPOINT_CREATE_LOAN = "/create";
 

@@ -50,11 +50,10 @@ public class LoanService {
             inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.LENDED);
         }
 
-        if (item.getCategory().getQuantizable()) {
-            if (item.getTotal() - loanRequest.getQuantity() == 0) {
-                inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.OUT_OF_STOCK);
-            }
+        if (item.getCategory().getQuantizable() && item.getTotal() - loanRequest.getQuantity() == 0) {
+            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.OUT_OF_STOCK);
         }
+
         inventoryItemService.updateInventoryItemTotal(loanRequest);
         if(loanRequest.getLoanType()==null) loanRequest.setLoanType(LoanType.GENERAL);
 
