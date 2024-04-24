@@ -1,22 +1,29 @@
 package com.consola.lis.service;
 
+import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.dto.LoanDTO;
+import com.consola.lis.dto.LoanInfoDTO;
 import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.model.entity.Loan;
+import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.enums.LoanType;
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.IsEmptyException;
 import com.consola.lis.util.exception.NotExistingException;
+import com.consola.lis.util.mapper.InventoryItemMapper;
+import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -42,12 +49,12 @@ public class LoanService {
         }
 
         if (!item.getCategory().getQuantizable()) {
-            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), StateItem.LENDED);
+            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.LENDED);
         }
 
         if (item.getCategory().getQuantizable()) {
             if (item.getTotal() - loanRequest.getQuantity() == 0) {
-                inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), StateItem.OUT_OF_STOCK);
+                inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.OUT_OF_STOCK);
             }
         }
         inventoryItemService.updateInventoryItemTotal(loanRequest);
@@ -59,6 +66,7 @@ public class LoanService {
                 .borrowerUser(loanRequest.getBorrowerUser())
                 .lenderUser(loanRequest.getLenderUser())
                 .quantity(loanRequest.getQuantity())
+                .loanState(LoanState.valueOf(LoanState.ACTIVE.name()))
                 .observation(loanRequest.getObservation())
                 .returnDate(loanRequest.getReturnDate())
                 .build();
@@ -93,7 +101,41 @@ public class LoanService {
         return allLoans;
     }
 
-//    public Map<String, Object> getAllLoansMapper() {
-//
-//    }
+
+
+    public Map<String, Object> getAllLoansMapper() {
+        List<LoanInfoDTO> loans = getAllLoansMap();
+        Map<String, Object> result = new HashMap<>();
+        result.put("header", createHeader());
+        result.put("allRegisters", loans);
+        return result;
+    }
+
+    private List<String> createHeader() {
+        List<String> header = new ArrayList<>();
+        header.add("Id");
+        header.add("Elemento");
+        header.add("Estado");
+        header.add("Usuario");
+        header.add("Tipo");
+        header.add("Fecha Prestamo");
+        header.add("Fecha Devolución");
+        return header;
+    }
+
+    public List<LoanInfoDTO> getAllLoansMap() {
+        List<Loan> allLoans = getAllLoans();
+        List<LoanInfoDTO> loans = new ArrayList<>();
+
+        allLoans.forEach(loan -> {
+            InventoryItem item = inventoryItemService.findInventoryItem(loan.getItemId());
+            loans.add(LoanMapper.mapLoanToDTO(loan,item));
+
+        });
+
+        return loans;
+    }
+
+
+
 }

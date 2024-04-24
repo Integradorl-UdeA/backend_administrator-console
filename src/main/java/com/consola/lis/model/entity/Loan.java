@@ -1,5 +1,6 @@
 package com.consola.lis.model.entity;
 
+import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.enums.LoanType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,10 @@ public class Loan {
     @JoinColumn(name = "item_id", referencedColumnName = "item_id", insertable = false, updatable = false)
     @JsonIgnore
     private InventoryItem inventoryItem;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "loan_state")
+    private LoanState loanState;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "borrower_user", referencedColumnName = "username", insertable = false, updatable = false)

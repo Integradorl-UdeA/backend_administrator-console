@@ -1,6 +1,6 @@
 package com.consola.lis.model.enums;
 
-public enum StateItem {
+public enum ItemState {
     AVAILABLE,
     BROKEN,
     REPAIRING,

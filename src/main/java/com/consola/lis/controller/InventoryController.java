@@ -1,12 +1,11 @@
 package com.consola.lis.controller;
 
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +49,12 @@ public class InventoryController {
     }
 
     @PatchMapping(EndpointConstant.ENDPOINT_EDIT_ITEM_STATE)
-    public void updateInventoryItem(@PathVariable("itemId")String itemId, @RequestBody StateItem state) {
+    public void updateInventoryItem(@PathVariable("itemId")String itemId, @RequestBody ItemState state) {
         inventoryItemService.updateInventoryItemState(itemId,state);
     }
+
+
+
 
 
 }

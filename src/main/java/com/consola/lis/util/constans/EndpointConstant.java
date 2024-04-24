@@ -42,7 +42,7 @@ public class EndpointConstant {
 
     public static final String ENDPOINT_GET_ONE_LOAN = "/{loanId}";
 
-    public static final String ENDPOINT_ALL_LOANS_TABLE = "/api/console-lis/auth/loan/tableRegisters";
+    public static final String ENDPOINT_ALL_LOANS_TABLE = "/tableRegisters";
 
     //Return Loan
     public static final String ENDPOINT_RETURN_LOAN = "/api/console-lis/auth/returnLoan";

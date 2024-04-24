@@ -1,7 +1,7 @@
 package com.consola.lis.model.entity;
 
 
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.WalletOwners;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
@@ -33,7 +33,7 @@ public class InventoryItem {
     private Boolean lendable;
 
     @Enumerated(EnumType.STRING)
-    StateItem state;
+    ItemState state;
 
     @JsonRawValue
     private String attributes;

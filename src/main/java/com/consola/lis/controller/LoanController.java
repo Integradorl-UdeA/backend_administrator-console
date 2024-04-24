@@ -49,8 +49,8 @@ public class LoanController {
         return loanService.getAllLoans();
     }
 
-//    @GetMapping(EndpointConstant.ENDPOINT_ALL_LOANS_TABLE)
-//    public Map<String, Object> loans(){
-//        return loanService.getAllLoansMapper();
-//    }
+    @GetMapping(EndpointConstant.ENDPOINT_ALL_LOANS_TABLE)
+    public Map<String, Object> loans(){
+        return loanService.getAllLoansMapper();
+    }
 }

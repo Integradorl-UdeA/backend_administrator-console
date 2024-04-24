@@ -1,6 +1,6 @@
 package com.consola.lis.dto;
 
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.WalletOwners;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Min;
@@ -26,7 +26,7 @@ public class InventoryItemDTO {
     private Boolean lendable;
 
     @NotBlank(message = "The state  is required")
-    private StateItem state;
+    private ItemState state;
 
     @NotBlank(message = "The quantity  is required")
     @Min(value = 1)

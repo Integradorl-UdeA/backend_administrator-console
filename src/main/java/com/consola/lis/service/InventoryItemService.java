@@ -10,7 +10,7 @@ import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.model.entity.Category;
 import com.consola.lis.model.entity.InventoryItem;
-import com.consola.lis.model.enums.StateItem;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.WalletOwners;
 import com.consola.lis.model.repository.CategoryRepository;
 import com.consola.lis.model.repository.InventoryItemRepository;
@@ -80,7 +80,7 @@ public class InventoryItemService {
                     .categoryId(inventoryItemRequest.getCategoryId())
                     .wallet(WalletOwners.valueOf(inventoryItemRequest.getWallet().name()))
                     .lendable(inventoryItemRequest.getLendable())
-                    .state(StateItem.valueOf(inventoryItemRequest.getState().name()))
+                    .state(ItemState.valueOf(inventoryItemRequest.getState().name()))
                     .attributes(attributesJson)
                     .quantity(inventoryItemRequest.getQuantity())
                     .total(inventoryItemRequest.getQuantity())
@@ -181,7 +181,7 @@ public class InventoryItemService {
     }
 
 
-    public void updateInventoryItemState (String itemId, StateItem state) {
+    public void updateInventoryItemState (String itemId, ItemState state) {
         InventoryItem existingItem = inventoryItemRepository.findById(itemId)
                 .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
 
