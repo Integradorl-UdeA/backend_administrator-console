@@ -2,6 +2,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.ReturnLoanDTO;
 import com.consola.lis.model.entity.ReturnLoan;
+import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.model.repository.ReturnLoanRepository;
 import com.consola.lis.util.exception.IsEmptyException;
@@ -21,11 +22,17 @@ import java.util.List;
 public class ReturnLoanService {
     private final ReturnLoanRepository returnLoanRepository;
     private final LoanRepository loanRepository;
+    private final LoanService loanService;
+    private final InventoryItemService inventoryItemService;
 
 
     public void createReturnLoan(ReturnLoanDTO returnLoanRequest){
-        loanRepository.findById(returnLoanRequest.getLoanId()).orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists "));
 
+        if(loanService.existLoan(returnLoanRequest.getLoanId())){
+            throw new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists ");
+        }
+
+        loanService.updateReturnLoanState(returnLoanRequest.getLoanId(), LoanState.RETURNED);
         ReturnLoan returnLoan = ReturnLoan.builder()
                 .loanId(returnLoanRequest.getLoanId())
                 .borrowerUser(returnLoanRequest.getBorrowerUser())
@@ -44,5 +51,7 @@ public class ReturnLoanService {
             return allReturnLoans;
 
     }
+
+
 
 }

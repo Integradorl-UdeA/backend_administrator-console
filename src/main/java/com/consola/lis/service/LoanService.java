@@ -7,7 +7,6 @@ import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.enums.LoanType;
 import com.consola.lis.model.enums.ItemState;
-import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
@@ -15,21 +14,24 @@ import com.consola.lis.util.exception.IsEmptyException;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
+
+import java.time.*;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class LoanService {
 
     private final LoanRepository loanRepository;
-    private final InventoryItemRepository inventoryItemRepository;
     private final InventoryItemService inventoryItemService;
+    private final JavaMailSender emailSender;
 
     public Loan createLoan(LoanDTO loanRequest) {
 
@@ -86,7 +88,7 @@ public class LoanService {
 
     }
 
-    private boolean existLoan(int loanId){
+    public boolean existLoan(int loanId){
         return loanRepository.existsById(loanId);
     }
 
@@ -133,6 +135,51 @@ public class LoanService {
         return loans;
     }
 
+    public void updateReturnLoanState (int loanId, LoanState state) {
+        Loan existingLoan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+
+        existingLoan.setLoanState(state);
+        loanRepository.save(existingLoan);
+    }
+
+    @Scheduled(cron = "0 0 0 * * *") // Se ejecuta una vez al día a la medianoche
+    public void monitorAndSendEmailsForLateLoans() {
+        List<Loan> activeLoans = getAllActiveLoans();
+
+        for (Loan loan : activeLoans) {
+            if (convertToLocalTime(loan.getReturnDate()).isBefore(LocalTime.now())) {
+                sendLateReturnEmail(loan);
+            }
+        }
+    }
+
+    // Método para convertir Date a LocalTime
+    private LocalTime convertToLocalTime(Date date) {
+        LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return localDateTime.toLocalTime();
+    }
+
+
+    private List<Loan> getAllActiveLoans() {
+        return loanRepository.findByLoanState(LoanState.ACTIVE);
+    }
+
+    private void sendLateReturnEmail(Loan loan) {
+        String lenderEmail = loan.getLenderUser() + "@udea.edu.co";
+        String subject = "Préstamo retrasado - Elemento #" + loan.getItemId();
+        String text = "El préstamo del elemento #" + loan.getItemId() + " está retrasado. Por favor, haga los arreglos necesarios.";
+
+        sendEmail(lenderEmail, subject, text);
+    }
+
+    private void sendEmail(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
+    }
 
 
 }
