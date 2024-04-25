@@ -1,6 +1,7 @@
 package com.consola.lis.model.entity;
 
 import com.consola.lis.model.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -32,6 +34,8 @@ public class User implements UserDetails {
     private String name;
     private String lastname;
     private String password;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
