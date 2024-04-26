@@ -71,23 +71,23 @@ class CategoryServiceTest {
     @Test
     void testDeleteCategory_CategoryExists() {
 
-        String categoryName = "Test";
+        int categoryId = 1;
 
-        when(categoryRepository.existsByCategoryName(categoryName)).thenReturn(true);
+        when(categoryRepository.existsById(categoryId)).thenReturn(true);
 
-        assertDoesNotThrow(() -> categoryService.deleteCategory(categoryName));
-        verify(categoryRepository, times(1)).deleteByCategoryName(categoryName);
+        assertDoesNotThrow(() -> categoryService.deleteCategory(categoryId));
+        verify(categoryRepository, times(1)).deleteById(categoryId);
     }
 
     @Test
     void testDeleteCategory_CategoryNotExists() {
 
-        String categoryName = "Test";
+        int categoryId = 1;
 
-        when(categoryRepository.existsByCategoryName(categoryName)).thenReturn(false);
+        when(categoryRepository.existsById(categoryId)).thenReturn(false);
 
-        assertThrows(NotExistingException.class, () -> categoryService.deleteCategory(categoryName));
-        verify(categoryRepository, never()).deleteByCategoryName(categoryName);
+        assertThrows(NotExistingException.class, () -> categoryService.deleteCategory(categoryId));
+        verify(categoryRepository, never()).deleteById(categoryId);
     }
 
     @Test

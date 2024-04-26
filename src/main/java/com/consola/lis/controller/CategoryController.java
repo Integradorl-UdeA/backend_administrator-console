@@ -34,13 +34,13 @@ public class CategoryController {
 
 
     @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_CATEGORY)
-    public void deleteCategory(@PathVariable("categoryName") String categoryName){
-        categoryService.deleteCategory(categoryName);
+    public void deleteCategory(@PathVariable("categoryId") int categoryId){
+        categoryService.deleteCategory(categoryId);
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_CATEGORY)
-    public ResponseEntity<Category> findCategory(@PathVariable("categoryName") String categoryName){
-        return ResponseEntity.ok(categoryService.findCategory(categoryName));
+    public ResponseEntity<Category> findCategory(@PathVariable("categoryId") String categoryId){
+        return ResponseEntity.ok(categoryService.findCategory(categoryId));
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ALL_NAMES_CATEGORIES)

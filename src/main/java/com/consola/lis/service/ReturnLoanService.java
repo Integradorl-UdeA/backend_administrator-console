@@ -38,7 +38,7 @@ public class ReturnLoanService {
         Loan loan = loanService.getOneLoan(returnLoanRequest.getLoanId());
         InventoryItem item = inventoryItemService.findInventoryItem(loan.getItemId());
 
-        if (item.getCategory().getQuantizable() && item.getTotal() == 0) {
+        if (Boolean.TRUE.equals(item.getCategory().getQuantizable()) && item.getTotal() == 0) {
             inventoryItemService.updateInventoryItemState(loan.getItemId(), ItemState.AVAILABLE);
         }
 

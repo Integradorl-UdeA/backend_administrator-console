@@ -27,46 +27,58 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final InventoryItemService inventoryItemService;
 
-    public Loan createLoan(LoanDTO loanRequest) {
 
-        if(!inventoryItemService.existItem(loanRequest.getItemId())) {
-            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item no exists into inventory");
+    public Loan createLoan(LoanDTO loanRequest) {
+        validateLoanRequest(loanRequest);
+
+        InventoryItem item = inventoryItemService.findInventoryItem(loanRequest.getItemId());
+        updateItemStateAndTotal(item, loanRequest.getQuantity());
+
+        Loan loan = buildLoanFromRequest(loanRequest);
+        return loanRepository.save(loan);
+    }
+
+    private void validateLoanRequest(LoanDTO loanRequest) {
+        if (!inventoryItemService.existItem(loanRequest.getItemId())) {
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item does not exist in inventory");
         }
 
         InventoryItem item = inventoryItemService.findInventoryItem(loanRequest.getItemId());
-        if(!item.getLendable()) {
-            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item not is lendable");
+
+        if (Boolean.FALSE.equals(item.getLendable())) {
+            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "This item is not lendable");
         }
 
-        if(loanRequest.getQuantity()>item.getTotal()){
+        if (loanRequest.getQuantity() > item.getTotal()) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity is greater than the stock");
         }
+    }
 
-        inventoryItemService.changeStateNoQuantizableItem(item,  ItemState.LENDED);
+    private void updateItemStateAndTotal(InventoryItem item, int quantity) {
+        inventoryItemService.changeStateNoQuantizableItem(item, ItemState.LENDED);
 
-
-        if (item.getCategory().getQuantizable() && item.getTotal() - loanRequest.getQuantity() == 0) {
-            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.OUT_OF_STOCK);
+        if (Boolean.TRUE.equals(item.getCategory().getQuantizable()) && item.getTotal() - quantity == 0) {
+            inventoryItemService.updateInventoryItemState(item.getItemId(), ItemState.OUT_OF_STOCK);
         }
 
-        inventoryItemService.updateInventoryItemTotal(loanRequest.getItemId(), -loanRequest.getQuantity());
+        inventoryItemService.updateInventoryItemTotal(item.getItemId(), -quantity);
+    }
 
-        if(loanRequest.getLoanType()==null) loanRequest.setLoanType(LoanType.GENERAL);
+    private Loan buildLoanFromRequest(LoanDTO loanRequest) {
+        if (loanRequest.getLoanType() == null) {
+            loanRequest.setLoanType(LoanType.GENERAL);
+        }
 
-        Loan loan = Loan.builder()
+        return Loan.builder()
                 .itemId(loanRequest.getItemId())
                 .loanType(LoanType.valueOf(loanRequest.getLoanType().name()))
                 .borrowerUser(loanRequest.getBorrowerUser())
                 .lenderUser(loanRequest.getLenderUser())
                 .quantity(loanRequest.getQuantity())
-                .loanState(LoanState.valueOf(LoanState.ACTIVE.name()))
+                .loanState(LoanState.ACTIVE)
                 .observation(loanRequest.getObservation())
                 .returnDate(loanRequest.getReturnDate())
                 .build();
-
-        return  loanRepository.save(loan);
-
-
     }
 
     public void deleteLoan(int loanId){

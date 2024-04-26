@@ -74,19 +74,23 @@ public class InventoryItemService {
                 inventoryItemRequest.setWallet(WalletOwners.NOT_APPLY);
             }
             
-            InventoryItem inventoryItem = InventoryItem.builder()
-                    .itemId(inventoryItemRequest.getItemId())
-                    .categoryId(inventoryItemRequest.getCategoryId())
-                    .wallet(WalletOwners.valueOf(inventoryItemRequest.getWallet().name()))
-                    .lendable(inventoryItemRequest.getLendable())
-                    .state(ItemState.valueOf(inventoryItemRequest.getState().name()))
-                    .attributes(attributesJson)
-                    .quantity(inventoryItemRequest.getQuantity())
-                    .total(inventoryItemRequest.getQuantity())
-                    .build();
+            InventoryItem inventoryItem = createNewItem(inventoryItemRequest, attributesJson);
 
             return inventoryItemRepository.save(inventoryItem);
         }
+    }
+
+    private InventoryItem createNewItem(InventoryItemDTO inventoryItemRequest, String attributesJson) {
+        return   InventoryItem.builder()
+                .itemId(inventoryItemRequest.getItemId())
+                .categoryId(inventoryItemRequest.getCategoryId())
+                .wallet(WalletOwners.valueOf(inventoryItemRequest.getWallet().name()))
+                .lendable(inventoryItemRequest.getLendable())
+                .state(ItemState.valueOf(inventoryItemRequest.getState().name()))
+                .attributes(attributesJson)
+                .quantity(inventoryItemRequest.getQuantity())
+                .total(inventoryItemRequest.getQuantity())
+                .build();
     }
 
 
@@ -183,7 +187,7 @@ public class InventoryItemService {
     }
 
     public void changeStateNoQuantizableItem(InventoryItem item, ItemState state){
-        if (!item.getCategory().getQuantizable()) {
+        if (Boolean.FALSE.equals(item.getCategory().getQuantizable())) {
             updateInventoryItemState(item.getItemId(), state);
         }
     }
