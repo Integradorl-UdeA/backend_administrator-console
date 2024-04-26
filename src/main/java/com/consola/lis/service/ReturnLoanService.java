@@ -8,7 +8,6 @@ import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.model.repository.ReturnLoanRepository;
-import com.consola.lis.util.exception.IsEmptyException;
 import com.consola.lis.util.exception.NotExistingException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,7 +57,6 @@ public class ReturnLoanService {
     }
 
     public List<ReturnLoan> getAllReturnsLoans() {
-        System.out.println( returnLoanRepository.findAll());
         return returnLoanRepository.findAll();
     }
 

@@ -157,10 +157,7 @@ public class InventoryItemService {
         List<InventoryItem> allItems = getAllInventoryItems();
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
 
-        allItems.forEach(item -> {
-                inventoryItems.add(InventoryItemMapper.mapToItemInfo(item, findCategory(item)));
-
-        });
+        allItems.forEach(item -> inventoryItems.add(InventoryItemMapper.mapToItemInfo(item, findCategory(item))));
         return inventoryItems;
     }
 
