@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JacksonException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class CategoryController {
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_CATEGORY)
-    public Category findCategory(@PathVariable("categoryName") String categoryName){
-        return categoryService.findCategory(categoryName);
+    public ResponseEntity<Category> findCategory(@PathVariable("categoryName") String categoryName){
+        return ResponseEntity.ok(categoryService.findCategory(categoryName));
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ALL_NAMES_CATEGORIES)

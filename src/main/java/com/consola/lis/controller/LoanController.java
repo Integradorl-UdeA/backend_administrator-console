@@ -24,10 +24,9 @@ public class LoanController {
     private final HandlerExceptionResolver handlerExceptionResolver;
 
 
-    @PostMapping(EndpointConstant.ENDPOINT_CREATE_LOAN)
+    @PostMapping
     public ResponseEntity<Loan> createLoan(@RequestBody LoanDTO loanRequest)  {
         return new ResponseEntity<>(loanService.createLoan(loanRequest), HttpStatus.CREATED);
-
     }
 
     @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_LOAN)
@@ -36,8 +35,8 @@ public class LoanController {
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_GET_ONE_LOAN)
-    public Loan getOneLoan(@PathVariable("loanId") int loanId){
-        return loanService.getOneLoan(loanId);
+    public ResponseEntity<Loan> getOneLoan(@PathVariable("loanId") int loanId){
+        return ResponseEntity.ok(loanService.getOneLoan(loanId));
     }
 
     @GetMapping

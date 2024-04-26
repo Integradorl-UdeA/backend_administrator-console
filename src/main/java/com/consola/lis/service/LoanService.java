@@ -15,12 +15,7 @@ import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 
-import java.time.*;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,7 +26,6 @@ public class LoanService {
 
     private final LoanRepository loanRepository;
     private final InventoryItemService inventoryItemService;
-    private final JavaMailSender emailSender;
 
     public Loan createLoan(LoanDTO loanRequest) {
 
@@ -48,15 +42,13 @@ public class LoanService {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity is greater than the stock");
         }
 
-        if (!item.getCategory().getQuantizable()) {
-            inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.LENDED);
-        }
+        inventoryItemService.changeStateNoQuantizableItem(item,  ItemState.LENDED);
+        inventoryItemService.updateInventoryItemTotal(loanRequest.getItemId(), -loanRequest.getQuantity());
 
         if (item.getCategory().getQuantizable() && item.getTotal() - loanRequest.getQuantity() == 0) {
             inventoryItemService.updateInventoryItemState(loanRequest.getItemId(), ItemState.OUT_OF_STOCK);
         }
 
-        inventoryItemService.updateInventoryItemTotal(loanRequest);
         if(loanRequest.getLoanType()==null) loanRequest.setLoanType(LoanType.GENERAL);
 
         Loan loan = Loan.builder()
@@ -76,7 +68,7 @@ public class LoanService {
     }
 
     public void deleteLoan(int loanId){
-        if(!existLoan(loanId)){
+        if(existLoan(loanId)){
             throw new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists ");
         }
         loanRepository.deleteById(loanId);
@@ -89,7 +81,7 @@ public class LoanService {
     }
 
     public boolean existLoan(int loanId){
-        return loanRepository.existsById(loanId);
+        return !loanRepository.existsById(loanId);
     }
 
     public List<Loan> getAllLoans() {
@@ -141,44 +133,6 @@ public class LoanService {
 
         existingLoan.setLoanState(state);
         loanRepository.save(existingLoan);
-    }
-
-    @Scheduled(cron = "0 0 0 * * *") // Se ejecuta una vez al día a la medianoche
-    public void monitorAndSendEmailsForLateLoans() {
-        List<Loan> activeLoans = getAllActiveLoans();
-
-        for (Loan loan : activeLoans) {
-            if (convertToLocalTime(loan.getReturnDate()).isBefore(LocalTime.now())) {
-                sendLateReturnEmail(loan);
-            }
-        }
-    }
-
-    // Método para convertir Date a LocalTime
-    private LocalTime convertToLocalTime(Date date) {
-        LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        return localDateTime.toLocalTime();
-    }
-
-
-    private List<Loan> getAllActiveLoans() {
-        return loanRepository.findByLoanState(LoanState.ACTIVE);
-    }
-
-    private void sendLateReturnEmail(Loan loan) {
-        String lenderEmail = loan.getLenderUser() + "@udea.edu.co";
-        String subject = "Préstamo retrasado - Elemento #" + loan.getItemId();
-        String text = "El préstamo del elemento #" + loan.getItemId() + " está retrasado. Por favor, haga los arreglos necesarios.";
-
-        sendEmail(lenderEmail, subject, text);
-    }
-
-    private void sendEmail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        emailSender.send(message);
     }
 
 

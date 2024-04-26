@@ -41,13 +41,14 @@ public class Loan {
     @Column(name = "lender_user")
     private String lenderUser;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="GMT-5")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "loan_date")
     private Date loanDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="UTC")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone="GMT-5")
+    @CreationTimestamp
     @Column(name = "return_date")
     private Date returnDate;
 

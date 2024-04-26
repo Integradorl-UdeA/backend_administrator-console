@@ -1,7 +1,10 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.ReturnLoanDTO;
+import com.consola.lis.model.entity.InventoryItem;
+import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.entity.ReturnLoan;
+import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.model.repository.ReturnLoanRepository;
@@ -26,13 +29,24 @@ public class ReturnLoanService {
     private final InventoryItemService inventoryItemService;
 
 
-    public void createReturnLoan(ReturnLoanDTO returnLoanRequest){
+    public void createReturnLoan(ReturnLoanDTO returnLoanRequest) {
 
-        if(loanService.existLoan(returnLoanRequest.getLoanId())){
+        if (loanService.existLoan(returnLoanRequest.getLoanId())) {
             throw new NotExistingException("409", HttpStatus.CONFLICT, "Loan not exists ");
         }
 
         loanService.updateReturnLoanState(returnLoanRequest.getLoanId(), LoanState.RETURNED);
+        Loan loan = loanService.getOneLoan(returnLoanRequest.getLoanId());
+        InventoryItem item = inventoryItemService.findInventoryItem(loan.getItemId());
+
+        if (item.getCategory().getQuantizable() && item.getTotal() == 0) {
+            inventoryItemService.updateInventoryItemState(loan.getItemId(), ItemState.AVAILABLE);
+        }
+
+        inventoryItemService.updateInventoryItemTotal(loan.getItemId(), loan.getQuantity());
+        inventoryItemService.changeStateNoQuantizableItem(item, ItemState.AVAILABLE);
+
+
         ReturnLoan returnLoan = ReturnLoan.builder()
                 .loanId(returnLoanRequest.getLoanId())
                 .borrowerUser(returnLoanRequest.getBorrowerUser())
@@ -43,15 +57,10 @@ public class ReturnLoanService {
         returnLoanRepository.save(returnLoan);
     }
 
-    public List<ReturnLoan> getAllReturnsLoans(){
-            List<ReturnLoan> allReturnLoans = returnLoanRepository.findAll();
-            if(allReturnLoans.isEmpty()){
-                throw new IsEmptyException("403", HttpStatus.FORBIDDEN, "No exists loans");
-            }
-            return allReturnLoans;
-
+    public List<ReturnLoan> getAllReturnsLoans() {
+        System.out.println( returnLoanRepository.findAll());
+        return returnLoanRepository.findAll();
     }
-
 
 
 }
