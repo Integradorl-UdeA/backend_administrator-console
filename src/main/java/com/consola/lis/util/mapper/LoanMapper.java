@@ -4,7 +4,6 @@ import com.consola.lis.dto.LoanInfoDTO;
 import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.model.entity.Loan;
 
-import java.util.Optional;
 
 public class LoanMapper {
 
