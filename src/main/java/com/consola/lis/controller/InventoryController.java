@@ -8,6 +8,7 @@ import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -21,7 +22,7 @@ public class InventoryController {
 
     private final InventoryItemService inventoryItemService;
 
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_ITEM )
     public ResponseEntity<InventoryItem> createInventoryItem(@RequestBody InventoryItemDTO inventoryItemDTO) throws JsonProcessingException {
         InventoryItem createdGeneralItem = inventoryItemService.createInventoryItem(inventoryItemDTO);
@@ -33,10 +34,12 @@ public class InventoryController {
         return inventoryItemService.getAllInventoryItems();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(EndpointConstant.ENDPOINT_DELETE_ITEM)
     public void deleteItem(@PathVariable("itemId") String itemId){
         inventoryItemService.deleteInventoryItem(itemId);
     }
+
 
     @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
     public Map<String, Object> inventoryItems() {
@@ -44,8 +47,8 @@ public class InventoryController {
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_ITEM)
-    public InventoryItem findInventoryItem(@PathVariable("itemId") String itemId){
-        return inventoryItemService.findInventoryItem(itemId);
+    public ResponseEntity<InventoryItem> findInventoryItem(@PathVariable("itemId") String itemId){
+        return ResponseEntity.ok(inventoryItemService.findInventoryItem(itemId));
     }
 
     @PatchMapping(EndpointConstant.ENDPOINT_EDIT_ITEM_STATE)

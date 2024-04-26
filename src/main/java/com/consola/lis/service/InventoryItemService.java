@@ -3,6 +3,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.dto.LoanDTO;
+import com.consola.lis.model.entity.Loan;
 import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.util.exception.AlreadyExistsException;
@@ -71,9 +72,7 @@ public class InventoryItemService {
             String attributesJson = objectMapper.writeValueAsString(inventoryItemRequest.getAttributes());
             if (inventoryItemRequest.getWallet() == null || inventoryItemRequest.getWallet().name().trim().isEmpty()) {
                 inventoryItemRequest.setWallet(WalletOwners.NOT_APPLY);
-
             }
-            validateWalletOwner(inventoryItemRequest.getWallet().name());
             
             InventoryItem inventoryItem = InventoryItem.builder()
                     .itemId(inventoryItemRequest.getItemId())
@@ -94,14 +93,6 @@ public class InventoryItemService {
     public void validateCategoryExists(Integer categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided category id is not valid");
-        }
-    }
-
-    public void validateWalletOwner(String wallerOwner){
-        List<String> walletOwners = Arrays.asList(Util.VALID_WALLET_OWNERS.split(","));
-        String normalizedOwner = wallerOwner.trim().toUpperCase();
-        if (!walletOwners.contains(normalizedOwner)){
-            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The provided wallet owner name is not valid");
         }
     }
 
@@ -166,12 +157,10 @@ public class InventoryItemService {
         List<InventoryItem> allItems = getAllInventoryItems();
         List<ItemInfoDTO> inventoryItems = new ArrayList<>();
 
-        // Mappear los GeneralItems solo si no se han añadido ya como QuantizableItems
         allItems.forEach(item -> {
                 inventoryItems.add(InventoryItemMapper.mapToItemInfo(item, findCategory(item)));
 
         });
-
         return inventoryItems;
     }
 
@@ -179,7 +168,6 @@ public class InventoryItemService {
     public Category findCategory(InventoryItem generalItem){
         return categoryRepository.findCategoryById(generalItem.getCategoryId());
     }
-
 
     public void updateInventoryItemState (String itemId, ItemState state) {
         InventoryItem existingItem = inventoryItemRepository.findById(itemId)
@@ -189,12 +177,19 @@ public class InventoryItemService {
         inventoryItemRepository.save(existingItem);
     }
 
+    public void updateInventoryItemTotal(String itemId, int quantityChange) {
+        InventoryItem existingItem = inventoryItemRepository.findById(itemId)
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists in inventory"));
 
-    public void updateInventoryItemTotal(LoanDTO loanRequest) {
-        InventoryItem existingItem = inventoryItemRepository.findById(loanRequest.getItemId())
-                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
-        existingItem.setTotal(existingItem.getTotal()-loanRequest.getQuantity());
+        existingItem.setTotal(existingItem.getTotal() + quantityChange);
         inventoryItemRepository.save(existingItem);
-
     }
+
+    public void changeStateNoQuantizableItem(InventoryItem item, ItemState state){
+        if (!item.getCategory().getQuantizable()) {
+            updateInventoryItemState(item.getItemId(), state);
+        }
+    }
+
+
 }
