@@ -1,6 +1,7 @@
 package com.consola.lis.configuration;
 
 
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -24,10 +25,15 @@ public class OpenAPIConfig {
                 .scheme("bearer")
                 .bearerFormat("JWT");
 
+        //Define security requirement for endpoints that require Bearer token
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+               .addList("bearerAuth");
+
+        // Create OpenAPI object and configure servers, info, security schemes, and security requirements
         return new OpenAPI()
                 .info(info)
-                .components(new io.swagger.v3.oas.models.Components().addSecuritySchemes("bearerAuth", securityScheme));
-
+                .components(new io.swagger.v3.oas.models.Components().addSecuritySchemes("bearerAuth", securityScheme))
+                .addSecurityItem(securityRequirement);
 
 
     }
