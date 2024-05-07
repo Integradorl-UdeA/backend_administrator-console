@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   app:
@@ -10,12 +10,7 @@ services:
       - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
     depends_on:
       - db
-    environment:
-      MYSQLDB_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
-      MYSQLDB_USER: ${MYSQLDB_USER}
-      MYSQLDB_DOCKER_PORT: ${MYSQLDB_DOCKER_PORT}
-      MYSQLDB_DATABASE: ${MYSQLDB_DATABASE}
-      JWT_SECRET: ${JWT_SECRET}
+
   db:
     image: mysql:latest
     restart: always
@@ -25,8 +20,7 @@ services:
       - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
     volumes:
       - mysql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQLDB_ROOT_PASSWORD}
+
 
 volumes:
   mysql:
