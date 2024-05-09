@@ -16,6 +16,8 @@ public class CategoryDTO {
     @NotBlank(message = "Category name is required")
     private String categoryName;
 
+    private String idFieldName;
+
     @NotNull(message = "Quantizable status is required")
     private Boolean quantizable;
 
