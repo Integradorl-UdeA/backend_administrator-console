@@ -38,6 +38,7 @@ public class CategoryService {
             String listAttributesJson = objectMapper.writeValueAsString(categoryRequest.getListAttributes());
             Category category = Category.builder()
                     .categoryName(categoryRequest.getCategoryName().toLowerCase())
+                    .idItemField(categoryRequest.getIdFieldName())
                     .quantizable(categoryRequest.getQuantizable())
                     .attributes(attributesJson)
                     .listAttributes(listAttributesJson)

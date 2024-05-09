@@ -49,7 +49,7 @@ class CategoryServiceTest {
     @Test
     void testCreateCategory_Success() throws JsonProcessingException {
 
-        CategoryDTO categoryDTO= new CategoryDTO("Test Category",true,new String[]{"Attribute1"},new ListAttributeDTO[]{new ListAttributeDTO()});
+        CategoryDTO categoryDTO= new CategoryDTO("Test Category","test",true,new String[]{"Attribute1"},new ListAttributeDTO[]{new ListAttributeDTO()});
         when(categoryRepository.existsByCategoryName("Test Category")).thenReturn(false);
         //act
         categoryService.createCategory(categoryDTO);
@@ -60,7 +60,7 @@ class CategoryServiceTest {
     @Test
     void testCreateCategory_CategoryAlreadyExists()  {
 
-        CategoryDTO categoryDTO= new CategoryDTO("Test Category",true,new String[]{"Attribute1"},new ListAttributeDTO[]{new ListAttributeDTO()});
+        CategoryDTO categoryDTO= new CategoryDTO("Test Category","test",true,new String[]{"Attribute1"},new ListAttributeDTO[]{new ListAttributeDTO()});
         when(categoryRepository.existsByCategoryName("Test Category")).thenReturn(true);
 
         assertThrows(AlreadyExistsException.class, () -> categoryService.createCategory(categoryDTO));

@@ -16,6 +16,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "id_item_field")
+    private String idItemField;
+
     @Column(name = "category_name")
     private String categoryName;
     private Boolean quantizable;
