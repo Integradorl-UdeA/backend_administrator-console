@@ -56,6 +56,12 @@ public class InventoryController {
         inventoryItemService.updateInventoryItemState(itemId,state);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(EndpointConstant.ENDPOINT_EDIT_QUANTITY)
+    public ResponseEntity<InventoryItem> updateInventoryItemQuantity(@PathVariable("itemId")String itemId, @RequestBody int quantity) {
+        return ResponseEntity.ok(inventoryItemService.updateInventoryItemQuantity(itemId, quantity ));
+
+    }
 
 
 

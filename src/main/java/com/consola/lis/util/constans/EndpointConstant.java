@@ -27,6 +27,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_EDIT_ITEM_STATE="/item/state/{itemId}";
 
     public static final String ENDPOINT_ONE_ITEM = "/item/{itemId}";
+    public static final String ENDPOINT_EDIT_QUANTITY = "/item/quantity/{itemId}";
     //user
 
     public static final String ENDPOINT_USER = "/api/console-lis/user";

@@ -51,6 +51,7 @@ public class InventoryItemService {
         validStatesMap.get(false).put(true, Arrays.asList(Util.VALID_STATES_NOTCUAN_LEND.split(",")));
         validStatesMap.get(false).put(false, Arrays.asList(Util.VALID_STATES_NOT_CUAN_LEND.split(",")));
     }
+
     public InventoryItem createInventoryItem(InventoryItemDTO inventoryItemRequest) throws JsonProcessingException {
 
         if (inventoryItemRequest.getQuantity() == 0) {
@@ -171,17 +172,20 @@ public class InventoryItemService {
         return categoryRepository.findCategoryById(generalItem.getCategoryId());
     }
 
-    public void updateInventoryItemState (String itemId, ItemState state) {
-        InventoryItem existingItem = inventoryItemRepository.findById(itemId)
+    public InventoryItem findItemById(String itemId) {
+        return  inventoryItemRepository.findById(itemId)
                 .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+    }
+
+    public void updateInventoryItemState (String itemId, ItemState state) {
+        InventoryItem existingItem = findItemById(itemId);
 
         existingItem.setState(state);
         inventoryItemRepository.save(existingItem);
     }
 
     public void updateInventoryItemTotal(String itemId, int quantityChange) {
-        InventoryItem existingItem = inventoryItemRepository.findById(itemId)
-                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists in inventory"));
+        InventoryItem existingItem = findItemById(itemId);
 
         existingItem.setTotal(existingItem.getTotal() + quantityChange);
         inventoryItemRepository.save(existingItem);
@@ -194,4 +198,14 @@ public class InventoryItemService {
     }
 
 
+    public InventoryItem updateInventoryItemQuantity(String itemId, int quantity) {
+        InventoryItem existingItem = findItemById(itemId);
+
+        if(existingItem.getQuantity() + quantity < 0){
+            throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity " + itemId + " you want to restore is greater than current");
+        }
+        existingItem.setQuantity(existingItem.getQuantity() + quantity);
+        existingItem.setTotal(existingItem.getTotal()+quantity);
+        return inventoryItemRepository.save(existingItem);
+    }
 }
