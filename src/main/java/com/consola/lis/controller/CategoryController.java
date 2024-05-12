@@ -28,8 +28,8 @@ public class CategoryController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createCategory(@RequestBody CategoryDTO category) throws JacksonException {
-        categoryService.createCategory(category);
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryDTO category) throws JacksonException {
+        return  ResponseEntity.ok(categoryService.createCategory(category));
     }
 
 

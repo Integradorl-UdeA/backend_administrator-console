@@ -28,7 +28,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public void createCategory(CategoryDTO categoryRequest) throws JsonProcessingException {
+    public Category createCategory(CategoryDTO categoryRequest) throws JsonProcessingException {
         boolean existingCategory = categoryRepository.existsByCategoryName(categoryRequest.getCategoryName());
 
         if (existingCategory) {
@@ -44,7 +44,7 @@ public class CategoryService {
                     .listAttributes(listAttributesJson)
                     .build();
 
-            categoryRepository.save(category);
+            return categoryRepository.save(category);
         }
 
 
