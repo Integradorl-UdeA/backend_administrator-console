@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ public class InventoryController {
     private final InventoryItemService inventoryItemService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_ITEM )
+    @PostMapping()
     public ResponseEntity<InventoryItem> createInventoryItem(@RequestBody InventoryItemDTO inventoryItemDTO) throws JsonProcessingException {
         InventoryItem createdGeneralItem = inventoryItemService.createInventoryItem(inventoryItemDTO);
         return ResponseEntity.ok(createdGeneralItem);
@@ -42,8 +44,8 @@ public class InventoryController {
 
 
     @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
-    public Map<String, Object> inventoryItems() {
-        return inventoryItemService.getAllItemsMapped();
+    public Map<String, Object> inventoryItems(Pageable pageable) {
+        return inventoryItemService.getAllItemsMapped(pageable);
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_ITEM)
@@ -63,6 +65,11 @@ public class InventoryController {
 
     }
 
+
+    @GetMapping(EndpointConstant.ENDPOINT_HEADERS_ITEM)
+    public List<String> getHeaders(){
+        return inventoryItemService.getHeaders();
+    }
 
 
 

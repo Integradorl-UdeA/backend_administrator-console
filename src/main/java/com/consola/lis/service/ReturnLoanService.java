@@ -48,7 +48,7 @@ public class ReturnLoanService {
 
         ReturnLoan returnLoan = ReturnLoan.builder()
                 .loanId(returnLoanRequest.getLoanId())
-                .borrowerUser(returnLoanRequest.getBorrowerUser())
+                .borrowerUser(loanService.getOneLoan(returnLoanRequest.getLoanId()).getBorrowerUser())
                 .lenderUser(returnLoanRequest.getLenderUser())
                 .observation(returnLoanRequest.getObservation())
                 .build();
