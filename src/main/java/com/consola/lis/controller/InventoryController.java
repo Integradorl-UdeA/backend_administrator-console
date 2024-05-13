@@ -26,7 +26,7 @@ public class InventoryController {
     private final InventoryItemService inventoryItemService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_ITEM )
+    @PostMapping()
     public ResponseEntity<InventoryItem> createInventoryItem(@RequestBody InventoryItemDTO inventoryItemDTO) throws JsonProcessingException {
         InventoryItem createdGeneralItem = inventoryItemService.createInventoryItem(inventoryItemDTO);
         return ResponseEntity.ok(createdGeneralItem);
@@ -71,6 +71,10 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryItemService.getAllProducts(pageable));
     }
 
+    @GetMapping(EndpointConstant.ENDPOINT_HEADERS_ITEM)
+    public List<String> getHeaders(){
+        return inventoryItemService.getHeaders();
+    }
 
 
 

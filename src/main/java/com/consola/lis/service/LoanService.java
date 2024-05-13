@@ -115,7 +115,6 @@ public class LoanService {
         Page<Loan> loanPage = getAllLoans(pageable);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("header", createHeader());
         result.put("totalElements", loanPage.getTotalElements());
         result.put("totalPages", loanPage.getTotalPages());
         result.put("currentPage", loanPage.getNumber());
@@ -128,7 +127,8 @@ public class LoanService {
                 .map(loan -> LoanMapper.mapLoanToDTO(loan, inventoryItemService.findInventoryItem(loan.getItemId())))
                 .collect(Collectors.toList());
     }
-    private List<String> createHeader() {
+
+    public List<String> getHeaders() {
         List<String> header = new ArrayList<>();
         header.add("Id");
         header.add("Elemento");
@@ -150,6 +150,7 @@ public class LoanService {
         existingLoan.setLoanState(state);
         loanRepository.save(existingLoan);
     }
+
 
 
 }

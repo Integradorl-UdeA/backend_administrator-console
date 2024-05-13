@@ -148,7 +148,6 @@ public class InventoryItemService {
         Page<InventoryItem> inventoryItemsPage = getAllInventoryItems(pageable);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("header", createHeader());
         result.put("totalElements", inventoryItemsPage.getTotalElements());
         result.put("totalPages", inventoryItemsPage.getTotalPages());
         result.put("currentPage", inventoryItemsPage.getNumber());
@@ -163,7 +162,7 @@ public class InventoryItemService {
                 .collect(Collectors.toList());
     }
 
-    private List<String> createHeader() {
+    public List<String> getHeaders() {
         List<String> header = new ArrayList<>();
         header.add("Id");
         header.add("Estado");
@@ -173,6 +172,8 @@ public class InventoryItemService {
         header.add("Acciones");
         return header;
     }
+
+
 
     private Page<InventoryItem> getAllInventoryItems(Pageable pageable) {
         return inventoryItemRepository.findAllItems(pageable);
@@ -228,4 +229,5 @@ public class InventoryItemService {
                 listOfProducts.getContent()
         );
     }
+
 }

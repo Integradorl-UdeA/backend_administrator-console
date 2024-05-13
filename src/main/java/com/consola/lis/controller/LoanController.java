@@ -49,4 +49,9 @@ public class LoanController {
     public Map<String, Object> loans(Pageable pageable){
         return loanService.getAllLoansMapper(pageable);
     }
+
+    @GetMapping(EndpointConstant.ENDPOINT_HEADERS_LOAN)
+    public List<String> getHeaders(){
+        return loanService.getHeaders();
+    }
 }
