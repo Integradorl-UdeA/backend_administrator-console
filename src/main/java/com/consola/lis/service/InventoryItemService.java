@@ -2,9 +2,6 @@ package com.consola.lis.service;
 
 
 import com.consola.lis.dto.ItemInfoDTO;
-import com.consola.lis.dto.LoanDTO;
-import com.consola.lis.dto.Response;
-import com.consola.lis.model.entity.Loan;
 import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.InventoryItemDTO;
 import com.consola.lis.util.exception.AlreadyExistsException;
@@ -159,9 +156,12 @@ public class InventoryItemService {
     private List<ItemInfoDTO> mapToItemInfoList(List<InventoryItem> items) {
         return items.stream()
                 .map(item -> InventoryItemMapper.mapToItemInfo(item, findCategory(item)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
+    private Page<InventoryItem> getAllInventoryItems(Pageable pageable) {
+        return inventoryItemRepository.findAllItems(pageable);
+    }
     public List<String> getHeaders() {
         List<String> header = new ArrayList<>();
         header.add("Id");
@@ -171,12 +171,6 @@ public class InventoryItemService {
         header.add("Atributos");
         header.add("Acciones");
         return header;
-    }
-
-
-
-    private Page<InventoryItem> getAllInventoryItems(Pageable pageable) {
-        return inventoryItemRepository.findAllItems(pageable);
     }
 
     public Category findCategory(InventoryItem generalItem) {
@@ -221,13 +215,6 @@ public class InventoryItemService {
     }
 
 
-    public Response<List<InventoryItem>> getAllProducts(Pageable pageable) {
-        Page<InventoryItem> listOfProducts = inventoryItemRepository.findAllItems(pageable);
-        return new Response<>(
-                listOfProducts.getTotalElements(),
-                listOfProducts.getTotalPages(),
-                listOfProducts.getContent()
-        );
-    }
+
 
 }

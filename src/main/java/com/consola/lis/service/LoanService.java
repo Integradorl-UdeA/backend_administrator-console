@@ -125,7 +125,11 @@ public class LoanService {
     private List<LoanInfoDTO> mapToLoanInfoList(List<Loan> loans) {
         return loans.stream()
                 .map(loan -> LoanMapper.mapLoanToDTO(loan, inventoryItemService.findInventoryItem(loan.getItemId())))
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    private Page<Loan> getAllLoans(Pageable pageable) {
+        return loanRepository.findAllLoans(pageable);
     }
 
     public List<String> getHeaders() {
@@ -138,9 +142,6 @@ public class LoanService {
         header.add("Fecha Prestamo");
         header.add("Fecha Devolución");
         return header;
-    }
-    private Page<Loan> getAllLoans(Pageable pageable) {
-        return loanRepository.findAllLoans(pageable);
     }
 
     public void updateReturnLoanState (int loanId, LoanState state) {

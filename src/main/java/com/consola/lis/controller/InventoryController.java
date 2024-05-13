@@ -8,7 +8,6 @@ import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,10 +65,6 @@ public class InventoryController {
 
     }
 
-    @GetMapping(value = "/products")
-    public ResponseEntity<?> getAllProducts(Pageable pageable) {
-        return ResponseEntity.ok(inventoryItemService.getAllProducts(pageable));
-    }
 
     @GetMapping(EndpointConstant.ENDPOINT_HEADERS_ITEM)
     public List<String> getHeaders(){
