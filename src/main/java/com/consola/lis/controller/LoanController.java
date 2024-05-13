@@ -7,6 +7,7 @@ import com.consola.lis.service.LoanService;
 import com.consola.lis.util.constans.EndpointConstant;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class LoanController {
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ALL_LOANS_TABLE)
-    public Map<String, Object> loans(){
-        return loanService.getAllLoansMapper();
+    public Map<String, Object> loans(Pageable pageable){
+        return loanService.getAllLoansMapper(pageable);
     }
 }

@@ -8,9 +8,12 @@ import com.consola.lis.service.InventoryItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +45,8 @@ public class InventoryController {
 
 
     @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
-    public Map<String, Object> inventoryItems() {
-        return inventoryItemService.getAllItemsMapped();
+    public Map<String, Object> inventoryItems(Pageable pageable) {
+        return inventoryItemService.getAllItemsMapped(pageable);
     }
 
     @GetMapping(EndpointConstant.ENDPOINT_ONE_ITEM)
@@ -61,6 +64,11 @@ public class InventoryController {
     public ResponseEntity<InventoryItem> updateInventoryItemQuantity(@PathVariable("itemId")String itemId, @RequestBody int quantity) {
         return ResponseEntity.ok(inventoryItemService.updateInventoryItemQuantity(itemId, quantity ));
 
+    }
+
+    @GetMapping(value = "/products")
+    public ResponseEntity<?> getAllProducts(Pageable pageable) {
+        return ResponseEntity.ok(inventoryItemService.getAllProducts(pageable));
     }
 
 

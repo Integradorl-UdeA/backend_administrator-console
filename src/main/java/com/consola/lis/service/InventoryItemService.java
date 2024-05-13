@@ -3,6 +3,7 @@ package com.consola.lis.service;
 
 import com.consola.lis.dto.ItemInfoDTO;
 import com.consola.lis.dto.LoanDTO;
+import com.consola.lis.dto.Response;
 import com.consola.lis.model.entity.Loan;
 import com.consola.lis.util.constans.Util;
 import com.consola.lis.dto.InventoryItemDTO;
@@ -19,10 +20,13 @@ import com.consola.lis.util.mapper.InventoryItemMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -61,8 +65,8 @@ public class InventoryItemService {
         validateCategoryExists(inventoryItemRequest.getCategoryId());
 
         Category category = categoryRepository.findCategoryById(inventoryItemRequest.getCategoryId());
-        boolean isQuantizable = category.getQuantizable() !=null ? category.getQuantizable() :false;
-        boolean isLendable = inventoryItemRequest.getLendable() !=null ? inventoryItemRequest.getLendable() : false;
+        boolean isQuantizable = category.getQuantizable() != null ? category.getQuantizable() : false;
+        boolean isLendable = inventoryItemRequest.getLendable() != null ? inventoryItemRequest.getLendable() : false;
 
 
         if (existItem(inventoryItemRequest.getItemId())) {
@@ -74,7 +78,7 @@ public class InventoryItemService {
             if (inventoryItemRequest.getWallet() == null || inventoryItemRequest.getWallet().name().trim().isEmpty()) {
                 inventoryItemRequest.setWallet(WalletOwners.NOT_APPLY);
             }
-            
+
             InventoryItem inventoryItem = createNewItem(inventoryItemRequest, attributesJson);
 
             return inventoryItemRepository.save(inventoryItem);
@@ -82,7 +86,7 @@ public class InventoryItemService {
     }
 
     private InventoryItem createNewItem(InventoryItemDTO inventoryItemRequest, String attributesJson) {
-        return   InventoryItem.builder()
+        return InventoryItem.builder()
                 .itemId(inventoryItemRequest.getItemId())
                 .categoryId(inventoryItemRequest.getCategoryId())
                 .wallet(WalletOwners.valueOf(inventoryItemRequest.getWallet().name()))
@@ -140,12 +144,23 @@ public class InventoryItemService {
     }
 
 
-    public Map<String, Object> getAllItemsMapped() {
-        List<ItemInfoDTO> inventoryItems = getAllItems();
+    public Map<String, Object> getAllItemsMapped(Pageable pageable) {
+        Page<InventoryItem> inventoryItemsPage = getAllInventoryItems(pageable);
+
         Map<String, Object> result = new HashMap<>();
         result.put("header", createHeader());
-        result.put("allRegisters", inventoryItems);
+        result.put("totalElements", inventoryItemsPage.getTotalElements());
+        result.put("totalPages", inventoryItemsPage.getTotalPages());
+        result.put("currentPage", inventoryItemsPage.getNumber());
+        result.put("items", mapToItemInfoList(inventoryItemsPage.getContent()));
+
         return result;
+    }
+
+    private List<ItemInfoDTO> mapToItemInfoList(List<InventoryItem> items) {
+        return items.stream()
+                .map(item -> InventoryItemMapper.mapToItemInfo(item, findCategory(item)))
+                .collect(Collectors.toList());
     }
 
     private List<String> createHeader() {
@@ -159,25 +174,20 @@ public class InventoryItemService {
         return header;
     }
 
-    public List<ItemInfoDTO> getAllItems() {
-        List<InventoryItem> allItems = getAllInventoryItems();
-        List<ItemInfoDTO> inventoryItems = new ArrayList<>();
-
-        allItems.forEach(item -> inventoryItems.add(InventoryItemMapper.mapToItemInfo(item, findCategory(item))));
-        return inventoryItems;
+    private Page<InventoryItem> getAllInventoryItems(Pageable pageable) {
+        return inventoryItemRepository.findAllItems(pageable);
     }
 
-
-    public Category findCategory(InventoryItem generalItem){
+    public Category findCategory(InventoryItem generalItem) {
         return categoryRepository.findCategoryById(generalItem.getCategoryId());
     }
 
     public InventoryItem findItemById(String itemId) {
-        return  inventoryItemRepository.findById(itemId)
+        return inventoryItemRepository.findById(itemId)
                 .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
     }
 
-    public void updateInventoryItemState (String itemId, ItemState state) {
+    public void updateInventoryItemState(String itemId, ItemState state) {
         InventoryItem existingItem = findItemById(itemId);
 
         existingItem.setState(state);
@@ -191,7 +201,7 @@ public class InventoryItemService {
         inventoryItemRepository.save(existingItem);
     }
 
-    public void changeStateNoQuantizableItem(InventoryItem item, ItemState state){
+    public void changeStateNoQuantizableItem(InventoryItem item, ItemState state) {
         if (Boolean.FALSE.equals(item.getCategory().getQuantizable())) {
             updateInventoryItemState(item.getItemId(), state);
         }
@@ -201,11 +211,21 @@ public class InventoryItemService {
     public InventoryItem updateInventoryItemQuantity(String itemId, int quantity) {
         InventoryItem existingItem = findItemById(itemId);
 
-        if(existingItem.getQuantity() + quantity < 0){
+        if (existingItem.getQuantity() + quantity < 0) {
             throw new IllegalParameterInRequest("400", HttpStatus.BAD_REQUEST, "The quantity " + itemId + " you want to restore is greater than current");
         }
         existingItem.setQuantity(existingItem.getQuantity() + quantity);
-        existingItem.setTotal(existingItem.getTotal()+quantity);
+        existingItem.setTotal(existingItem.getTotal() + quantity);
         return inventoryItemRepository.save(existingItem);
+    }
+
+
+    public Response<List<InventoryItem>> getAllProducts(Pageable pageable) {
+        Page<InventoryItem> listOfProducts = inventoryItemRepository.findAllItems(pageable);
+        return new Response<>(
+                listOfProducts.getTotalElements(),
+                listOfProducts.getTotalPages(),
+                listOfProducts.getContent()
+        );
     }
 }
