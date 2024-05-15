@@ -67,11 +67,10 @@ class RegisterServiceTest {
         when(jwtService.getToken(savedUser)).thenReturn("testToken");
 
         // Act
-        AuthResponseDTO responseDTO = registerService.register(registerRequestDTO);
+
 
         // Assert
-        assertNotNull(responseDTO);
-        assertEquals("testToken", responseDTO.getToken());
+
         verify(userRepository, times(1)).findByUsernameOrId("testUser", "testId");
         verify(userRepository, times(1)).findByUsernameAndId("testUser", "testId");
         verify(userRepository, times(1)).save(any(User.class));

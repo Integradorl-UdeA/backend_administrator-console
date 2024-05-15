@@ -22,7 +22,7 @@ public class RegisterService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
+    public void register(RegisterRequestDTO registerRequest) {
 
         Optional<User> existingOneData = userRepository.findByUsernameOrId(registerRequest.getUsername(), registerRequest.getId());
         Optional<User> existingUser = userRepository.findByUsernameAndId(registerRequest.getUsername(), registerRequest.getId());
@@ -42,10 +42,6 @@ public class RegisterService {
 
             userRepository.save(user);
 
-
-            return AuthResponseDTO.builder()
-                    .token(jwtService.getToken(user))
-                    .build();
         }
     }
 }
