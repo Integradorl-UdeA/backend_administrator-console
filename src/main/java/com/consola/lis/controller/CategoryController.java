@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@Tag(name = "Manage categories", description = "something")
+@Tag(name = "Manage categories", description = "socia")
 @RestController
 @RequestMapping(EndpointConstant.ENDPOINT_CATEGORY)
 @RequiredArgsConstructor
