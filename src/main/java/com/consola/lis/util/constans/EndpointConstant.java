@@ -18,15 +18,16 @@ public class EndpointConstant {
 
 
     //Endpoints Inventory Item
-    public static final String ENDPOINT_INVENTORY = "/api/console-lis/user/inventory";
+    public static final String ENDPOINT_INVENTORY = "/api/console-lis/user/inventory/item";
 
     public static final String ENDPOINT_INVENTORY_TABLE = "/tableRegisters";
-    public static final String ENDPOINT_INVENTORY_ITEM = "/item";
 
-    public static final String ENDPOINT_DELETE_ITEM="/item/delete/{itemId}";
+    public static final String ENDPOINT_DELETE_ITEM="/delete/{itemId}";
     public static final String ENDPOINT_EDIT_ITEM_STATE="/item/state/{itemId}";
 
-    public static final String ENDPOINT_ONE_ITEM = "/item/{itemId}";
+    public static final String ENDPOINT_ONE_ITEM = "/{itemId}";
+    public static final String ENDPOINT_EDIT_QUANTITY = "/quantity/{itemId}";
+    public static final String ENDPOINT_HEADERS_ITEM = "/tableHeaders/";
     //user
 
     public static final String ENDPOINT_USER = "/api/console-lis/user";
@@ -43,6 +44,7 @@ public class EndpointConstant {
     public static final String ENDPOINT_GET_ONE_LOAN = "/{loanId}";
 
     public static final String ENDPOINT_ALL_LOANS_TABLE = "/tableRegisters";
+    public static final String ENDPOINT_HEADERS_LOAN = "/tableHeaders/";
 
     //Return Loan
     public static final String ENDPOINT_RETURN_LOAN = "/api/console-lis/user/returnLoan";

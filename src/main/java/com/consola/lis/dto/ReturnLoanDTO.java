@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReturnLoanDTO {
     private int loanId;
-    private String borrowerUser;
     private String lenderUser;
     private String observation;
 

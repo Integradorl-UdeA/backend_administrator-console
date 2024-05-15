@@ -15,10 +15,13 @@ import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -108,15 +111,28 @@ public class LoanService {
 
 
 
-    public Map<String, Object> getAllLoansMapper() {
-        List<LoanInfoDTO> loans = getAllLoansMap();
+    public Map<String, Object> getAllLoansMapper(Pageable pageable) {
+        Page<Loan> loanPage = getAllLoans(pageable);
+
         Map<String, Object> result = new HashMap<>();
-        result.put("header", createHeader());
-        result.put("allRegisters", loans);
+        result.put("totalElements", loanPage.getTotalElements());
+        result.put("totalPages", loanPage.getTotalPages());
+        result.put("currentPage", loanPage.getNumber());
+        result.put("items", mapToLoanInfoList(loanPage.getContent()));
         return result;
     }
 
-    private List<String> createHeader() {
+    private List<LoanInfoDTO> mapToLoanInfoList(List<Loan> loans) {
+        return loans.stream()
+                .map(loan -> LoanMapper.mapLoanToDTO(loan, inventoryItemService.findInventoryItem(loan.getItemId())))
+                .toList();
+    }
+
+    private Page<Loan> getAllLoans(Pageable pageable) {
+        return loanRepository.findAllLoans(pageable);
+    }
+
+    public List<String> getHeaders() {
         List<String> header = new ArrayList<>();
         header.add("Id");
         header.add("Elemento");
@@ -128,19 +144,6 @@ public class LoanService {
         return header;
     }
 
-    public List<LoanInfoDTO> getAllLoansMap() {
-        List<Loan> allLoans = getAllLoans();
-        List<LoanInfoDTO> loans = new ArrayList<>();
-
-        allLoans.forEach(loan -> {
-            InventoryItem item = inventoryItemService.findInventoryItem(loan.getItemId());
-            loans.add(LoanMapper.mapLoanToDTO(loan,item));
-
-        });
-
-        return loans;
-    }
-
     public void updateReturnLoanState (int loanId, LoanState state) {
         Loan existingLoan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
@@ -148,6 +151,7 @@ public class LoanService {
         existingLoan.setLoanState(state);
         loanRepository.save(existingLoan);
     }
+
 
 
 }
