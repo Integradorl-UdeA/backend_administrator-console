@@ -15,8 +15,9 @@ public class ApiDescription {
     public static final String DESCRIPTION_LOGIN=" Este endpoint permite a los usuarios iniciar sesión proporcionando su nombre de usuario y contraseña. Después de una autenticación exitosa, el sistema responde con un token de autenticación que el usuario puede usar para acceder a recursos protegidos.";
     public static final String DESCRIPTION_CONTROLLER_LOGIN=" Este controlador maneja la operación relacionada con el inicio de sesión de usuario.";
 
-    public static final String DESCRIPTION_REGISTER="Este endpoint registra un nuevo usuario en el sistema. Se deben proporcionar los detalles del usuario, como nombre de usuario, identificación, nombre, apellido y contraseña en el cuerpo de la solicitud.";
+    public static final String DESCRIPTION_REGISTER_USER_LIS="Este endpoint registra un nuevo usuario general en el sistema. Se deben proporcionar los detalles del usuario, como nombre de usuario, identificación, nombre, apellido y contraseña en el cuerpo de la solicitud.";
     public static final String DESCRIPTION_CONTROLLER_REGISTER="Este grupo de Endpoints maneja las operaciones relacionadas con el registro de nuevos usuarios en el sistema.";
+    public static final String DESCRIPTION_REGISTER_USER_HELLO_LIS="Este endpoint registra un nuevo usuario auxiliar o administrador en el sistema. Se deben proporcionar los detalles del usuario general agregando una contraseña.";
 
     //manage categories
     public static final String DESCRIPTION_ALL_CATEGORIES=" Este endpoint permite obtener una lista de todas las categorías de elementos disponibles.";

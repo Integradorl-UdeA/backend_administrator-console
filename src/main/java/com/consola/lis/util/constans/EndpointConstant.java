@@ -8,7 +8,8 @@ public class EndpointConstant {
     //Endpoints authentication
     public static final String ENDPOINT_LOGIN = "/api/console-lis/auth/login";
     public static final String ENDPOINT_REGISTER = "/api/console-lis/admin/register";
-
+    public static final String ENDPOINT_REGISTER_USER_HELLO_LIS= "/userHelloLis";
+    public static final String ENDPOINT_REGISTER_USER_LIS= "/user-lis";
 
     //Endpoints Category
     public static final String ENDPOINT_CATEGORY = "/api/console-lis/user/category";

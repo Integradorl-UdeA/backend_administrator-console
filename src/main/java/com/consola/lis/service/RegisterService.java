@@ -1,53 +1,62 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.AuthResponseDTO;
-import com.consola.lis.dto.RegisterRequestDTO;
+import com.consola.lis.dto.*;
+import com.consola.lis.model.entity.UserHelloLis;
+import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.model.repository.UserHelloLisRepository;
+import com.consola.lis.model.repository.UserLisRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.jwt.JwtService;
-import com.consola.lis.model.entity.User;
-import com.consola.lis.model.repository.UserRepository;
-import com.consola.lis.model.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class RegisterService {
 
-    private final UserRepository userRepository;
+    private final UserLisRepository userLisRepository;
+    private final UserHelloLisRepository userHelloLisRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponseDTO register(RegisterRequestDTO registerRequest) {
 
-        Optional<User> existingOneData = userRepository.findByUsernameOrId(registerRequest.getUsername(), registerRequest.getId());
-        Optional<User> existingUser = userRepository.findByUsernameAndId(registerRequest.getUsername(), registerRequest.getId());
-        if (existingUser.isPresent()) {
+    public UserLis registerUserLis(UserLisDTO registerUserLisDTO) {
+        if(userLisRepository.existsById(registerUserLisDTO.getIdUser())){
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
-        }else if(existingOneData.isPresent()){
-            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
-        }else {
-            User user = User.builder()
-                    .username(registerRequest.getUsername())
-                    .role(UserRole.AUXADMI)
-                    .id(registerRequest.getId())
-                    .name(registerRequest.getName())
-                    .lastname(registerRequest.getLastname())
-                    .password(passwordEncoder.encode(registerRequest.getPassword()))
-                    .build();
-
-            userRepository.save(user);
-
-
-            return AuthResponseDTO.builder()
-                    .token(jwtService.getToken(user))
-                    .build();
         }
+        UserLis userLis = UserLis.builder()
+                .username(registerUserLisDTO.getUsername())
+                .role(registerUserLisDTO.getRole())
+                .idUser(registerUserLisDTO.getIdUser())
+                .name(registerUserLisDTO.getName())
+                .lastname(registerUserLisDTO.getLastname())
+                .build();
+        return userLisRepository.save(userLis);
     }
+
+    public void registerUserHelloLis(UserHelloLisDTO registerUserHelloLisDTO) {
+        if(userLisRepository.existsById(registerUserHelloLisDTO.getIdUser())){
+            throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
+        }
+        UserLisDTO registerUserLisDTO = UserLisDTO.builder()
+                .username(registerUserHelloLisDTO.getUsername())
+                .role(registerUserHelloLisDTO.getRole())
+                .idUser(registerUserHelloLisDTO.getIdUser())
+                .name(registerUserHelloLisDTO.getName())
+                .lastname(registerUserHelloLisDTO.getLastname())
+                .build();
+
+        UserHelloLis userHelloLis = UserHelloLis.builder()
+                .password(passwordEncoder.encode(registerUserHelloLisDTO.getPassword()))
+                .userLis(registerUserLis(registerUserLisDTO))
+                .build();
+
+        userHelloLisRepository.save(userHelloLis);
+    }
+
+
 }
 
 

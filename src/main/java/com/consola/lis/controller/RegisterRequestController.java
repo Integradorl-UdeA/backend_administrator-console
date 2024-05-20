@@ -1,9 +1,10 @@
 package com.consola.lis.controller;
 
 
+import com.consola.lis.dto.UserHelloLisDTO;
+import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.util.constans.ApiDescription;
 import com.consola.lis.util.constans.EndpointConstant;
-import com.consola.lis.dto.RegisterRequestDTO;
 import com.consola.lis.service.RegisterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,13 +20,21 @@ public class RegisterRequestController {
 
     private final RegisterService registerService;
 
-    @Operation(summary=ApiDescription.DESCRIPTION_REGISTER)
+
+    @Operation(summary=ApiDescription.DESCRIPTION_REGISTER_USER_LIS)
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public void register(@RequestBody RegisterRequestDTO registerRequestDTO) {
-        registerService.register(registerRequestDTO);
-
-
-
+    @PostMapping(EndpointConstant.ENDPOINT_REGISTER_USER_LIS)
+    public void registerUserLis(@RequestBody UserLisDTO registerUserLisDTO) {
+        System.out.printf("holi " + registerUserLisDTO);
+        registerService.registerUserLis(registerUserLisDTO);
     }
+
+    @Operation(summary=ApiDescription.DESCRIPTION_REGISTER_USER_HELLO_LIS)
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(EndpointConstant.ENDPOINT_REGISTER_USER_HELLO_LIS)
+    public void registerUserHelloLis(@RequestBody UserHelloLisDTO registerUserHelloLisDTO) {
+        registerService.registerUserHelloLis(registerUserHelloLisDTO);
+    }
+
+
 }

@@ -1,15 +1,17 @@
 package com.consola.lis.controller;
 
 
+import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.service.UserService;
 import com.consola.lis.util.constans.ApiDescription;
 import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.dto.AuthResponseDTO;
-import com.consola.lis.dto.UserDTO;
+import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.model.enums.UserRole;
-import com.consola.lis.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +26,7 @@ public class UserController {
 
     @Operation(summary = ApiDescription.DESCRIPTION_ONE_USER)
     @GetMapping(EndpointConstant.ENDPOINT_ONE_USER)
-    public ResponseEntity<UserDTO> oneUser(@PathVariable("username") String userId){
+    public ResponseEntity<UserLis> oneUser(@PathVariable("username") String userId){
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
@@ -37,7 +39,7 @@ public class UserController {
 
     @Operation(summary = ApiDescription.DESCRIPTION_USER_LDAP)
     @GetMapping(EndpointConstant.ENDPOINT_USER_LDAP)
-    public ResponseEntity<UserDTO> userLDAP(@PathVariable("username") String username){
+    public ResponseEntity<UserLisDTO> userLDAP(@PathVariable("username") String username){
         return ResponseEntity.ok(userService.getUserLDAP(username));
     }
 

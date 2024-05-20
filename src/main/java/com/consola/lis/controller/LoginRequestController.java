@@ -20,11 +20,10 @@ public class LoginRequestController {
 
     private final LoginService loginService;
 
-
-
     @Operation(summary = ApiDescription.DESCRIPTION_LOGIN)
     @PostMapping
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO loginRequest)   {
+        System.out.printf("popirr"+loginRequest);
         return ResponseEntity.ok(loginService.login(loginRequest));
 
     }
