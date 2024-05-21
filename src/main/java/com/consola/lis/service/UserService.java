@@ -1,6 +1,7 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
+import com.consola.lis.dto.UserLdapDTO;
 import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.model.repository.UserLisRepository;
@@ -44,9 +45,9 @@ public class UserService {
     }
 
 
-    public UserLisDTO getUserLDAP(String username) {
+    public UserLdapDTO getUserLDAP(String username) {
 
-        ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
+        ResponseEntity<UserLdapDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLdapDTO.class, username);
         if (response.getBody() == null){
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit " + username + "not exist");
         }
@@ -54,13 +55,13 @@ public class UserService {
 
     }
 
-    public UserLisDTO changeRole(UserLisDTO response) {
+    public UserLdapDTO changeRole(UserLdapDTO response) {
 
-        switch (response.getRole().toString()) {
-            case "1005" -> response.setRole(UserRole.STUDENT);
-            case "503" -> response.setRole(UserRole.PROFESOR);
-            case "502" -> response.setRole(UserRole.AUXPROG);
-            case "1006" -> response.setRole(UserRole.AUXADMI);
+        switch (response.getRole()) {
+            case "1005" -> response.setRole(String.valueOf(UserRole.STUDENT));
+            case "503" -> response.setRole(String.valueOf(UserRole.PROFESOR));
+            case "502" -> response.setRole(String.valueOf(UserRole.AUXPROG));
+            case "1006" -> response.setRole(String.valueOf(UserRole.AUXADMI));
             default -> throw new IllegalStateException("Unexpected value: " + response.getRole());
         }
         return response;

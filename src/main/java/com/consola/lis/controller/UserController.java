@@ -1,6 +1,7 @@
 package com.consola.lis.controller;
 
 
+import com.consola.lis.dto.UserLdapDTO;
 import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.service.UserService;
 import com.consola.lis.util.constans.ApiDescription;
@@ -39,7 +40,7 @@ public class UserController {
 
     @Operation(summary = ApiDescription.DESCRIPTION_USER_LDAP)
     @GetMapping(EndpointConstant.ENDPOINT_USER_LDAP)
-    public ResponseEntity<UserLisDTO> userLDAP(@PathVariable("username") String username){
+    public ResponseEntity<UserLdapDTO> userLDAP(@PathVariable("username") String username){
         return ResponseEntity.ok(userService.getUserLDAP(username));
     }
 

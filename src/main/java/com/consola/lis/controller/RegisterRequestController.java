@@ -25,7 +25,6 @@ public class RegisterRequestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(EndpointConstant.ENDPOINT_REGISTER_USER_LIS)
     public void registerUserLis(@RequestBody UserLisDTO registerUserLisDTO) {
-        System.out.printf("holi " + registerUserLisDTO);
         registerService.registerUserLis(registerUserLisDTO);
     }
 

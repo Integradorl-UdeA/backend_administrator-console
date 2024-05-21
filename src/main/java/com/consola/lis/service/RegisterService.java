@@ -18,12 +18,11 @@ public class RegisterService {
 
     private final UserLisRepository userLisRepository;
     private final UserHelloLisRepository userHelloLisRepository;
-    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
 
     public UserLis registerUserLis(UserLisDTO registerUserLisDTO) {
-        if(userLisRepository.existsById(registerUserLisDTO.getIdUser())){
+        if(userLisRepository.existsById(registerUserLisDTO.getIdUser()) ||  userLisRepository.existsByUsername(registerUserLisDTO.getUsername())){
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
         }
         UserLis userLis = UserLis.builder()

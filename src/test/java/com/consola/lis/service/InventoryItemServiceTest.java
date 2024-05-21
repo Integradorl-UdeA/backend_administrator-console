@@ -31,7 +31,6 @@ class InventoryItemServiceTest {
     @Mock
     private InventoryItemRepository inventoryItemRepository;
 
-
     @Mock
     private  CategoryRepository categoryRepository;
 
@@ -76,7 +75,6 @@ class InventoryItemServiceTest {
 
         assertEquals(mockItem, result);
     }
-
 
 
     @Test
