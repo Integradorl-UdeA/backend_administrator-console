@@ -29,7 +29,6 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final InventoryItemService inventoryItemService;
 
-
     public Loan createLoan(LoanDTO loanRequest) {
         validateLoanRequest(loanRequest);
 

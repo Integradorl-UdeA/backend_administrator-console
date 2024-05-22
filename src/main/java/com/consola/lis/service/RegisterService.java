@@ -3,6 +3,7 @@ package com.consola.lis.service;
 import com.consola.lis.dto.*;
 import com.consola.lis.model.entity.UserHelloLis;
 import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.model.enums.UserRole;
 import com.consola.lis.model.repository.UserHelloLisRepository;
 import com.consola.lis.model.repository.UserLisRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
@@ -24,6 +25,7 @@ public class RegisterService {
         if(userLisRepository.existsById(registerUserLisDTO.getIdUser()) ||  userLisRepository.existsByUsername(registerUserLisDTO.getUsername())){
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
         }
+
         UserLis userLis = UserLis.builder()
                 .username(registerUserLisDTO.getUsername())
                 .role(registerUserLisDTO.getRole())

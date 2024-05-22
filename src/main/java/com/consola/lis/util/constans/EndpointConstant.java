@@ -1,6 +1,12 @@
 package com.consola.lis.util.constans;
 
+import com.consola.lis.model.enums.*;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @UtilityClass
 public class EndpointConstant {
@@ -49,7 +55,13 @@ public class EndpointConstant {
     public static final String ENDPOINT_RETURN_ALL_LOANS = "/returnLoans";
 
 
-
+    //Select list enums
+    public static final String ENDPOINT_SELECT_LIST_ENUM = "/api/console-lis/user/selectList";
+    public static final String ENDPOINT_SELECT_LIST_ENUM_WALLET = "/walletOwners";
+    public static final String ENDPOINT_SELECT_LIST_ENUM_LOAN_TYPE = "/loanType";
+    public static final String ENDPOINT_SELECT_LIST_ENUM_ROLE = "/userRole";
+    public static final String ENDPOINT_SELECT_LIST_ENUM_LOAN_STATE = "/loanState";
+    public static final String ENDPOINT_SELECT_LIST_ENUM_ITEM_STATE = "/itemState";
 
 
 

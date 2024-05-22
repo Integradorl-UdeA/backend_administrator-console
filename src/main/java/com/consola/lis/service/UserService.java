@@ -62,7 +62,6 @@ public class UserService {
             if (existUser(username)) {
                 return true;
             }
-
             ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
             UserLisDTO userLdap = response.getBody();
             if (userLdap == null) {

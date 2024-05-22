@@ -56,5 +56,13 @@ public class ApiDescription {
     public static final String DESCRIPTION_HEADERS_ITEM = "Este endpoint permite obtener los encabezados de una tabla de elementos de inventario.";
     public static final String DESCRIPTION_CONTROLLER_INVENTORY="Este grupo de Endpoints maneja las operaciones relacionadas con la gestión de inventario.";
     public static final String DESCRIPTION_EXISTING_USER = "Este Enpoint se encarga de consultar la existencia de un usuario en la db o en el ldap, si existe en alguno de los dos true, de otra forma false; también se hace un mapeo de un usuario existente en el ldap y no en la db a la db";
+
+    //manage select list
+    public static final String DESCRIPTION_CONTROLLER_SELECT_LIST = "Este grupo de enpoint permite obtener como una lista los enums que se usan en la api";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_WALLET = "Este enpoint permite obtener la lista de los enums de Wallet Owner pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_LOAN_TYPE = "Este enpoint permite obtener la lista de los enums de Loan Type pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_ROLE = "Este enpoint permite obtener la lista de los enums de User Role pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_LOAN_STATE = "Este enpoint permite obtener la lista de los enums de Loan State pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_ITEM_STATE = "Este enpoint permite obtener la lista de los enums de Item State pasados a toString y español";
 }
 

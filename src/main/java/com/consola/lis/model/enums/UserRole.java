@@ -8,7 +8,7 @@ import java.util.List;
 public enum UserRole {
     ADMIN ("Administrador"),
     AUXPROG ("Auxiliar de Programación"),
-    AUXADMI("Auxiliar de Administrativo"),
+    AUXADMI("Auxiliar Administrativo"),
     STUDENT("Estudiante"),
     PROFESSOR("Profesor");
 

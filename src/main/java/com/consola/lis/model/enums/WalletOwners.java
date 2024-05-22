@@ -7,9 +7,7 @@ import java.util.List;
 public enum WalletOwners {
     DIEGO_ALEJANDRO_BOTIA ("Diego Alejandro Botia"),
     ANDRES_MARIN("Andres Marin"),
-
     LUIS_SILVA("Luis Silva"),
-
     NOT_APPLY("No Aplica");
 
     final String lowerCase;
