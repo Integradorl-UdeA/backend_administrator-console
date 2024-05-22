@@ -1,7 +1,6 @@
 package com.consola.lis.util.deserializer;
 
 import com.consola.lis.model.enums.WalletOwners;
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
