@@ -11,8 +11,8 @@ import java.util.List;
 
 
 public class CustomUserDetails implements UserDetails {
-    private final UserLis userLis;
-    private final UserHelloLis userHelloLis;
+    private final transient UserLis userLis;
+    private final transient UserHelloLis userHelloLis;
 
     public CustomUserDetails(UserLis userLis, UserHelloLis userHelloLis) {
         this.userLis = userLis;
