@@ -55,6 +55,6 @@ public class ApiDescription {
     public static final String DESCRIPTION_EDIT_QUANTITY = "Este endpoint permite actualizar la cantidad de un elemento de inventario específico. Se proporciona el ID del elemento como parte de la URL y se especifica la nueva cantidad en el cuerpo de la solicitud.";
     public static final String DESCRIPTION_HEADERS_ITEM = "Este endpoint permite obtener los encabezados de una tabla de elementos de inventario.";
     public static final String DESCRIPTION_CONTROLLER_INVENTORY="Este grupo de Endpoints maneja las operaciones relacionadas con la gestión de inventario.";
-
+    public static final String DESCRIPTION_EXISTING_USER = "Este Enpoint se encarga de consultar la existencia de un usuario en la db o en el ldap, si existe en alguno de los dos true, de otra forma false; también se hace un mapeo de un usuario existente en el ldap y no en la db a la db";
 }
 

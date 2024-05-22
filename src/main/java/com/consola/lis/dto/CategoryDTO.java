@@ -1,5 +1,6 @@
 package com.consola.lis.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ public class CategoryDTO {
     @NotBlank(message = "Category name is required")
     private String categoryName;
 
+    @Column(name = "id_item_field")
     private String idFieldName;
 
     @NotNull(message = "Quantizable status is required")

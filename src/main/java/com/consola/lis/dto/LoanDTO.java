@@ -1,6 +1,8 @@
 package com.consola.lis.dto;
 
 import com.consola.lis.model.enums.LoanType;
+import com.consola.lis.util.deserializer.LoanTypeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -26,6 +28,8 @@ public class LoanDTO {
 
     @NotBlank(message = "The lender user is required")
     private String lenderUser;
+
+    @JsonDeserialize(using = LoanTypeDeserializer.class)
     private LoanType loanType;
 
     @NotBlank(message = "The return date is required")

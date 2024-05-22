@@ -17,9 +17,9 @@ public class InventoryItemMapper {
 
         return ItemInfoDTO.builder()
                 .id(item.getItemId())
-                .state(String.valueOf(item.getState()))
+                .state(item.getState().toString())
                 .category(category.getCategoryName())
-                .wallet(String.valueOf(item.getWallet()).replace("_"," "))
+                .wallet(item.getWallet().toString())
                 .quantizable(category.getQuantizable())
                 .attributes(convertAttributes(item.getAttributes()))
                 .build();

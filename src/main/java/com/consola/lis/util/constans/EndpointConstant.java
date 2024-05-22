@@ -20,20 +20,17 @@ public class EndpointConstant {
 
     //Endpoints Inventory Item
     public static final String ENDPOINT_INVENTORY = "/api/console-lis/user/inventory/item";
-
     public static final String ENDPOINT_INVENTORY_TABLE = "/tableRegisters";
-
     public static final String ENDPOINT_DELETE_ITEM="/delete/{itemId}";
     public static final String ENDPOINT_EDIT_ITEM_STATE="/item/state/{itemId}";
-
     public static final String ENDPOINT_ONE_ITEM = "/{itemId}";
     public static final String ENDPOINT_EDIT_QUANTITY = "/quantity/{itemId}";
     public static final String ENDPOINT_HEADERS_ITEM = "/tableHeaders/";
-    //user
 
+    //user
     public static final String ENDPOINT_USER = "/api/console-lis/user";
     public static final String ENDPOINT_ONE_USER ="/{username}";
-    public static final String ENDPOINT_USER_LDAP = "/ldapUser/{username}";
+    public static final String ENDPOINT_EXISTING_USER = "/existUser/{username}";
     public static final String ENDPOINT_DELETE_USER = "/delete/{username}";
     public static final String ENDPOINT_CHANGE_ROLE_USER = "/role/{username}";
 

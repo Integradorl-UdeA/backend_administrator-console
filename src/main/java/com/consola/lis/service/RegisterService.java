@@ -6,7 +6,6 @@ import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.model.repository.UserHelloLisRepository;
 import com.consola.lis.model.repository.UserLisRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
-import com.consola.lis.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,7 +1,6 @@
 package com.consola.lis.jwt;
 
 
-import com.consola.lis.model.entity.UserHelloLis;
 import com.consola.lis.model.entity.UserLis;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,7 +36,7 @@ public class JwtService {
                 .builder()
                 .claims(extraClaims)
                 .claim("id", user.getIdUser())
-                .claim("role", user.getRole())
+                .claim("role", user.getRole().toString())
                 .claim("name", user.getName())
                 .claim("username", user.getUsername())
                 .subject(user.getUsername())

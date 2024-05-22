@@ -1,9 +1,40 @@
 package com.consola.lis.model.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum LoanType {
-    GENERAL,
-    BOOK,
-    IOT,
-    PI,
-    OTRO
+    GENERAL("General"),
+    BOOK ("Libro"),
+    IOT("IOT"),
+    PI("Proyecto Integrador"),
+    OTHER("Otro");
+
+    final String lowerCase;
+
+    LoanType(String lowerCase){
+        this.lowerCase = lowerCase;
+    }
+    @Override
+    public String toString() {
+        return this.lowerCase;
+    }
+
+    public static LoanType fromString(String text) {
+        for (LoanType loan : LoanType.values()) {
+            if (loan.lowerCase.equalsIgnoreCase(text)) {
+                return loan;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with text " + text);
+    }
+
+    public static List<String> getLowerCaseValuesList() {
+        List<String> lowerCaseValues = new ArrayList<>();
+        for (LoanType loan : LoanType.values()) {
+            lowerCaseValues.add(loan.toString());
+        }
+        return lowerCaseValues;
+    }
+
 }

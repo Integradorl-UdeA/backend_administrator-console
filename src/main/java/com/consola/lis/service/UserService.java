@@ -1,7 +1,6 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
-import com.consola.lis.dto.UserLdapDTO;
 import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.model.repository.UserLisRepository;
@@ -14,8 +13,6 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -45,27 +42,7 @@ public class UserService {
     }
 
 
-    public UserLdapDTO getUserLDAP(String username) {
 
-        ResponseEntity<UserLdapDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLdapDTO.class, username);
-        if (response.getBody() == null){
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit " + username + "not exist");
-        }
-        return changeRole(Objects.requireNonNull(response.getBody()));
-
-    }
-
-    public UserLdapDTO changeRole(UserLdapDTO response) {
-
-        switch (response.getRole()) {
-            case "1005" -> response.setRole(String.valueOf(UserRole.STUDENT));
-            case "503" -> response.setRole(String.valueOf(UserRole.PROFESOR));
-            case "502" -> response.setRole(String.valueOf(UserRole.AUXPROG));
-            case "1006" -> response.setRole(String.valueOf(UserRole.AUXADMI));
-            default -> throw new IllegalStateException("Unexpected value: " + response.getRole());
-        }
-        return response;
-    }
 
     @Transactional
     public void deleteUser(String username) {
@@ -78,5 +55,32 @@ public class UserService {
 
     public boolean existUser(String username) {
         return userLisRepository.existsByUsername(username);
+    }
+
+    public Boolean checkExistUser(String username) {
+        try {
+            if (existUser(username)) {
+                return true;
+            }
+
+            ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
+            UserLisDTO userLdap = response.getBody();
+            if (userLdap == null) {
+                return false;
+            } else {
+                UserLis userLis = UserLis.builder()
+                        .idUser(userLdap.getIdUser())
+                        .username(userLdap.getUsername())
+                        .name(userLdap.getName())
+                        .lastname(userLdap.getLastname())
+                        .role(userLdap.getRole())
+                        .build();
+
+                userLisRepository.save(userLis);
+                return true;
+            }
+        }catch (Exception ex){
+            return false;
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.consola.lis.jwt;
 
 import com.consola.lis.model.entity.UserHelloLis;
 import com.consola.lis.model.entity.UserLis;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

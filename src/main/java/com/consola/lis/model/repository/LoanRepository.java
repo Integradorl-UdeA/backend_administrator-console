@@ -1,6 +1,5 @@
 package com.consola.lis.model.repository;
 
-import com.consola.lis.model.entity.InventoryItem;
 import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.enums.LoanState;
 import org.springframework.data.domain.Page;
