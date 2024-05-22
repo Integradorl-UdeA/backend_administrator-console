@@ -11,7 +11,7 @@ import java.io.IOException;
 public class LoanStateDeserializer extends JsonDeserializer<LoanState> {
 
     @Override
-    public LoanState deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public LoanState deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String loanStateLowerCase = jsonParser.getText();
         return LoanState.fromString(loanStateLowerCase);
     }

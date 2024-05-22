@@ -1,12 +1,7 @@
 package com.consola.lis.util.constans;
 
-import com.consola.lis.model.enums.*;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 @UtilityClass
 public class EndpointConstant {

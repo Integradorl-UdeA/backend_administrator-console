@@ -34,7 +34,7 @@ public class LoginService  {
                     .token(token)
                     .build();
         } catch (AuthenticationException ex) {
-            throw new UserAuthenticationException("401", HttpStatus.UNAUTHORIZED, "mor acá no fue");
+            throw new UserAuthenticationException("401", HttpStatus.UNAUTHORIZED, "Bad credentials");
         }
     }
 

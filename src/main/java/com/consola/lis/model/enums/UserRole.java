@@ -1,6 +1,5 @@
 package com.consola.lis.model.enums;
 
-import org.apache.catalina.User;
 
 import java.util.ArrayList;
 import java.util.List;

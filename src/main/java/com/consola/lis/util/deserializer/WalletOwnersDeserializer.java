@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class WalletOwnersDeserializer extends JsonDeserializer<WalletOwners> {
     @Override
-    public WalletOwners deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public WalletOwners deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String walletOwnerLoweCase = jsonParser.getText();
         return WalletOwners.fromString(walletOwnerLoweCase);
     }

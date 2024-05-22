@@ -75,37 +75,4 @@ class UserServiceTest {
     }
 
 
-
-
-
-
-
-  /*  @Test
-    void testGetUserLDAP() {
-        // Arrange
-        String username = "testUser";
-        UserLdapDTO userDTO = new UserLdapDTO();
-        userDTO.setRole("1005");
-        ResponseEntity<UserLdapDTO> responseEntity = ResponseEntity.ok(userDTO);
-        when(restTemplate.getForEntity(anyString(), eq(UserLdapDTO.class), eq(username))).thenReturn(responseEntity);
-
-        // Act
-        UserLdapDTO result = userService.getUserLDAP(username);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(userDTO.getRole(), result.getRole());
-    }
-
-    @Test
-    void testGetUserLDAP_ResponseNull() {
-        // Arrange
-        String username = "nonExistingUser";
-        ResponseEntity<UserLisDTO> responseEntity = ResponseEntity.ok(null);
-        when(restTemplate.getForEntity(anyString(), eq(UserLisDTO.class), eq(username))).thenReturn(responseEntity);
-
-        // Act and Assert
-        assertThrows(NotExistingException.class, () -> userService.getUserLDAP(username));
-    }*/
-
 }

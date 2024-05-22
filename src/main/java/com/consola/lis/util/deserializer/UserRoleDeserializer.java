@@ -11,7 +11,7 @@ import java.io.IOException;
 public class UserRoleDeserializer extends JsonDeserializer<UserRole> {
 
     @Override
-    public UserRole deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public UserRole deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String roleNumericString = jsonParser.getText();
         return UserRole.fromString(roleNumericString);
     }
