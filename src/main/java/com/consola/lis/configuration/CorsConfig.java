@@ -16,7 +16,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/api/console-lis/**").allowedOrigins("http://192.168.30.66", "http://localhost:3000").allowedHeaders("*").allowedMethods("*");
+                registry.addMapping("/api/console-lis/**").allowedOrigins("hhtp://192.168.30.66", "http://localhost:3000").allowedHeaders("*").allowedMethods("*");
             }
         };
     }

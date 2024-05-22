@@ -1,18 +1,14 @@
 package com.consola.lis.service;
 
-import com.consola.lis.dto.AuthResponseDTO;
-import com.consola.lis.dto.UserDTO;
+import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.model.repository.UserLisRepository;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
-import com.consola.lis.model.entity.User;
-import com.consola.lis.model.enums.UserRole;
-import com.consola.lis.model.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,18 +19,17 @@ import static org.mockito.Mockito.*;
 
 class UserServiceTest {
     @Mock
-    UserRepository userRepository;
+    UserLisRepository userRepository;
 
     @Mock
     RestTemplate restTemplate;
 
+    @Mock
+    JwtService jwtService;
 
 
     @Mock
     PasswordEncoder passwordEncoder;
-
-    @Mock
-    JwtService jwtService;
 
     @InjectMocks
     UserService userService;
@@ -47,7 +42,7 @@ class UserServiceTest {
     @Test
     void testGetUser_UserNotExists() {
         String username = "nonExistingUsername";
-        Optional<User> optionalUser = Optional.empty();
+        Optional<UserLis> optionalUser = Optional.empty();
         when(userRepository.findByUsername(username)).thenReturn(optionalUser);
 
         assertThrows(NotExistingException.class, () -> userService.getUser(username));
@@ -79,77 +74,5 @@ class UserServiceTest {
 
     }
 
-    @Test
-    void testChangeUserRole_UserExists() {
-        // Arrange
-        String username = "testUser";
-        UserRole newRole = UserRole.PROFESSOR;
-        User user = new User();
-        user.setUsername(username);
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
-        when(jwtService.getToken(user)).thenReturn("mockedToken");
-
-        // Act
-        AuthResponseDTO result = userService.changeUserRole(username, newRole);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("mockedToken", result.getToken());
-        assertEquals(newRole, user.getRole());
-        verify(userRepository, times(1)).save(user);
-    }
-
-    @Test
-    void testChangeUserRole_UserNotExists() {
-        // Arrange
-        String username = "nonExistingUser";
-        UserRole newRole = UserRole.PROFESSOR;
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        // Act and Assert
-        assertThrows(NotExistingException.class, () -> userService.changeUserRole(username, newRole));
-        verify(userRepository, never()).save(any());
-    }
-
-
-
-    @Test
-    void testChangeRole() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setRole("1006");
-
-        UserDTO result = userService.changeRole(userDTO);
-
-        assertNotNull(result);
-        assertEquals(UserRole.AUXADMI.toString(), result.getRole());
-    }
-
-    @Test
-    void testGetUserLDAP() {
-        // Arrange
-        String username = "testUser";
-        UserDTO userDTO = new UserDTO();
-        userDTO.setRole("1005");
-        ResponseEntity<UserDTO> responseEntity = ResponseEntity.ok(userDTO);
-        when(restTemplate.getForEntity(anyString(), eq(UserDTO.class), eq(username))).thenReturn(responseEntity);
-
-        // Act
-        UserDTO result = userService.getUserLDAP(username);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(userDTO.getRole(), result.getRole());
-    }
-
-    @Test
-    void testGetUserLDAP_ResponseNull() {
-        // Arrange
-        String username = "nonExistingUser";
-        ResponseEntity<UserDTO> responseEntity = ResponseEntity.ok(null);
-        when(restTemplate.getForEntity(anyString(), eq(UserDTO.class), eq(username))).thenReturn(responseEntity);
-
-        // Act and Assert
-        assertThrows(NotExistingException.class, () -> userService.getUserLDAP(username));
-    }
 
 }

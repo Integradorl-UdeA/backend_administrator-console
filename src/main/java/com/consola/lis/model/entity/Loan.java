@@ -66,10 +66,10 @@ public class Loan {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "borrower_user", referencedColumnName = "username", insertable = false, updatable = false)
     @JsonIgnore
-    private User userB;
+    private UserLis userB;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lender_user", referencedColumnName = "username", insertable = false, updatable = false)
     @JsonIgnore
-    private User userL;
+    private UserLis userL;
 }

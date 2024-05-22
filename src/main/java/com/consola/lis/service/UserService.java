@@ -1,13 +1,12 @@
 package com.consola.lis.service;
 
 import com.consola.lis.dto.AuthResponseDTO;
-import com.consola.lis.dto.UserDTO;
-import com.consola.lis.util.mapper.UserMapper;
+import com.consola.lis.dto.UserLisDTO;
+import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.model.repository.UserLisRepository;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
-import com.consola.lis.model.entity.User;
 import com.consola.lis.model.enums.UserRole;
-import com.consola.lis.model.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -15,76 +14,72 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    public final UserRepository userRepository;
+    public final UserLisRepository userLisRepository;
     private final RestTemplate restTemplate;
     public final PasswordEncoder passwordEncoder;
     public final JwtService jwtService;
 
 
-    public UserDTO getUser(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist ");
-        } else return UserMapper.mapToUserDTO(user.get());
+    public UserLis getUser(String username) {
+        return userLisRepository.findByUsername(username).orElseThrow(()-> new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist "));
     }
 
 
     public AuthResponseDTO changeUserRole(String username, UserRole newRole) {
 
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit  " + username + " not exist");
-        }
-
-        user.get().setRole(newRole);
-        userRepository.save(user.get());
+        UserLis user = userLisRepository.findByUsername(username).orElseThrow(()-> new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist "));
+        user.setRole(newRole);
+        userLisRepository.save(user);
 
 
         return AuthResponseDTO.builder()
-                .token(jwtService.getToken(user.get()))
+                .token(jwtService.getToken(user))
                 .build();
     }
 
 
-    public UserDTO getUserLDAP(String username) {
 
-        ResponseEntity<UserDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserDTO.class, username);
-        if (response.getBody() == null){
-            throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit " + username + "not exist");
-        }
-        return changeRole(Objects.requireNonNull(response.getBody()));
-
-    }
-
-    public UserDTO changeRole(UserDTO response) {
-
-        switch (response.getRole()) {
-            case "1005" -> response.setRole(String.valueOf(UserRole.STUDENT));
-            case "503" -> response.setRole(String.valueOf(UserRole.PROFESOR));
-            case "502" -> response.setRole(String.valueOf(UserRole.AUXPROG));
-            case "1006" -> response.setRole(String.valueOf(UserRole.AUXADMI));
-            default -> throw new IllegalStateException("Unexpected value: " + response.getRole());
-        }
-        return response;
-    }
 
     @Transactional
     public void deleteUser(String username) {
-        if (existUser(username)) {
-            userRepository.deleteByUsername(username);
-        } else {
+        if (!existUser(username)) {
             throw new NotExistingException("404", HttpStatus.NOT_FOUND, " the user whit " + username + "not exist");
         }
+        userLisRepository.deleteByUsername(username);
     }
 
 
     public boolean existUser(String username) {
-        return userRepository.existsByUsername(username);
+        return userLisRepository.existsByUsername(username);
+    }
+
+    public Boolean checkExistUser(String username) {
+        try {
+            if (existUser(username)) {
+                return true;
+            }
+            ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
+            UserLisDTO userLdap = response.getBody();
+            if (userLdap == null) {
+                return false;
+            } else {
+                UserLis userLis = UserLis.builder()
+                        .idUser(userLdap.getIdUser())
+                        .username(userLdap.getUsername())
+                        .name(userLdap.getName())
+                        .lastname(userLdap.getLastname())
+                        .role(userLdap.getRole())
+                        .build();
+
+                userLisRepository.save(userLis);
+                return true;
+            }
+        }catch (Exception ex){
+            return false;
+        }
     }
 }

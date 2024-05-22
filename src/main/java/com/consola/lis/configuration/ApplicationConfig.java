@@ -1,6 +1,10 @@
 package com.consola.lis.configuration;
 
-import com.consola.lis.model.repository.UserRepository;
+import com.consola.lis.jwt.CustomUserDetails;
+import com.consola.lis.model.entity.UserHelloLis;
+import com.consola.lis.model.entity.UserLis;
+import com.consola.lis.model.repository.UserHelloLisRepository;
+import com.consola.lis.model.repository.UserLisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final UserHelloLisRepository userHelloLisRepository;
+    private final UserLisRepository userLisRepository;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();
@@ -37,9 +43,16 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public UserDetailsService userDetailService() {
-        return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> {
+            UserLis userLis = userLisRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            UserHelloLis userHelloLis = userHelloLisRepository.findByUserLis(userLis)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            return new CustomUserDetails(userLis, userHelloLis);
+        };
     }
 }

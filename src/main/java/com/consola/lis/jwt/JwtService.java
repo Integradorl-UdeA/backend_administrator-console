@@ -1,7 +1,7 @@
 package com.consola.lis.jwt;
 
 
-import com.consola.lis.model.entity.User;
+import com.consola.lis.model.entity.UserLis;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -25,18 +25,18 @@ public class JwtService {
     private String secretKey;
 
 
-    public String getToken(User user) {
+    public String getToken(UserLis user) {
 
         return getToken(new HashMap<>(), user);
     }
 
-    private String getToken(Map<String, Object> extraClaims, User user) {
+    private String getToken(Map<String, Object> extraClaims, UserLis user) {
 
         return Jwts
                 .builder()
                 .claims(extraClaims)
-                .claim("id", user.getId())
-                .claim("role", user.getRole())
+                .claim("id", user.getIdUser())
+                .claim("role", user.getRole().toString())
                 .claim("name", user.getName())
                 .claim("username", user.getUsername())
                 .subject(user.getUsername())

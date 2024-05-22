@@ -15,8 +15,9 @@ public class ApiDescription {
     public static final String DESCRIPTION_LOGIN=" Este endpoint permite a los usuarios iniciar sesión proporcionando su nombre de usuario y contraseña. Después de una autenticación exitosa, el sistema responde con un token de autenticación que el usuario puede usar para acceder a recursos protegidos.";
     public static final String DESCRIPTION_CONTROLLER_LOGIN=" Este controlador maneja la operación relacionada con el inicio de sesión de usuario.";
 
-    public static final String DESCRIPTION_REGISTER="Este endpoint registra un nuevo usuario en el sistema. Se deben proporcionar los detalles del usuario, como nombre de usuario, identificación, nombre, apellido y contraseña en el cuerpo de la solicitud.";
+    public static final String DESCRIPTION_REGISTER_USER_LIS="Este endpoint registra un nuevo usuario general en el sistema. Se deben proporcionar los detalles del usuario, como nombre de usuario, identificación, nombre, apellido y contraseña en el cuerpo de la solicitud.";
     public static final String DESCRIPTION_CONTROLLER_REGISTER="Este grupo de Endpoints maneja las operaciones relacionadas con el registro de nuevos usuarios en el sistema.";
+    public static final String DESCRIPTION_REGISTER_USER_HELLO_LIS="Este endpoint registra un nuevo usuario auxiliar o administrador en el sistema. Se deben proporcionar los detalles del usuario general agregando una contraseña.";
 
     //manage categories
     public static final String DESCRIPTION_ALL_CATEGORIES=" Este endpoint permite obtener una lista de todas las categorías de elementos disponibles.";
@@ -54,6 +55,14 @@ public class ApiDescription {
     public static final String DESCRIPTION_EDIT_QUANTITY = "Este endpoint permite actualizar la cantidad de un elemento de inventario específico. Se proporciona el ID del elemento como parte de la URL y se especifica la nueva cantidad en el cuerpo de la solicitud.";
     public static final String DESCRIPTION_HEADERS_ITEM = "Este endpoint permite obtener los encabezados de una tabla de elementos de inventario.";
     public static final String DESCRIPTION_CONTROLLER_INVENTORY="Este grupo de Endpoints maneja las operaciones relacionadas con la gestión de inventario.";
+    public static final String DESCRIPTION_EXISTING_USER = "Este Enpoint se encarga de consultar la existencia de un usuario en la db o en el ldap, si existe en alguno de los dos true, de otra forma false; también se hace un mapeo de un usuario existente en el ldap y no en la db a la db";
 
+    //manage select list
+    public static final String DESCRIPTION_CONTROLLER_SELECT_LIST = "Este grupo de enpoint permite obtener como una lista los enums que se usan en la api";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_WALLET = "Este enpoint permite obtener la lista de los enums de Wallet Owner pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_LOAN_TYPE = "Este enpoint permite obtener la lista de los enums de Loan Type pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_ROLE = "Este enpoint permite obtener la lista de los enums de User Role pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_LOAN_STATE = "Este enpoint permite obtener la lista de los enums de Loan State pasados a toString y español";
+    public static final String DESCRIPTION_SELECT_LIST_ENUM_ITEM_STATE = "Este enpoint permite obtener la lista de los enums de Item State pasados a toString y español";
 }
 
