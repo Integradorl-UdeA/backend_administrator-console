@@ -1,7 +1,6 @@
 package com.consola.lis.model.enums;
 
 import com.consola.lis.util.deserializer.LoanTypeDeserializer;
-import com.consola.lis.util.deserializer.UserRoleDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package com.consola.lis.model.enums;
 
 
-import com.consola.lis.util.deserializer.UserRoleDeserializer;
 import com.consola.lis.util.deserializer.WalletOwnersDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
