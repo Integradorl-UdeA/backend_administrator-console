@@ -100,11 +100,7 @@ public class LoanService {
     }
 
     public List<Loan> getAllLoans() {
-        List<Loan> allLoans = loanRepository.findAll();
-        if(allLoans.isEmpty()){
-            throw new IsEmptyException("403", HttpStatus.FORBIDDEN, "No exists loans");
-        }
-        return allLoans;
+        return  loanRepository.findAll();
     }
 
 
