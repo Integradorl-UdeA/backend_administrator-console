@@ -1,8 +1,12 @@
 package com.consola.lis.model.enums;
 
+import com.consola.lis.util.deserializer.ItemStateDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(using = ItemStateDeserializer.class)
 public enum ItemState {
     AVAILABLE("Disponible"),
     BROKEN("Averiado"),

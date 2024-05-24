@@ -30,8 +30,9 @@ public class UserService {
 
 
     public AuthResponseDTO changeUserRole(String username, UserRole newRole) {
-
+        System.out.println("holi"+newRole.name());
         UserLis user = userLisRepository.findByUsername(username).orElseThrow(()-> new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist "));
+
         user.setRole(newRole);
         userLisRepository.save(user);
 

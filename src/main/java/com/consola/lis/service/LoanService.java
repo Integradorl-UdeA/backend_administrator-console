@@ -10,7 +10,6 @@ import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.repository.LoanRepository;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
-import com.consola.lis.util.exception.IsEmptyException;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
 import lombok.RequiredArgsConstructor;
@@ -100,11 +99,7 @@ public class LoanService {
     }
 
     public List<Loan> getAllLoans() {
-        List<Loan> allLoans = loanRepository.findAll();
-        if(allLoans.isEmpty()){
-            throw new IsEmptyException("403", HttpStatus.FORBIDDEN, "No exists loans");
-        }
-        return allLoans;
+        return  loanRepository.findAll();
     }
 
 

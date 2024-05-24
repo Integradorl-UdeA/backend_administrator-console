@@ -1,9 +1,13 @@
 package com.consola.lis.model.enums;
 
 
+import com.consola.lis.util.deserializer.WalletOwnersDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(using = WalletOwnersDeserializer.class)
 public enum WalletOwners {
     DIEGO_ALEJANDRO_BOTIA ("Diego Alejandro Botia"),
     ANDRES_MARIN("Andres Marin"),
