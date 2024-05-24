@@ -36,7 +36,7 @@ public class JwtService {
                 .builder()
                 .claims(extraClaims)
                 .claim("id", user.getIdUser())
-                .claim("role", user.getRole().toString())
+                .claim("role", user.getRole())
                 .claim("name", user.getName())
                 .claim("username", user.getUsername())
                 .subject(user.getUsername())

@@ -22,13 +22,20 @@ public enum UserRole {
         return this.lowerCase;
     }
 
-    public static UserRole fromString(String role) {
+    public static UserRole fromString(String text) {
         try {
-            return UserRole.valueOf(role.toUpperCase());
+            for (UserRole role : UserRole.values()) {
+                if (role.lowerCase.equalsIgnoreCase(text)) {
+                    return role;
+                }
+            }
         } catch (IllegalArgumentException e) {
-            return fromNumericString(role);
+            return fromNumericString(text);
         }
+        throw new IllegalArgumentException("No enum constant with text " + text);
     }
+
+
 
 
     public static UserRole fromNumericString(String numericString) {
