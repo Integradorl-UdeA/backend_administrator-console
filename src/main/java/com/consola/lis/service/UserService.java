@@ -65,9 +65,11 @@ public class UserService {
             }
             ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
             UserLisDTO userLdap = response.getBody();
+            System.out.printf("fd"+userLdap);
             if (userLdap == null) {
                 return false;
             } else {
+
                 UserLis userLis = UserLis.builder()
                         .idUser(userLdap.getIdUser())
                         .username(userLdap.getUsername())
@@ -80,7 +82,10 @@ public class UserService {
                 return true;
             }
         }catch (Exception ex){
+            System.out.printf("error"+ex);
             return false;
         }
     }
+
+
 }

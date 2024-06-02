@@ -58,6 +58,6 @@ public class EndpointConstant {
     public static final String ENDPOINT_SELECT_LIST_ENUM_LOAN_STATE = "/loanState";
     public static final String ENDPOINT_SELECT_LIST_ENUM_ITEM_STATE = "/itemState";
 
-
+    public static final String ENDPOINT_LDAP="https://sistemas.udea.edu.co/api/ldap/login/";
 
 }

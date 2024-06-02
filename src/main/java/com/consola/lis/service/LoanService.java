@@ -117,7 +117,10 @@ public class LoanService {
 
     private List<LoanInfoDTO> mapToLoanInfoList(List<Loan> loans) {
         return loans.stream()
-                .map(loan -> LoanMapper.mapLoanToDTO(loan, inventoryItemService.findInventoryItem(loan.getItemId())))
+                .map(loan -> {
+                    InventoryItem item = loan.getItemId() != null ? inventoryItemService.findInventoryItem(loan.getItemId()) : null;
+                    return LoanMapper.mapLoanToDTO(loan, item);
+                })
                 .toList();
     }
 
