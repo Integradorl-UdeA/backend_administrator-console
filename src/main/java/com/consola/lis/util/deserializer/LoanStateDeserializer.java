@@ -12,6 +12,10 @@ public class LoanStateDeserializer extends JsonDeserializer<LoanState> {
     @Override
     public LoanState deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String loanStateLowerCase = jsonParser.getText();
+        if (loanStateLowerCase == null || loanStateLowerCase.trim().isEmpty()) {
+            return null;
+        }
         return LoanState.fromString(loanStateLowerCase);
+
     }
 }

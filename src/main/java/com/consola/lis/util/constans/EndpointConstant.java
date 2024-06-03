@@ -21,7 +21,7 @@ public class EndpointConstant {
 
     //Endpoints Inventory Item
     public static final String ENDPOINT_INVENTORY = "/api/console-lis/user/inventory/item";
-    public static final String ENDPOINT_INVENTORY_TABLE = "/tableRegisters";
+    public static final String ENDPOINT_INVENTORY_TABLE = "/table";
     public static final String ENDPOINT_DELETE_ITEM="/delete/{itemId}";
     public static final String ENDPOINT_EDIT_ITEM_STATE="/item/state/{itemId}";
     public static final String ENDPOINT_ONE_ITEM = "/{itemId}";
@@ -42,7 +42,7 @@ public class EndpointConstant {
 
     public static final String ENDPOINT_GET_ONE_LOAN = "/{loanId}";
 
-    public static final String ENDPOINT_ALL_LOANS_TABLE = "/tableRegisters";
+    public static final String ENDPOINT_ALL_LOANS_TABLE = "/table";
     public static final String ENDPOINT_HEADERS_LOAN = "/tableHeaders/";
 
     //Return Loan
@@ -58,6 +58,6 @@ public class EndpointConstant {
     public static final String ENDPOINT_SELECT_LIST_ENUM_LOAN_STATE = "/loanState";
     public static final String ENDPOINT_SELECT_LIST_ENUM_ITEM_STATE = "/itemState";
 
-
+    public static final String ENDPOINT_LDAP="https://sistemas.udea.edu.co/api/ldap/login/";
 
 }

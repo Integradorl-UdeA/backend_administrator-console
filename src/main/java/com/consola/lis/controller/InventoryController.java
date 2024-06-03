@@ -1,5 +1,7 @@
 package com.consola.lis.controller;
 
+import com.consola.lis.dto.TableRegistersItemDTO;
+import com.consola.lis.dto.TableRegistersLoanDTO;
 import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.util.constans.ApiDescription;
 import com.consola.lis.util.constans.EndpointConstant;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +52,10 @@ public class InventoryController {
 
 
     @Operation(summary = ApiDescription.DESCRIPTION_INVENTORY_TABLE)
-    @GetMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
-    public Map<String, Object> inventoryItems(Pageable pageable) {
-        return inventoryItemService.getAllItemsMapped(pageable);
+    @PostMapping(EndpointConstant.ENDPOINT_INVENTORY_TABLE)
+    public Map<String, Object> inventoryItems(@RequestBody TableRegistersItemDTO tableRegistersDTO){
+        Pageable pageable = PageRequest.of(tableRegistersDTO.getPage(), tableRegistersDTO.getSize());
+        return inventoryItemService.getAllItemsMapped(tableRegistersDTO.getLendable(),pageable);
     }
 
     @Operation(summary = ApiDescription.DESCRIPTION_ONE_ITEM)

@@ -17,6 +17,8 @@ public class LoanInfoDTO {
     private String loanName;
     private String loanState;
     private String borrowerUser;
+
+    private String loanItemId;
     private String loanType;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date loanDate;

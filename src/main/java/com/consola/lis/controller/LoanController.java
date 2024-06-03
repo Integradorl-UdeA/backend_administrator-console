@@ -2,6 +2,7 @@ package com.consola.lis.controller;
 
 
 import com.consola.lis.dto.LoanDTO;
+import com.consola.lis.dto.TableRegistersLoanDTO;
 import com.consola.lis.model.entity.Loan;
 import com.consola.lis.service.LoanService;
 import com.consola.lis.util.constans.ApiDescription;
@@ -9,6 +10,7 @@ import com.consola.lis.util.constans.EndpointConstant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.Integer.parseInt;
 
 @Tag(name = "Manage Loans", description = ApiDescription.DESCRIPTION_CONTROLLER_LOAN)
 @RestController
@@ -51,10 +55,12 @@ public class LoanController {
         return loanService.getAllLoans();
     }
 
+
     @Operation(summary = ApiDescription.DESCRIPTION_ALL_LOANS_TABLE)
-    @GetMapping(EndpointConstant.ENDPOINT_ALL_LOANS_TABLE)
-    public Map<String, Object> loans(Pageable pageable){
-        return loanService.getAllLoansMapper(pageable);
+    @PostMapping(EndpointConstant.ENDPOINT_ALL_LOANS_TABLE )
+    public Map<String, Object> loans(@RequestBody TableRegistersLoanDTO tableRegistersDTO){
+        Pageable pageable = PageRequest.of(tableRegistersDTO.getPage(), tableRegistersDTO.getSize());
+        return loanService.getAllLoansMapper(tableRegistersDTO.getLoanState(),pageable);
     }
 
     @Operation(summary = ApiDescription.DESCRIPTION_HEADERS_LOAN)
