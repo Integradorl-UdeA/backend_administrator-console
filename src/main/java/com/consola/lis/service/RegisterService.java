@@ -49,7 +49,11 @@ public class RegisterService {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "User already exists");
         }
 
-        if (registerUserLisDTO.getRole() == UserRole.STUDENT && !getBasicAcademicInfo(registerUserLisDTO.getIdUser())) {
+        if (registerUserLisDTO.getRole() == UserRole.STUDENT && !getBasicAcademicInfo("ACTIVO",registerUserLisDTO.getIdUser())) {
+            throw new NotExistingException("403", HttpStatus.FORBIDDEN, "The student does not belong to systems engineering");
+        }
+
+        if (registerUserLisDTO.getRole() == UserRole.GRADUATED && !getBasicAcademicInfo("GRADUADO",registerUserLisDTO.getIdUser())) {
             throw new NotExistingException("403", HttpStatus.FORBIDDEN, "The student does not belong to systems engineering");
         }
 
@@ -84,7 +88,7 @@ public class RegisterService {
         userHelloLisRepository.save(userHelloLis);
     }
 
-    private boolean getBasicAcademicInfo(String identificationNumber) {
+    private boolean getBasicAcademicInfo(String state,String identificationNumber) {
         try{
             String url = endpointAsone + identificationNumber;
 
@@ -106,7 +110,7 @@ public class RegisterService {
                 JsonNode lastObject = objects.get(objects.size() - 1);
                 int program = lastObject.path("programa").asInt();
                 String stateProgram = lastObject.path("estadoAlumnoPrograma").asText();
-                return program == 504 && "ACTIVO".equals(stateProgram);
+                return program == 504 && state.equals(stateProgram);
             }
 
             return false;
