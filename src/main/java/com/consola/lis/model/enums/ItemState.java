@@ -27,6 +27,9 @@ public enum ItemState {
     }
 
     public static ItemState fromString(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return null;
+        }
         for (ItemState state : ItemState.values()) {
             if (state.lowerCase.equalsIgnoreCase(text)) {
                 return state;
@@ -34,6 +37,8 @@ public enum ItemState {
         }
         throw new IllegalArgumentException("No enum constant with text " + text);
     }
+
+
 
     public static List<String> getLowerCaseValuesList() {
         List<String> lowerCaseValues = new ArrayList<>();

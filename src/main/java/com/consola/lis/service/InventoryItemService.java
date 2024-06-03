@@ -140,9 +140,8 @@ public class InventoryItemService {
     }
 
 
-    public Map<String, Object> getAllItemsMapped(Pageable pageable) {
-        Page<InventoryItem> inventoryItemsPage = getAllInventoryItems(pageable);
-
+    public Map<String, Object> getAllItemsMapped(Boolean lendable, Pageable pageable) {
+        Page<InventoryItem> inventoryItemsPage = getAllInventoryItems(lendable, pageable);
         Map<String, Object> result = new HashMap<>();
         result.put("totalElements", inventoryItemsPage.getTotalElements());
         result.put("totalPages", inventoryItemsPage.getTotalPages());
@@ -158,8 +157,8 @@ public class InventoryItemService {
                 .toList();
     }
 
-    private Page<InventoryItem> getAllInventoryItems(Pageable pageable) {
-        return inventoryItemRepository.findAllItems(pageable);
+    private Page<InventoryItem> getAllInventoryItems(Boolean lendable,Pageable pageable) {
+        return inventoryItemRepository.findAllLoansByLendable(lendable,pageable);
     }
     public List<String> getHeaders() {
         List<String> header = new ArrayList<>();

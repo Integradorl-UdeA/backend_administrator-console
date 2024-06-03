@@ -4,11 +4,13 @@ import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.model.repository.UserLisRepository;
+import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.enums.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,13 +26,15 @@ public class UserService {
     public final JwtService jwtService;
 
 
+    @Value("${ldap}")
+    private String endpointLdap;
+
     public UserLis getUser(String username) {
         return userLisRepository.findByUsername(username).orElseThrow(()-> new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist "));
     }
 
 
     public AuthResponseDTO changeUserRole(String username, UserRole newRole) {
-        System.out.println("holi"+newRole.name());
         UserLis user = userLisRepository.findByUsername(username).orElseThrow(()-> new NotExistingException("404", HttpStatus.NOT_FOUND, "the category whit id " + username + " not exist "));
 
         user.setRole(newRole);
@@ -63,9 +67,8 @@ public class UserService {
             if (existUser(username)) {
                 return true;
             }
-            ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity("https://sistemas.udea.edu.co/api/ldap/login/{username}", UserLisDTO.class, username);
+            ResponseEntity<UserLisDTO> response = this.restTemplate.getForEntity(endpointLdap +"{username}", UserLisDTO.class, username);
             UserLisDTO userLdap = response.getBody();
-            System.out.printf("fd"+userLdap);
             if (userLdap == null) {
                 return false;
             } else {
@@ -82,7 +85,6 @@ public class UserService {
                 return true;
             }
         }catch (Exception ex){
-            System.out.printf("error"+ex);
             return false;
         }
     }

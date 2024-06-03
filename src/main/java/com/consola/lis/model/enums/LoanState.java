@@ -23,6 +23,9 @@ public enum LoanState {
     }
 
     public static LoanState fromString(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return null;
+        }
         for (LoanState state : LoanState.values()) {
             if (state.lowerCase.equalsIgnoreCase(text)) {
                 return state;

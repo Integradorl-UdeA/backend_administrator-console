@@ -7,11 +7,14 @@ import com.consola.lis.model.entity.Loan;
 import com.consola.lis.model.enums.LoanState;
 import com.consola.lis.model.enums.LoanType;
 import com.consola.lis.model.enums.ItemState;
+import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
+import com.consola.lis.util.deserializer.LoanStateDeserializer;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ public class LoanService {
 
     private final LoanRepository loanRepository;
     private final InventoryItemService inventoryItemService;
+    private final InventoryItemRepository inventoryItemRepository;
 
     public Loan createLoan(LoanDTO loanRequest) {
         validateLoanRequest(loanRequest);
@@ -68,12 +72,15 @@ public class LoanService {
         if (loanRequest.getLoanType() == null) {
             loanRequest.setLoanType(LoanType.GENERAL);
         }
+        Optional<InventoryItem> item = inventoryItemRepository.findById(loanRequest.getItemId());
 
         return Loan.builder()
                 .itemId(loanRequest.getItemId())
                 .loanType(LoanType.valueOf(loanRequest.getLoanType().name()))
                 .borrowerUser(loanRequest.getBorrowerUser())
                 .lenderUser(loanRequest.getLenderUser())
+                .item(loanRequest.getItemId())
+                .category(item.get().getCategory().getCategoryName())
                 .quantity(loanRequest.getQuantity())
                 .loanState(LoanState.ACTIVE)
                 .observation(loanRequest.getObservation())
@@ -99,13 +106,16 @@ public class LoanService {
     }
 
     public List<Loan> getAllLoans() {
+        System.out.printf("d"+loanRepository.findAll());
         return  loanRepository.findAll();
     }
 
 
 
-    public Map<String, Object> getAllLoansMapper(Pageable pageable) {
-        Page<Loan> loanPage = getAllLoans(pageable);
+
+    public Map<String, Object> getAllLoansMapper(LoanState loanState,Pageable pageable) {
+
+        Page<Loan> loanPage = getAllLoans(loanState, pageable);
 
         Map<String, Object> result = new HashMap<>();
         result.put("totalElements", loanPage.getTotalElements());
@@ -124,8 +134,8 @@ public class LoanService {
                 .toList();
     }
 
-    private Page<Loan> getAllLoans(Pageable pageable) {
-        return loanRepository.findAllLoans(pageable);
+    private Page<Loan> getAllLoans(LoanState loanState,Pageable pageable) {
+        return loanRepository.findAllLoansByState(loanState, pageable);
     }
 
     public List<String> getHeaders() {
@@ -142,7 +152,7 @@ public class LoanService {
 
     public void updateReturnLoanState (int loanId, LoanState state) {
         Loan existingLoan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventary"));
+                .orElseThrow(() -> new NotExistingException("409", HttpStatus.CONFLICT, "Item not exists into inventory"));
 
         existingLoan.setLoanState(state);
         loanRepository.save(existingLoan);

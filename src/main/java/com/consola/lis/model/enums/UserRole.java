@@ -13,6 +13,7 @@ public enum UserRole {
     AUXPROG ("Auxiliar de Programación"),
     AUXADMI("Auxiliar Administrativo"),
     STUDENT("Estudiante"),
+    GRADUATED("Egresado"),
     PROFESSOR("Profesor");
 
     final String lowerCase;
@@ -27,16 +28,17 @@ public enum UserRole {
     }
 
     public static UserRole fromString(String text) {
-        try {
-            for (UserRole role : UserRole.values()) {
-                if (role.lowerCase.equalsIgnoreCase(text)) {
-                    return role;
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            return fromNumericString(text);
+        if (text == null || text.isEmpty()) {
+            throw new IllegalArgumentException("Text cannot be null or empty");
         }
-        throw new IllegalArgumentException("No enum constant with text " + text);
+
+        for (UserRole role : UserRole.values()) {
+            if (role.lowerCase.equalsIgnoreCase(text)) {
+                return role;
+            }
+        }
+
+        return fromNumericString(text);
     }
 
 

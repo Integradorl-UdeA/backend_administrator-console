@@ -12,14 +12,15 @@ public class LoanMapper {
     }
 
     public static LoanInfoDTO mapLoanToDTO(Loan loan, InventoryItem item){
-        String categoryName = item != null && item.getCategory() != null ? item.getCategory().getCategoryName() : "Unknown Category";
+
         return LoanInfoDTO.builder()
                 .loanId(loan.getLoanId())
                 .loanType(loan.getLoanType().toString())
                 .loanState(loan.getLoanState().toString())
                 .borrowerUser(loan.getBorrowerUser())
                 .loanDate(loan.getLoanDate())
-                .loanName(categoryName)
+                .loanName(loan.getCategory())
+                .loanItemId(loan.getItem())
                 .returnDate(loan.getReturnDate())
                 .loanDate(loan.getLoanDate())
                 .build();
