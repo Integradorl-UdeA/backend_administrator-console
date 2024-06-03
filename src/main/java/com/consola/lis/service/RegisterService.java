@@ -99,9 +99,6 @@ public class RegisterService {
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            if (response == null) {
-                return false;
-            }
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(response.getBody());
             JsonNode objects = root.path("object");
