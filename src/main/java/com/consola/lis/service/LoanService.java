@@ -9,12 +9,10 @@ import com.consola.lis.model.enums.LoanType;
 import com.consola.lis.model.enums.ItemState;
 import com.consola.lis.model.repository.InventoryItemRepository;
 import com.consola.lis.model.repository.LoanRepository;
-import com.consola.lis.util.deserializer.LoanStateDeserializer;
 import com.consola.lis.util.exception.AlreadyExistsException;
 import com.consola.lis.util.exception.IllegalParameterInRequest;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.util.mapper.LoanMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -74,6 +72,7 @@ public class LoanService {
         }
         Optional<InventoryItem> item = inventoryItemRepository.findById(loanRequest.getItemId());
 
+
         return Loan.builder()
                 .itemId(loanRequest.getItemId())
                 .loanType(LoanType.valueOf(loanRequest.getLoanType().name()))
@@ -106,7 +105,6 @@ public class LoanService {
     }
 
     public List<Loan> getAllLoans() {
-        System.out.printf("d"+loanRepository.findAll());
         return  loanRepository.findAll();
     }
 

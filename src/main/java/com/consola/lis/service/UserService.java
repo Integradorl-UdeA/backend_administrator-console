@@ -4,7 +4,6 @@ import com.consola.lis.dto.AuthResponseDTO;
 import com.consola.lis.dto.UserLisDTO;
 import com.consola.lis.model.entity.UserLis;
 import com.consola.lis.model.repository.UserLisRepository;
-import com.consola.lis.util.constans.EndpointConstant;
 import com.consola.lis.util.exception.NotExistingException;
 import com.consola.lis.jwt.JwtService;
 import com.consola.lis.model.enums.UserRole;
