@@ -40,7 +40,7 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
-    private void validateLoanRequest(LoanDTO loanRequest) {
+    public void validateLoanRequest(LoanDTO loanRequest) {
         if (!inventoryItemService.existItem(loanRequest.getItemId())) {
             throw new AlreadyExistsException("409", HttpStatus.CONFLICT, "Item does not exist in inventory");
         }
@@ -56,17 +56,17 @@ public class LoanService {
         }
     }
 
-    private void updateItemStateAndTotal(InventoryItem item, int quantity) {
+    public void updateItemStateAndTotal(InventoryItem item, int quantity) {
         inventoryItemService.changeStateNoQuantizableItem(item, ItemState.LENDED);
 
-        if (Boolean.TRUE.equals(item.getCategory().getQuantizable()) && item.getTotal() - quantity == 0) {
+        if (item.getCategory() != null &&Boolean.TRUE.equals(item.getCategory().getQuantizable()) && item.getTotal() - quantity == 0) {
             inventoryItemService.updateInventoryItemState(item.getItemId(), ItemState.OUT_OF_STOCK);
         }
 
         inventoryItemService.updateInventoryItemTotal(item.getItemId(), -quantity);
     }
 
-    private Loan buildLoanFromRequest(LoanDTO loanRequest) {
+    public Loan buildLoanFromRequest(LoanDTO loanRequest) {
         if (loanRequest.getLoanType() == null) {
             loanRequest.setLoanType(LoanType.GENERAL);
         }
