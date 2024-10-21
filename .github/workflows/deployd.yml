@@ -24,14 +24,21 @@ jobs:
     - name: Install OpenVPN
       run: sudo apt-get install openvpn
 
+    
+
     - name: Move the dir to configuration openvpn
       run: |
         sudo mv ./certs/ ${{secrets.PATH_DIR_OVPN}}
 
+    - name: Create credentials file
+      run: |
+        echo "${{secrets.USERNAMEVPN}}" > creds.txt
+        echo "${{secrets.PASSWORDVPN}}" >> creds.txt
+
     - name: cd to certs and run openvpn
       run: |
         cd ${{secrets.PATH_DIR_OVPN}}/certs
-        sudo openvpn --config ${{ secrets.CERT}} &
+        sudo openvpn --config ${{ secrets.CERT}}  --auth-user-pass creds.txt &
 
     - name: Esperar 15 segundos
       run: sleep 15
