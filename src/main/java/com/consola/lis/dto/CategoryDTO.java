@@ -18,7 +18,7 @@ public class CategoryDTO {
     private String categoryName;
 
     @Column(name = "id_item_field")
-    private String idFieldName;
+    private String idItemField;
 
     @NotNull(message = "Quantizable status is required")
     private Boolean quantizable;
